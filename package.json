@@ -1,0 +1,19 @@
+{
+  "name": "cs-546-final-project",
+  "version": "1.0.0",
+  "description": "Video game review and rating website",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Limey12/CS-546-Final-Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Limey12/CS-546-Final-Project/issues"
+  },
+  "homepage": "https://github.com/Limey12/CS-546-Final-Project#readme"
+}
