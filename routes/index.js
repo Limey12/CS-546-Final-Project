@@ -1,6 +1,6 @@
 //I pledge my honor that I have abided by the Stevens Honor System
 
-const routes = require("./routesFile"); // not yet created (TODO)
+const routes = require("./routesFile"); // tmp
 
 const constructorMethod = (app) => {
     app.use("/", routes);
