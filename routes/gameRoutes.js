@@ -1,18 +1,19 @@
 const express = require("express");
 const router = express.Router();
+const { gameApi } = require("../data");
 
 //GET http://localhost:3000/game/{id}
 router.route("/:id").get(async (req, res) => {
-    //todo: look up game in database
-    let game = {}; //game object from database
+    let argId = req.params.id; //todo check validity
+    let game = gameApi.getGameFromId(argId);
     let hobj = {
-        game_name: "test",
-        image: "",
-        alt: "",
-        description: "",
-        f_rating: "",
-        overall_rating: "",
-        reviews: {},
+        game_name: game.title,
+        image: gameApi.getImageFromGameId(argId), //todo not implemented
+        alt: `${game.title}`,
+        description: game.description,
+        f_rating: gameApi.getAverageRatingAmongFriends(argId, userId), //todo not implemented. also should depend on if the user is logged in
+        overall_rating: game.avg_rating,
+        reviews: game.reviews, //todo apply function to grab usernames from ids
     };
     res.render("pages/game");
 });
