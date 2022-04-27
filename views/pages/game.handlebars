@@ -1,0 +1,28 @@
+{{!-- 
+Image, title, description of game
+Average rating among friends
+Average rating among all users
+Reviews
+--}}
+
+
+<article>
+    <h2>{{game_name}}</h2>
+    <img src="{{image}}" alt="{{alt}}"></img>
+    <p>{{description}}</p>
+    <h3>Average Rating</h3>
+    <div>
+        <p>Among friends: {{f_rating}}</p>
+        <p>Among all users: {{overall_rating}}</p>
+    </div>
+
+    <h3>Reviews</h3>
+    <ul>
+    {{#each review}}
+        <li>
+            <h4>{{self.reviewUsername}}</h4>
+            <p>{{self.reviewText}}</p>
+        </li>
+    {{/each}}
+    </ul>
+</article>

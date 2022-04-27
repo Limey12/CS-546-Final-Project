@@ -1,4 +1,4 @@
-const userApi = require("./gameApi");
+const gameApi = require("./gameApi");
 module.exports = {
     gameApi: gameApi,
 };
