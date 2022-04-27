@@ -1,0 +1,27 @@
+<body>
+    <header>
+        <h1>
+            User Profile
+        </h1>
+    </header>
+    <p>About {{username}}</p>
+    <p>{{bio}}</p>
+    <h2>My Games List</h2>
+    <ul>
+        {{#each game}}
+            <li>
+                <h3>{{game_name}}</h3>
+                <img src="{{image}}" alt="{{alt}}"></img>
+            </li>
+        {{/each}}
+    </ul>
+    <h2>My Reviews</h2>
+    <ul>
+        {{#each review}}
+            <li>
+                <h4>{{self.reviewUsername}}</h4>
+                <p>{{self.reviewText}}</p>
+            </li>
+        {{/each}}
+    </ul>
+</body>
