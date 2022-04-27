@@ -5,3 +5,5 @@ const router = express.Router();
 router.route("/").get(async (req, res) => {
     res.status(404).send("default");
 });
+
+module.exports = router;
