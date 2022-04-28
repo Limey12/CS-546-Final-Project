@@ -11,6 +11,17 @@ async function main() {
       "Minecraft",
       "Block Game Big Man Steve"
     );
+    const Pokemon = await games.addGame(
+      "Pokemon",
+      "Catch them All"
+    );
+    //Update Game
+    const Minecraft2 = await games.updateGame(
+      Minecraft._id.toString(),
+      "Minecraft 2",
+      "Bigger Game"
+    );
+    console.log(await games.getGame(Minecraft._id.toString(),));
   } catch (e) {
     console.log(e);
   }

@@ -8,6 +8,7 @@ let getAverageRatingAmongFriends = function () {
 
 let getGameFromId = function () {
     //todo
+    //in games file
 };
 
 let getImageFromGameId = function () {
