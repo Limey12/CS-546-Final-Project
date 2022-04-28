@@ -1,6 +1,5 @@
 const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
-const { ObjectId } = require('mongodb');
 const bcrypt = require('bcrypt');
 const validator = require("email-validator");
 
@@ -46,7 +45,6 @@ const checkUser = async function checkUser(username, password) {
     if(!(/^[a-z0-9]+$/i.test(username))) throw 'Username must be alphanumeric.';
     if(username.length < 4) throw 'Username must be at least 4 characters long.';
     if(typeof password !== 'string') throw 'Password must be a string.';
-    //password = password.trim();
     if(/\s/.test(password)) throw 'Password must not contain any spaces.';
     if(password.length < 6) throw 'Username must be at least 6 characters long.';
     const userCollection = await users();
