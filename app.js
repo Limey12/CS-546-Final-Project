@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
     name: 'AuthCookie',
+    secret: 'game time',
     resave: false,
     saveUninitialized: true
 }));
