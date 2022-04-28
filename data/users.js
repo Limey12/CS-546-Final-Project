@@ -28,6 +28,7 @@ const createUser = async function createUser(username, email, password) {
         email: email,
         password: hash,
         favoriteGameId: "",
+        leastFavoriteGameId: "",
         reviews: [],
         comments: [],
         friends: []
