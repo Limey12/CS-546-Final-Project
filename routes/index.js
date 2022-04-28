@@ -1,14 +1,18 @@
 //I pledge my honor that I have abided by the Stevens Honor System
 
 const gameRoutes = require("./gameRoutes");
-const loginRoute = require("./loginRoutes");
+const loginRoutes = require("./loginRoutes");
+const signupRoutes = require("./signupRoutes");
+const logoutRoutes = require("./logoutRoutes");
 const rootRoute = require("./rootRoute");
 const catalogRoutes = require("./catalogRoutes");
 const profileRoutes = require("./profileRoutes");
 
 const constructorMethod = (app) => {
   app.use("/", rootRoute);
-  app.use("/login", loginRoute);
+  app.use("/login", loginRoutes);
+  app.use("/signup", signupRoutes);
+  app.use("/logout", logoutRoutes);
   app.use("/game", gameRoutes);
   app.use("/GameCatalog", catalogRoutes);
   app.use("/Profile", profileRoutes);
