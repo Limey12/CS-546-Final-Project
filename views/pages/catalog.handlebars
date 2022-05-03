@@ -1,19 +1,23 @@
 <body>
-    <header>
-        <h1>
-            Game Catalog
-        </h1>
-    </header>
-    <p id="searcherror" hidden> Need to enter a search term</p>
-    <form id="gamesearch">
-        <label for="search_term">Search:</label>
-        <input type = "text" name="search_term" id ="search_term"/>
-        <button type="submit">Submit</button>
-    </form>
-    <ul id = "gameList">{{#each games}}
-    <li>
-      <a href= "/game/{{_id}}">{{title}}</a> 
-    </li> 
+  <header>
+    <h1>
+      Game Catalog
+    </h1>
+  </header>
+  <form method="POST" action="/searchgames" id="gamesearch">
+    <label for="showsearchTerm" id="Search">Search:</label>
+    <input type="text" name="gameSearchTerm" id="gameSearchTerm" />
+    <button type="submit">Submit Form</button>
+  </form>
+  <ul id="gameList">{{#each games}}
+      <li>
+        <a href="/game/{{_id}}">{{title}}</a>
+      </li>
     {{/each}}</ul>
-    <a href ="/GameCatalog" id="backLink" hidden>Get All Games</a>
+  {{#if error}}
+    <p class="error">
+      {{errormsg}}
+    </p>
+  {{/if}}
+  <a href="/GameCatalog" id="backLink" hidden>Get All Games</a>
 </body>
