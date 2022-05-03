@@ -45,7 +45,7 @@ const addGame = async function addGame(title, description) {
 //Get all games in the database
 const getAllGames = async function getAll() {
   if (arguments.length !== 0) {
-    ("should take no arguments");
+    throw "should take no arguments";
   }
   const gameCollection = await games();
   const gameList = await gameCollection.find({}).toArray();
@@ -59,7 +59,7 @@ const getAllGames = async function getAll() {
 //Get a game based on the id
 const getGame = async function getGame(id) {
   if (arguments.length !== 1) {
-    ("should have 1 argument");
+    throw "should have 1 argument";
   }
   if (!id) {
     throw "You must provide an id to search for";
@@ -83,7 +83,7 @@ const getGame = async function getGame(id) {
 //removes a game from the database based on the id
 const removeGame = async function removeGame(id) {
   if (arguments.length !== 1) {
-    ("should take 1 argument");
+    throw "should take 1 argument";
   }
   if (!id) {
     throw "You must provide an id to search for";
@@ -114,7 +114,7 @@ const removeGame = async function removeGame(id) {
 //updates game
 const updateGame = async function updateGame(id, title, description) {
   if (arguments.length !== 3) {
-    ("should take 3 arguments");
+    throw "should take 3 arguments";
   }
   if (!id || !title || !description) {
     throw "field not provided";
