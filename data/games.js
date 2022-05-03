@@ -166,7 +166,7 @@ let getAverageRatingAmongFriends = function () {
   //todo
 };
 
-let getImageFromGameId = function () {
+let getImage =  function () {
   //todo
 };
 
@@ -176,4 +176,6 @@ module.exports = {
   getGame,
   removeGame,
   updateGame,
+  getAverageRatingAmongFriends,
+  getImage
 };
