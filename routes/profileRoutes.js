@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { gameApi } = require("../data");
+const { games } = require("../data");
 
 //GET http://localhost:3000/Profile/{id}
 router.route("/:id").get(async (req, res) => {

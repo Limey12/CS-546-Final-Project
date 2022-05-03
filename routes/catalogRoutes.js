@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { gameApi,games } = require("../data");
+const { games } = require("../data");
 
 
 //GET http://localhost:3000/GameCatalog
