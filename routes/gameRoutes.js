@@ -5,7 +5,7 @@ const { games } = require("../data");
 //GET http://localhost:3000/game/{id}
 router.route("/:id").get(async (req, res) => {
     let argId = req.params.id; //todo check validity
-    let game = games.getGame(argId);
+    let game = await games.getGame(argId);
     let userId = undefined; //todo get user id from session
     let hobj = {
         game_name: game?.title,
@@ -16,7 +16,7 @@ router.route("/:id").get(async (req, res) => {
         overall_rating: game?.avg_rating,
         reviews: game?.reviews, //todo apply function to grab usernames from ids
     };
-    res.render("pages/game");
+    res.render("pages/game", hobj);
 });
 
 module.exports = router;
