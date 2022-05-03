@@ -162,6 +162,14 @@ const updateGame = async function updateGame(id, title, description) {
   return await this.getGame(id);
 };
 
+let getAverageRatingAmongFriends = function () {
+  //todo
+};
+
+let getImageFromGameId = function () {
+  //todo
+};
+
 module.exports = {
   addGame,
   getAllGames,
