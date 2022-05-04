@@ -162,6 +162,28 @@ const updateGame = async function updateGame(id, title, description) {
   return await this.getGame(id);
 };
 
+let getGameSearchTerm = async function getGameSearchTerm(term) {
+  if (arguments.length !== 1) {
+    throw "should have 1 argument";
+  }
+  if (!term) {
+    throw "Should provide search term";
+  }
+  if (typeof term !== "string") {
+    throw "term must be a string";
+  }
+  term = term.trim()
+  if (term.length === 0) {
+    throw "term cannot be an empty string or just spaces";
+  }
+  const gameCollection = await games();
+  const gameList = await gameCollection.find({"title" : {$regex : term, $options : 'i'}}).toArray();
+  for(i of gameList){
+    i["_id"] = i["_id"].toString();
+  }
+  return gameList;
+}
+
 let getAverageRatingAmongFriends = function () {
   //todo
 };
@@ -177,5 +199,6 @@ module.exports = {
   removeGame,
   updateGame,
   getAverageRatingAmongFriends,
-  getImage
+  getImage,
+  getGameSearchTerm
 };

@@ -21,26 +21,19 @@ router.route("/").get(async (req, res) => {
 });
 
 //POST 
-router.post('/searchgames', async (req, res) => {
+router.post('/', async (req, res) => {
     let search = req.body.gameSearchTerm;
+    search = search.trim();
     if (!search) {
-        res.status(400).render('pages/catalog',{title:"Show Finder",gameSearchTerm:search,error:true,errormsg:"No searchterm inputted"});
+        res.status(404).render('pages/catalog',{games:[],error:true,errormsg:"No searchterm inputted"});
         return;
     }
-    else{
-        search = search.trim();
-        if(!search){
-            res.status(400).render('pages/catalog',{title:"Show Finder",gameSearchTerm:search,error:true,errormsg:"No searchterm inputted"});
-            return;
-        }
-    }
-    
-    games = await gameData.getAllGames(); //todo
-    if(games.length == 0){
-        res.status(400).render('pages/catalog',{title:"Show Finder",gameSearchTerm:search,error:true,errormsg:"No results"});
+    gamelist = await games.getGameSearchTerm(search);
+    if(gamelist.length == 0){
+        res.status(404).render('pages/catalog',{games:[],error:true,errormsg:"No results"});
         return;
     }
-    res.render('pages/catalog',{title:"Show Finder",gameSearchTerm:search});
+    res.render('pages/catalog',{games:gamelist});
 });
 
 module.exports = router;

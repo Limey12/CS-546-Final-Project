@@ -4,7 +4,7 @@
       Game Catalog
     </h1>
   </header>
-  <form method="POST" action="/searchgames" id="gamesearch">
+  <form method="POST" action="/gamecatalog" id="gamesearch">
     <label for="showsearchTerm" id="Search">Search:</label>
     <input type="text" name="gameSearchTerm" id="gameSearchTerm" />
     <button type="submit">Submit Form</button>
@@ -19,5 +19,5 @@
       {{errormsg}}
     </p>
   {{/if}}
-  <a href="/GameCatalog" id="backLink" hidden>Get All Games</a>
+  <a href="/GameCatalog" id="backLink" >Get All Games</a>
 </body>
