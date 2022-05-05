@@ -3,9 +3,14 @@ const data = require("../data/");
 const games = data.games;
 
 async function main() {
+  try {
     const db = await dbConnection.dbConnection();
     await db.dropDatabase();
-    await dbConnection.closeConnection();
+  } catch (e) {
+    console.log(e);
+  }
+
+  await dbConnection.closeConnection();
 }
 
 main();
