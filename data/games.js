@@ -184,11 +184,11 @@ let getGameSearchTerm = async function getGameSearchTerm(term) {
   return gameList;
 }
 
-let getAverageRatingAmongFriends = function () {
+let getAverageRatingAmongFriends = async function () {
   //todo
 };
 
-let getImage =  function () {
+let getImage = async function () {
   //todo
 };
 
