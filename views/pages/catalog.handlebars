@@ -1,23 +1,22 @@
-<body>
-  <header>
-    <h1>
-      Game Catalog
-    </h1>
-  </header>
-  <form method="POST" action="/gamecatalog" id="gamesearch">
-    <label for="showsearchTerm" id="Search">Search:</label>
-    <input type="text" name="gameSearchTerm" id="gameSearchTerm" />
-    <button type="submit">Submit Form</button>
-  </form>
-  <ul id="gameList">{{#each games}}
-      <li>
-        <a href="/game/{{_id}}">{{title}}</a>
-      </li>
-    {{/each}}</ul>
-  {{#if error}}
-    <p class="error">
-      {{errormsg}}
-    </p>
-  {{/if}}
-  <a href="/GameCatalog" id="backLink" >Get All Games</a>
-</body>
+<h1>
+  Game Catalog
+</h1>
+{{#if login}}
+<button><a href='/GameCatalog/gameform'>Enter a new game</a></button>
+{{/if}}
+<form method="POST" action="/gamecatalog" id="gamesearch">
+  <label for="gameSearchTerm" id="Search">Search:</label>
+  <input type="text" name="gameSearchTerm" id="gameSearchTerm" />
+  <button type="submit">Submit</button>
+</form>
+<ul id="gameList">{{#each games}}
+    <li>
+      <a href="/game/{{_id}}">{{title}}</a>
+    </li>
+  {{/each}}</ul>
+{{#if error}}
+  <p class="error">
+    {{errormsg}}
+  </p>
+{{/if}}
+<a href="/GameCatalog" id="backLink">Get All Games</a>
