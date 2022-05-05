@@ -66,7 +66,22 @@ const checkUser = async function checkUser(username, password) {
   }
 };
 
+const usernameToID = async function usernameToID(username) {
+  if (!username) {
+    throw "username must be provided";
+  }
+  if (typeof username !== "string") throw "Username must be a string.";
+  username = username.trim().toLowerCase();
+  const userCollection = await users();
+  const user = await userCollection.findOne({ username: username });
+  if (!user?._id) {
+    throw "no user with that name"
+  }
+  return user._id.toString();
+}
+
 module.exports = {
   createUser,
   checkUser,
+  usernameToID
 };
