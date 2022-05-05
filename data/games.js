@@ -225,10 +225,9 @@ let getImage = async function(gameID) {
   const gameCollection = await games();
   const game = await gameCollection.findOne({ _id: ObjectId(gameID) });
   if (!game?.image) {
-    return "/public/images/no_image.jpeg" //todo default image
+    return "/public/images/no_image.jpeg"
   }
   return game.image;
-
 };
 
 module.exports = {
