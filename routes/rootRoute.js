@@ -3,8 +3,15 @@ const router = express.Router();
 
 //GET http://localhost:3000/
 router.route("/").get(async (req, res) => {
+  let loggedIn = (req.session.user) ? true : false;
+  let id = 0;
+  if(loggedIn) {
+    //id = req.session.user.id;
+  }
   res.render("pages/home", {
     HTML_title: "Home",
+    loggedIn: loggedIn,
+    id: id
   });
 });
 
