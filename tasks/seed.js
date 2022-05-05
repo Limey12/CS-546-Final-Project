@@ -4,8 +4,11 @@ const games = data.games;
 const users = data.users;
 
 async function main() {
+  
   const db = await dbConnection.dbConnection();
-  // await db.dropDatabase();
+  if (process.argv.includes("drop")) {
+    await db.dropDatabase();
+  } 
   //Add Games
   try {
     const Minecraft = await games.addGame(
