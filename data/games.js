@@ -191,34 +191,44 @@ let getAverageRatingAmongFriends = async function(userID, gameID) {
   // get list of friend ids (easy)
   // get rating for each freind
   // average ratings
-  return 0; //todo complete
-  if (!userID || !gameID) {
-    throw "all args must be provided";
+
+  if (arguments.length != 2) {
+    throw "expects 2 args";
   }
-  
-  username = username.trim().toLowerCase();
+  if (!userID) {
+    return "N/A";
+  }
+
   const gameCollection = await games();
   const userCollection = await users();
-
   
-  const user = await userCollection.findOne({ _id: userID });
+  const user = await userCollection.findOne({ _id: ObjectId(userID) });
+  console.log(user)
   const friendList = user.friends;
-  
-  for(f of friendList) {
-    //f is id of a freind
-    let freind = await userCollection.findOne({ _id: f});
-    // const reviewsList
-
+  if (friendList.legnth == 0) {
+    return "N/A";
   }
-  
-  
-  
+  let total = 0;
+  for(f of friendList) {
+    //f is id of a friend
+    let friend = await userCollection.findOne({ _id: f});
+    const reviewList = friend.reviews;
+    //todo look in reviews subdocument of the particular game to see if the friend reviewed the game.
+    console.log(friend);
+  }
+  return total/friendList.legnth;
 
 };
 
-let getImage = async function () {
-  //todo
-  return '';
+let getImage = async function(gameID) {
+  if (!gameID) throw "gameID must be provided";
+  const gameCollection = await games();
+  const game = await gameCollection.findOne({ _id: ObjectId(gameID) });
+  if (!game?.image) {
+    return "/public/images/no_image.jpeg" //todo default image
+  }
+  return game.image;
+
 };
 
 module.exports = {

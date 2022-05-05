@@ -12,19 +12,19 @@ router.route("/:id").get(async (req, res) => {
         }
         let game = await games.getGame(argId);
         let userId = req?.session?.user?.id;
-
+        console.log("before hobj")
         let hobj = {
             game_name: game?.title,
-            image: await games.getImage(argId), //todo not implemented
+            image: await games.getImage(argId),
             alt: `${game?.title}`,
-            description: game?.description,
-            f_rating: await games.getAverageRatingAmongFriends(argId, userId), //todo not implemented. also should depend on if the user is logged in
-            overall_rating: game?.avg_rating,
+            description: game?.description ?? "No description available",
+            f_rating: await games.getAverageRatingAmongFriends(userId, argId) ?? "N/A", //todo not implemented. also should depend on if the user is logged in
+            overall_rating: game?.avg_rating ?? "N/A",
             reviews: game?.reviews, //todo apply function to grab usernames from ids
         };
         res.render("pages/game", hobj);
     } catch (e) {
-        return res.status(400).send(e);
+        return res.status(400).send("routecatch "+e);
     }
 });
 
