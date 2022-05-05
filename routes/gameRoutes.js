@@ -12,7 +12,7 @@ router.route("/:id").get(async (req, res) => {
         }
         let game = await games.getGame(argId);
         let userId = req?.session?.user?.id;
-        console.log("before hobj")
+        // console.log("before hobj")
         let hobj = {
             game_name: game?.title,
             image: await games.getImage(argId),
