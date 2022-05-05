@@ -40,7 +40,9 @@ router.post("/", async (req, res) => {
       signupData.username,
       signupData.password
     );
-    req.session.user = { username: signupData.username };
+    //checkUser throws if user is not logging in correctly
+    //if we are here, the user input the correct credentials
+    req.session.user = { username: signupData.username, id: await userData.usernameToID(signupData.username)};
     res.redirect("/");
   } catch (e) {
     return res.status(400).render("pages/form", {
