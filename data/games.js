@@ -1,5 +1,6 @@
 const mongoCollections = require("../config/mongoCollections");
 const games = mongoCollections.games;
+const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 
 //Add a Game
@@ -184,12 +185,40 @@ let getGameSearchTerm = async function getGameSearchTerm(term) {
   return gameList;
 }
 
-let getAverageRatingAmongFriends = async function () {
-  //todo
+let getAverageRatingAmongFriends = async function(userID, gameID) {
+  //todo validation
+  //steps:
+  // get list of friend ids (easy)
+  // get rating for each freind
+  // average ratings
+  return 0; //todo complete
+  if (!userID || !gameID) {
+    throw "all args must be provided";
+  }
+  
+  username = username.trim().toLowerCase();
+  const gameCollection = await games();
+  const userCollection = await users();
+
+  
+  const user = await userCollection.findOne({ _id: userID });
+  const friendList = user.friends;
+  
+  for(f of friendList) {
+    //f is id of a freind
+    let freind = await userCollection.findOne({ _id: f});
+    // const reviewsList
+
+  }
+  
+  
+  
+
 };
 
 let getImage = async function () {
   //todo
+  return '';
 };
 
 module.exports = {
