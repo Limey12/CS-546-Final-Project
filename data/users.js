@@ -2,6 +2,7 @@ const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const bcrypt = require("bcrypt");
 const validator = require("email-validator");
+const { ObjectId } = require("mongodb");
 
 const saltRounds = 8;
 
@@ -37,7 +38,8 @@ const createUser = async function createUser(username, email, password) {
   const insertInfo = await userCollection.insertOne(newUser);
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
     throw "Could not add user.";
-  return { userInserted: true };
+  newUser._id = newUser._id.toString();
+  return newUser;
 };
 
 const checkUser = async function checkUser(username, password) {
@@ -66,6 +68,18 @@ const checkUser = async function checkUser(username, password) {
   }
 };
 
+const addFriend = async function addFriend(uID1, uID2) {
+  //adds uID1 to uID2's freind list and vice versa
+  try {
+    const userCollection = await users();
+    await userCollection.updateOne({_id : ObjectId(uID1)}, {$push: {friends : uID2}});
+    await userCollection.updateOne({_id : ObjectId(uID2)}, {$push: {friends : uID1}});
+  } catch (e) {
+    console.log(e);
+  }
+  return;
+}
+
 const usernameToID = async function usernameToID(username) {
   if (!username) {
     throw "username must be provided";
@@ -83,5 +97,6 @@ const usernameToID = async function usernameToID(username) {
 module.exports = {
   createUser,
   checkUser,
-  usernameToID
+  usernameToID,
+  addFriend
 };
