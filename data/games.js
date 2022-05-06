@@ -5,6 +5,8 @@ const { ObjectId } = require("mongodb");
 
 const reviews = require("./reviews");
 
+const goodRank = 3;
+
 //Add a Game
 //Takes in a title and description
 //image is optional but should be null if it is not inputted
@@ -275,6 +277,26 @@ let getImage = async function (gameID) {
   return game.image;
 };
 
+const getRecommendations = async function getRecommendations(gameID) {
+  if (!gameID) throw "gameID must be provided";
+  const gameCollection = await games();
+  const userCollection = await users();
+  const game = await gameCollection.findOne({ _id: ObjectId(gameID) });
+  const reviews = game.reviews;
+  let gameList = [];
+  for(r of reviews) {
+    if(r.rating >= goodRank) {
+      let user = await userCollection.findOne({ _id:ObjectId(r.userId) });
+      if(!user){
+        continue;
+      }
+      gameList.push(await getGame(user.favoriteGameId));
+    }
+  }
+
+  return gameList;
+}
+
 module.exports = {
   addGame,
   getAllGames,
@@ -284,4 +306,5 @@ module.exports = {
   getAverageRatingAmongFriends,
   getImage,
   getGameSearchTerm,
+  getRecommendations
 };
