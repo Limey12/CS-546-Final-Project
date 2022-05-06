@@ -1,4 +1,4 @@
-(function ($) {
+$(function ($) {
   var gameList = $("#gameList");
   var form = $("#gamesearch");
   var searchTermInput = $("#gameSearchTerm");

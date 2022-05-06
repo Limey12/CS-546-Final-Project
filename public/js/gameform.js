@@ -1,14 +1,8 @@
-//TODO No clue why this does not catch errors
 async function checkImage(url) {
   try{
     let req = await axios.head(url);
     console.log(req.status)
     return req.status == 200 && req.headers["content-type"].includes("image");
-    // if(req.status == 200){
-    //   return true;
-    // } else{
-    //   return false;
-    // }
   } catch(e){
     console.log(e);
     return false;

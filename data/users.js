@@ -2,9 +2,20 @@ const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const bcrypt = require("bcrypt");
 const validator = require("email-validator");
+const reviewData = require("./reviews");
+const gameData = require("./games");
 const { ObjectId } = require("mongodb");
 
 const saltRounds = 8;
+const numRecs = 2;
+
+//https://advancedweb.hu/asynchronous-array-functions-in-javascript/
+const asyncFilter = async (arr, predicate) => {
+	const results = await Promise.all(arr.map(predicate));
+	return arr.filter((_v, index) => results[index]);
+}
+const asyncSome =
+	async (arr, predicate) => (await asyncFilter(arr, predicate)).length > 0;
 
 const createUser = async function createUser(username, email, password) {
   if (!username || !email || !password)
@@ -51,7 +62,7 @@ const checkUser = async function checkUser(username, password) {
   if (username.length < 4) throw "Username must be at least 4 characters long.";
   if (typeof password !== "string") throw "Password must be a string.";
   if (/\s/.test(password)) throw "Password must not contain any spaces.";
-  if (password.length < 6) throw "Username must be at least 6 characters long.";
+  if (password.length < 6) throw "Password must be at least 6 characters long.";
   const userCollection = await users();
   const user = await userCollection.findOne({ username: username });
   if (!user) throw "Either the username or password is invalid";
@@ -82,21 +93,96 @@ const addFriend = async function addFriend(uID1, uID2) {
 
 const usernameToID = async function usernameToID(username) {
   if (!username) {
-    throw "username must be provided";
+    throw "Username must be provided.";
   }
   if (typeof username !== "string") throw "Username must be a string.";
   username = username.trim().toLowerCase();
   const userCollection = await users();
   const user = await userCollection.findOne({ username: username });
   if (!user?._id) {
-    throw "no user with that name"
+    throw "No user with that name."
   }
   return user._id.toString();
+}
+
+const getRecommendations = async function getRecommendations(username) {
+  if (!username) throw "Username must be a valid value.";
+  if (typeof username !== "string") throw "Username must be a string.";
+  username = username.trim();
+  username = username.toLowerCase();
+  if (!/^[a-z0-9]+$/i.test(username)) throw "Username must be alphanumeric.";
+  if (username.length < 4) throw "Username must be at least 4 characters long.";
+  const userCollection = await users();
+  const user = await userCollection.findOne({ username: username });
+  if (!user) throw "No user with that username.";
+  let fav = user.favoriteGameId;
+  const reviews = user.reviews;
+  if(!fav && reviews.length == 0) {
+    let games = await gameData.getAllGames();
+    games = games.sort(function(){return .5 - Math.random()});
+    return games.slice(0, numRecs);
+  }
+  else if(!fav) {
+    let max = 0;
+    for(let i = 0; i < reviews.length; i++) {
+      if(await reviewData.getRatingFromReview(reviews[i]) > max) {
+        max = await reviewData.getRatingFromReview(reviews[i]);
+        fav = await reviewData.getGameFromReview(reviews[i]);
+      }
+    }
+  }
+  let games = await gameData.getRecommendations(fav);
+  games = await asyncFilter(games, async game => {
+    return !await asyncSome(reviews, async r => (await reviewData.getGameFromReview(r)).toString() === game._id);
+  });
+  games = games.sort(function(){return .5 - Math.random()});
+  if(games.length < numRecs) {
+    let tmp = await gameData.getAllGames()
+    tmp = tmp.sort(function(){return .5 - Math.random()});
+    tmp = tmp.filter(g1 => {
+      return !games.some(g2 => (g1._id === g2._id));
+    });
+    games = games.concat(tmp);
+  }
+  return games.slice(0, numRecs);
+}
+
+const IDtoUsername = async function(uID) {
+  if (!uID) {
+    throw "uID must be provided";
+  }
+  if (typeof uID !== "string") throw "uID must be a string.";
+  const userCollection = await users();
+  const user = await userCollection.findOne({ _id: ObjectId(uID) });
+  if (!user?._id) {
+    throw "no user with that id"
+  }
+  return user.username;
+}
+
+const favorite = async function(uID, gameID) {
+  const userCollection = await users();
+  await userCollection.updateOne(
+    { _id: ObjectId(uID) },
+    { $set: {favoriteGameId : gameID} }
+  );
+}
+
+const leastfavorite = async function(uID, gameID) {
+  const userCollection = await users();
+  await userCollection.updateOne(
+    { _id: ObjectId(uID) },
+    { $set: {leastFavoriteGameId : gameID} }
+  );
 }
 
 module.exports = {
   createUser,
   checkUser,
   usernameToID,
-  addFriend
+  addFriend,
+  getRecommendations,
+  IDtoUsername,
+  favorite,
+  leastfavorite,
 };

@@ -3,6 +3,7 @@ const data = require("../data/");
 const games = data.games;
 const users = data.users;
 const reviews = data.reviews;
+const comments = data.comments;
 
 async function main() {
   
@@ -59,6 +60,7 @@ async function main() {
     const u3 = await users.createUser("user03", "user03@email.com", "1234567890");
     const u4 = await users.createUser("user04", "user04@email.com", "1234567890");
     const u5 = await users.createUser("qwerty", "qwerty@email.com", "qwerty");
+    const u6 = await users.createUser("qwerty2", "qwerty2@email.com", "qwerty2");
     await users.addFriend(u1._id, u4._id);
     await users.addFriend(u1._id, u2._id);
     await users.addFriend(u3._id, u4._id);
@@ -66,7 +68,25 @@ async function main() {
     //creating reviews
     const r1 = await reviews.createReview(u4._id, Persona4._id, "pretty good", 3);
     const r2 = await reviews.createReview(u2._id, Persona4._id, "is persona = bad", 1);
+    const r3 = await reviews.createReview(u1._id, Persona4._id, "good!", 4);
+    const r4 = await reviews.createReview(u1._id, Persona5._id, "good!!!", 5);
+    const r5 = await reviews.createReview(u3._id, Persona5._id, "good", 4);
+    const r6 = await reviews.createReview(u4._id, Persona5._id, "pretty good also", 3);
+    const r7 = await reviews.createReview(u5._id, Persona5._id, "fancy", 3);
+    const r8 = await reviews.createReview(u6._id, Persona5._id, "it is like pokemon", 4);
+
     console.log(r1)
+
+    //favorite games
+    await users.favorite(u1._id, Persona5._id);
+    await users.favorite(u3._id, RiskofRain2._id);
+    await users.favorite(u4._id, Persona4._id);
+    await users.favorite(u5._id, LeagueofLegends._id);
+    await users.favorite(u6._id, Pokemon._id);
+
+    //creating comments
+    const c1 = await comments.createComment(u2._id, Persona4._id, "u2 comment on persona 4");
+    const c2 = await comments.createComment(u3._id, Minecraft._id, "u3 comment on minecraft");
 
   } catch (e) {
     console.log(e);

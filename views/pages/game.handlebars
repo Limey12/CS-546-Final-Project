@@ -8,6 +8,13 @@ Reviews
 
 <article>
     <h2>{{game_name}}</h2>
+    <form id="fav_btn">
+        <button type="submit">Favorite</button>
+    </form>
+    <form id="least_fav_btn">
+        <button type="submit">Least Favorite</button>
+    </form>
+    
     <img src="{{image}}" alt="{{alt}}" width="300" 
      height="300"></img>
      {{!-- todo place holder to resize image --}}
@@ -18,13 +25,49 @@ Reviews
         <p>Among all users: {{overall_rating}}</p>
     </div>
 
+    {{!-- Todo form to add a new review --}}
+
     <h3>Reviews</h3>
+    <form id="reviewform" action = "?" method="post">
+        <label for="rating" id="rating_label">Rating:</label>
+        <input type="number" name="rating" id="rating_input" min="0" max="5" step="0.1"/><br />
+        <label for="review" id="review_label">Review:</label>
+        <textarea type="text" name="review" id="review_input" /></textarea>
+        <button type="submit">Submit</button>
+    </form>
     <ul>
-    {{#each review}}
-        <li>
-            <h4>{{self.reviewUsername}}</h4>
-            <p>{{self.reviewText}}</p>
-        </li>
-    {{/each}}
+    {{#if reviews}}
+        {{#each reviews}}
+            <li>
+                <h4>By {{this.reviewUsername}}</h4>
+                <p>Rating: {{this.rating}}</p>
+                <p>{{this.reviewText}}</p>
+            </li>
+        {{/each}}
+    {{else}}
+        <p>There are no reviews for this game yet! Be the first to add one.</p>
+    {{/if}}
+    </ul>
+
+    <h3>Comments</h3>
+    <ul>
+    {{#if comments}}
+        {{#each comments}}
+            <li>
+                <h4>By {{this.commentUsername}}</h4>
+                <p>{{this.commentText}}</p>
+            </li>
+        {{/each}}
+    {{else}}
+        <p>There are no comments for this game yet! Be the first to add one.</p>
+    {{/if}}
+    
     </ul>
 </article>
+{{!-- for ajax buttons and forms --}}
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"
+></script>
+<script src="/public/js/game.js"></script>
