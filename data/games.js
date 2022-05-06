@@ -286,12 +286,10 @@ const getRecommendations = async function getRecommendations(gameID) {
   let gameList = [];
   for(r of reviews) {
     if(r.rating >= goodRank) {
-      console.log(r);
       let user = await userCollection.findOne({ _id:ObjectId(r.userId) });
       if(!user){
         continue;
       }
-      console.log(user);
       gameList.push(await getGame(user.favoriteGameId));
     }
   }
