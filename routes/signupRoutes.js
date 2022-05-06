@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
       signupData.email,
       signupData.password
     );
-    if (result.userInserted) {
+    if (result) {
       res.redirect("/");
     } else {
       return res.status(500).render("pages/form", {
