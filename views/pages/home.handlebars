@@ -4,17 +4,6 @@
     your friends rank games they played. It is ideal for keeping track of your
     favorite games figuring out what games to play next based on the reviews of
     your trusted friends.</p>
-  <a href="/gamecatalog">Click here to see games</a>
-  <br />
-  {{#if loggedIn}}
-    <a href="/profile/{{id}}">Click here to see your profile</a>
-    <br />
-    <a href="/logout">Click here to log-out</a>
-  {{else}}
-    <a href="/login/">Already have an account? Click here to log-in</a>
-    <br />
-    <a href="/signup">Need to register? Click here to sign-up</a>
-  {{/if}}
   {{#if loggedIn}}
     <h2>Recommendations</h2>
     <ul>

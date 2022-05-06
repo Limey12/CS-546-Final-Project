@@ -37,7 +37,10 @@ router.route("/:id").get(async (req, res) => {
     if(!user){
         res.status(404).json({ message: "User not found" });
     }
+    let userdId = req?.session?.user?.id;
     res.render("pages/profile", {
+        HTML_title: "Profile",
+        id: userdId,
         username: user.username,
         bio: user.bio,
         reviews: user.reviews,

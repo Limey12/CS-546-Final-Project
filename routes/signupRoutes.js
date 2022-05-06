@@ -8,8 +8,10 @@ router.get("/", async (req, res) => {
   if (req.session.user) {
     res.redirect("/");
   } else {
+    let id = req?.session?.user?.id;
     res.render("pages/form", {
       HTML_title: "Signup",
+      id: id,
       act: "/signup",
       formId: "signup-form",
       login: false,
@@ -48,8 +50,10 @@ router.post("/", async (req, res) => {
     if (result) {
       res.redirect("/");
     } else {
+      let id = req?.session?.user?.id;
       return res.status(500).render("pages/form", {
         HTML_title: "Signup",
+        id: id,
         act: "/signup",
         formId: "signup-form",
         login: false,
@@ -58,8 +62,10 @@ router.post("/", async (req, res) => {
       });
     }
   } catch (e) {
+    let id = req?.session?.user?.id;
     return res.status(400).render("pages/form", {
       HTML_title: "Signup",
+      id: id,
       act: "/signup",
       formId: "signup-form",
       login: false,

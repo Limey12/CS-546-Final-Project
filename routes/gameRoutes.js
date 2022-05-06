@@ -29,7 +29,7 @@ router.route("/:id").get(async (req, res) => {
             c.commentUsername = await users.IDtoUsername(c.userId);
         }
         let hobj = {
-            logged_in: userId != undefined,
+            id: userId,
             game_name: game?.title,
             image: await games.getImage(argId),
             alt: `${game?.title}`,
