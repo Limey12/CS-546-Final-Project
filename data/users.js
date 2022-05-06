@@ -123,7 +123,10 @@ const getRecommendations = async function getRecommendations(username) {
       }
     }
   }
-  let games = await gameData.getRecommendations(fav); //Need to check if already in list
+  let games = await gameData.getRecommendations(fav);
+  games = games.filter((game) => {
+    return !reviews.some(e => reviewData.getGameFromReview(e)._id === game._id);
+  });
   games = games.sort(function(){return .5 - Math.random()});
   return games.slice(0, numRecs);
 }
