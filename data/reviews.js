@@ -30,7 +30,7 @@ let getGameFromReview = async function (reviewID) {
   const game = await gameCollection.findOne(
     {"reviews._id": reviewID}
   );
-  return game;
+  return game._id;
 };
 
 let getRatingFromReview = async function (reviewID) {
