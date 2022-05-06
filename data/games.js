@@ -5,11 +5,12 @@ const { ObjectId } = require("mongodb");
 
 //Add a Game
 //Takes in a title and description
+//image is optional but should be null if it is not inputted
 //reviews/comments/rating will be intitialized to default
 
-const addGame = async function addGame(title, description) {
-  if (arguments.length !== 2) {
-    throw "should have 2 arguments";
+const addGame = async function addGame(title, description, image) {
+  if (arguments.length != 3) {
+    throw "should have 3 arguments";
   }
 
   if (!title || !description) {
@@ -27,10 +28,15 @@ const addGame = async function addGame(title, description) {
     throw "Cannot be an empty string";
   }
 
+  if (!image) {
+    image = "/public/images/no_image.jpeg";
+  }
+
   const gameCollection = await games();
   let newGame = {
     title: title,
     description: description,
+    image: image,
     reviews: [],
     comments: [],
     overallRating: 0,
@@ -113,17 +119,21 @@ const removeGame = async function removeGame(id) {
 };
 
 //updates game
-const updateGame = async function updateGame(id, title, description) {
-  if (arguments.length !== 3) {
-    throw "should take 3 arguments";
+const updateGame = async function updateGame(id, title, description, image) {
+  if (arguments.length < 2) {
+    throw "should take at least 2 arguments";
   }
-  if (!id || !title || !description) {
+  if (arguments.length > 4) {
+    throw "should take at less than 4 arguments";
+  }
+  if (!id && !title && !description && !image) {
     throw "field not provided";
   }
   if (
-    typeof id !== "string" ||
-    typeof title !== "string" ||
-    typeof description !== "string"
+    (typeof id !== "string" && id) ||
+    (typeof description !== "string" && description) ||
+    (typeof title !== "string" && title) ||
+    (typeof image !== "string" && image)
   ) {
     throw "not correct type";
   }
@@ -136,7 +146,11 @@ const updateGame = async function updateGame(id, title, description) {
   }
   title.trim();
   description.trim();
-  if (title.length == 0 || description.length == 0) {
+  if(!image){
+    image = "/public/images/no_image.jpeg";
+  }
+  image.trim();
+  if (title.length == 0 || description.length == 0 || image.length == 0) {
     throw "empty string";
   }
   const gameCollection = await games();
@@ -144,12 +158,25 @@ const updateGame = async function updateGame(id, title, description) {
   if (game == null) {
     throw "game does not exist";
   }
-  if (game.title == title && game.description == description) {
+  if (game.title == title && game.description == description && game.image == image) {
     throw "No fields will change";
+  }
+
+  //these ifs are for if you are not updating certain fields you pass those in as null
+  //and they are set to the original
+  if(title == null){
+    title = game.title;
+  }
+  if(description == null){
+    description = game.description;
+  }
+  if(image == null){
+    image = game.image;
   }
   const updatedGame = {
     title: title,
     description: description,
+    image: image
   };
 
   const updatedInfo = await gameCollection.updateOne(
@@ -173,19 +200,21 @@ let getGameSearchTerm = async function getGameSearchTerm(term) {
   if (typeof term !== "string") {
     throw "term must be a string";
   }
-  term = term.trim()
+  term = term.trim();
   if (term.length === 0) {
     throw "term cannot be an empty string or just spaces";
   }
   const gameCollection = await games();
-  const gameList = await gameCollection.find({"title" : {$regex : term, $options : 'i'}}).toArray();
-  for(i of gameList){
+  const gameList = await gameCollection
+    .find({ title: { $regex: term, $options: "i" } })
+    .toArray();
+  for (i of gameList) {
     i["_id"] = i["_id"].toString();
   }
   return gameList;
-}
+};
 
-let getAverageRatingAmongFriends = async function(userID, gameID) {
+let getAverageRatingAmongFriends = async function (userID, gameID) {
   //todo validation
   //steps:
   // get list of friend ids (easy)
@@ -201,31 +230,30 @@ let getAverageRatingAmongFriends = async function(userID, gameID) {
 
   const gameCollection = await games();
   const userCollection = await users();
-  
+
   const user = await userCollection.findOne({ _id: ObjectId(userID) });
-  console.log(user)
+  console.log(user);
   const friendList = user.friends;
   if (friendList.legnth == 0) {
     return "N/A";
   }
   let total = 0;
-  for(f of friendList) {
+  for (f of friendList) {
     //f is id of a friend
-    let friend = await userCollection.findOne({ _id: f});
+    let friend = await userCollection.findOne({ _id: f });
     const reviewList = friend.reviews;
     //todo look in reviews subdocument of the particular game to see if the friend reviewed the game.
     console.log(friend);
   }
-  return total/friendList.legnth;
-
+  return total / friendList.legnth;
 };
 
-let getImage = async function(gameID) {
+let getImage = async function (gameID) {
   if (!gameID) throw "gameID must be provided";
   const gameCollection = await games();
   const game = await gameCollection.findOne({ _id: ObjectId(gameID) });
   if (!game?.image) {
-    return "/public/images/no_image.jpeg"
+    return "/public/images/no_image.jpeg";
   }
   return game.image;
 };
@@ -238,5 +266,5 @@ module.exports = {
   updateGame,
   getAverageRatingAmongFriends,
   getImage,
-  getGameSearchTerm
+  getGameSearchTerm,
 };
