@@ -5,6 +5,8 @@ const { ObjectId } = require("mongodb");
 
 const reviews = require("./reviews");
 
+const goodRank = 3;
+
 //Add a Game
 //Takes in a title and description
 //image is optional but should be null if it is not inputted
@@ -283,7 +285,7 @@ const getRecommendations = async function getRecommendations(gameID) {
   const reviews = game.reviews;
   let games = [];
   for(let i = 0; i < reviews.legnth; i++) {
-    if(reviews[i].rating >= 4) {
+    if(reviews[i].rating >= goodRank) {
       let user = await userCollection.findOne({ _id:reviews.userId });
       games.push(getGame(user.favoriteGameId));
     }
