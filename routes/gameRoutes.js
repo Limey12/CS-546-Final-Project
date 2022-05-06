@@ -36,6 +36,7 @@ router.route("/:id").get(async (req, res) => {
             description: game?.description ?? "No description available",
             f_rating: await games.getAverageRatingAmongFriends(userId, argId) ?? "None of your freinds have rated this game!", //todo should depend on if the user is logged in
             overall_rating: game?.overallRating ?? "No one has rated this game!",
+            HTML_title: game?.title,
             reviews: reviews,
             comments: comments, //todo
         };
