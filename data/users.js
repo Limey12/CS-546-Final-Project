@@ -123,7 +123,9 @@ const getRecommendations = async function getRecommendations(username) {
       }
     }
   }
-  return gameData.getRecommendations(fav);
+  let games = gameData.getRecommendations(fav); //Need to check if already in list
+  games = games.sort(function(){return .5 - Math.random()});
+  return games.slice(0, numRecs);
 }
 
 module.exports = {
