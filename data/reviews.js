@@ -30,6 +30,7 @@ let getGameFromReview = async function (reviewID) {
   const game = await gameCollection.findOne(
     {"reviews._id": reviewID}
   );
+  if(game === null) throw 'No review with that id.';
   return game._id;
 };
 
