@@ -2,6 +2,7 @@ const dbConnection = require("../config/mongoConnection");
 const data = require("../data/");
 const games = data.games;
 const users = data.users;
+const reviews = data.reviews;
 
 async function main() {
   
@@ -57,10 +58,15 @@ async function main() {
     const u2 = await users.createUser("user02", "user02@email.com", "1234567890");
     const u3 = await users.createUser("user03", "user03@email.com", "1234567890");
     const u4 = await users.createUser("user04", "user04@email.com", "1234567890");
-
+    const u5 = await users.createUser("qwerty", "qwerty@email.com", "qwerty");
     await users.addFriend(u1._id, u4._id);
     await users.addFriend(u1._id, u2._id);
     await users.addFriend(u3._id, u4._id);
+    
+    //creating reviews
+    const r1 = await reviews.createReview(u4._id, Persona4._id, "pretty good", 3);
+    const r2 = await reviews.createReview(u2._id, Persona4._id, "is persona = bad", 1);
+    console.log(r1)
 
   } catch (e) {
     console.log(e);
