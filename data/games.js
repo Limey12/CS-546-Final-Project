@@ -3,6 +3,8 @@ const games = mongoCollections.games;
 const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 
+const reviews = require("./reviews");
+
 //Add a Game
 //Takes in a title and description
 //image is optional but should be null if it is not inputted
@@ -234,15 +236,19 @@ let getAverageRatingAmongFriends = async function (userID, gameID) {
   const user = await userCollection.findOne({ _id: ObjectId(userID) });
   console.log(user);
   const friendList = user.friends;
-  if (friendList.legnth == 0) {
+  if (friendList.length == 0) {
     return "N/A";
   }
-  let total = 0;
+  let total = 0; //running total of the reviews
+  let reviewCount = 0; //number of freinds that rated the game
   for (f of friendList) {
     //f is id of a friend
-    let friend = await userCollection.findOne({ _id: f });
+    let friend = await userCollection.findOne({ _id: ObjectId(f) });
+    console.log(friend);
     const reviewList = friend.reviews;
+    await reviews.getGameFromReview(reviewList[0]);
     //todo look in reviews subdocument of the particular game to see if the friend reviewed the game.
+    console.log("frrr")
     console.log(friend);
   }
   return total / friendList.legnth;
