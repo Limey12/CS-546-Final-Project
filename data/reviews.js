@@ -27,11 +27,10 @@ let createReview = async function (userID, gameID, reviewText, rating) {
 let getGameFromReview = async function (reviewID) {
   //from a reviewID, return a gameID
   const gameCollection = await games();
-  const game = await gameCollection.findOne({
-    "reviews._id": ObjectId(reviewID),
-  });
-  console.log("game:");
-  console.log(game);
+  const game = await gameCollection.findOne(
+    {"reviews._id": reviewID}
+  );
+  return game;
 };
 
 let getRatingFromReview = async function (reviewID) {
