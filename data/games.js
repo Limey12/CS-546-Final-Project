@@ -41,7 +41,7 @@ const addGame = async function addGame(title, description, image) {
     image: image,
     reviews: [],
     comments: [],
-    overallRating: 0,
+    overallRating: null,
     totalRatings: 0,
   };
   const insertInfo = await gameCollection.insertOne(newGame);
