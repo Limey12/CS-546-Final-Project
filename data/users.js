@@ -107,7 +107,7 @@ const getRecommendations = async function getRecommendations(username) {
   const userCollection = await users();
   const user = await userCollection.findOne({ username: username });
   if (!user) throw "No user with that username.";
-  const fav = user.favoriteGameId;
+  let fav = user.favoriteGameId;
   const reviews = user.reviews;
   if(!fav && reviews.length == 0) {
     let games = await gameData.getAllGames();

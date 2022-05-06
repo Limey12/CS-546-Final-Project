@@ -281,16 +281,22 @@ const getRecommendations = async function getRecommendations(gameID) {
   if (!gameID) throw "gameID must be provided";
   const gameCollection = await games();
   const userCollection = await users();
-  const game = await gameCollection.findOne({ _id: ObjectId(gameID)});
+  const game = await gameCollection.findOne({ _id: ObjectId(gameID) });
   const reviews = game.reviews;
-  let games = [];
-  for(let i = 0; i < reviews.legnth; i++) {
-    if(reviews[i].rating >= goodRank) {
-      let user = await userCollection.findOne({ _id:reviews.userId });
-      games.push(getGame(user.favoriteGameId));
+  let gameList = [];
+  for(r of reviews) {
+    if(r.rating >= goodRank) {
+      console.log(r);
+      let user = await userCollection.findOne({ _id:ObjectId(r.userId) });
+      if(!user){
+        continue;
+      }
+      console.log(user);
+      gameList.push(await getGame(user.favoriteGameId));
     }
   }
-  return games;
+
+  return gameList;
 }
 
 module.exports = {
