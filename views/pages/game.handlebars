@@ -28,6 +28,13 @@ Reviews
     {{!-- Todo form to add a new review --}}
 
     <h3>Reviews</h3>
+    <form id="reviewform" action = "?" method="post">
+        <label for="rating" id="rating_label">Rating:</label>
+        <input type="number" name="rating" id="rating_input" min="0" max="5" step="0.1"/><br />
+        <label for="review" id="review_label">Review:</label>
+        <textarea type="text" name="review" id="review_input" /></textarea>
+        <button type="submit">Submit</button>
+    </form>
     <ul>
     {{#if reviews}}
         {{#each reviews}}
@@ -41,7 +48,7 @@ Reviews
         <p>There are no reviews for this game yet! Be the first to add one.</p>
     {{/if}}
     </ul>
-    
+
     <h3>Comments</h3>
     <ul>
     {{#if comments}}
