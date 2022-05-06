@@ -110,20 +110,20 @@ const getRecommendations = async function getRecommendations(username) {
   const fav = user.favoriteGameId;
   const reviews = user.reviews;
   if(!fav && reviews.length == 0) {
-    let games = gameData.getAllGames();
+    let games = await gameData.getAllGames();
     games = games.sort(function(){return .5 - Math.random()});
     return games.slice(0, numRecs);
   }
   else if(!fav) {
     let max = 0;
     for(let i = 0; i < reviews.length; i++) {
-      if(reviewData.getRatingFromReview(reviews[i]) > max) {
-        max = reviewData.getRatingFromReview(reviews[i]);
-        fav = reviewData.getGameFromReview(reviews[i]);
+      if(await reviewData.getRatingFromReview(reviews[i]) > max) {
+        max = await reviewData.getRatingFromReview(reviews[i]);
+        fav = await reviewData.getGameFromReview(reviews[i]);
       }
     }
   }
-  let games = gameData.getRecommendations(fav); //Need to check if already in list
+  let games = await gameData.getRecommendations(fav); //Need to check if already in list
   games = games.sort(function(){return .5 - Math.random()});
   return games.slice(0, numRecs);
 }
