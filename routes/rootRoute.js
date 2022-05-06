@@ -9,7 +9,7 @@ router.route("/").get(async (req, res) => {
     id = req.session.user.id;
   }
   res.render("pages/home", {
-    HTML_title: "Home",
+    HTML_title: "Game Ranker",
     loggedIn: loggedIn,
     id: id
   });
