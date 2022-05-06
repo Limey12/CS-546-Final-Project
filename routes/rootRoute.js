@@ -4,7 +4,7 @@ const { games, users } = require("../data");
 
 //GET http://localhost:3000/
 router.route("/").get(async (req, res) => {
-  let id = req.session.user?.id;;
+  let id = req.session.user?.id;
   let recs = [];
   if(req.session.user) {
     recs = await users.getRecommendations(req.session.user.username);

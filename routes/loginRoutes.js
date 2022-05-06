@@ -7,8 +7,10 @@ router.get("/", async (req, res) => {
   if (req.session.user) {
     res.redirect("/");
   } else {
+    let id = req?.session?.user?.id;
     res.render("pages/form", {
       HTML_title: "Login",
+      id: id,
       act: "/login",
       formId: "login-form",
       login: true,
@@ -45,8 +47,10 @@ router.post("/", async (req, res) => {
     req.session.user = { username: signupData.username, id: await userData.usernameToID(signupData.username)};
     res.redirect("/");
   } catch (e) {
+    let id = req?.session?.user?.id;
     return res.status(400).render("pages/form", {
       HTML_title: "Login",
+      id: id,
       act: "/login",
       formId: "login-form",
       login: true,

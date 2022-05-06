@@ -6,18 +6,19 @@ const { games } = require("../data");
 //GET http://localhost:3000/GameCatalog
 router.route("/").get(async (req, res) => {
   try {
-    let loggedIn = req.session.user ? true : false;
+    let id = req.session.user?.id;
     let allGames = await games.getAllGames();
     if (!allGames) {
         throw "games not found"
     }
     if (allGames.length == 0) {
-        res.render("pages/catalog", { games: allGames, login: loggedIn, errormsg: 'No games in database', HTML_title:"Game Catalog" });
+        res.render("pages/catalog", { games: allGames, errormsg: 'No games in database', HTML_title:"Game Catalog", id: id });
         return;
     }
-    res.render("pages/catalog", { games: allGames, login: loggedIn,HTML_title:"Game Catalog" });
+    res.render("pages/catalog", { games: allGames, HTML_title:"Game Catalog", id: id });
   } catch (e) {
-    res.status(500).render("pages/catalog", { error: true, errormsg: e, HTML_title:"Game Catalog" });
+    let id = req?.session?.user?.id;
+    res.status(500).render("pages/catalog", { error: true, errormsg: e, HTML_title:"Game Catalog", id: id });
   }
 });
 
@@ -25,7 +26,7 @@ router.route("/").get(async (req, res) => {
 router.post("/", async (req, res) => {
   let search = req.body.gameSearchTerm;
   search = search.trim();
-  let loggedIn = req.session.user ? true : false;
+  let id = req.session.user?.id;
   if (!search) {
     res
       .status(400)
@@ -33,13 +34,14 @@ router.post("/", async (req, res) => {
         games: [],
         error: true,
         errormsg: "No searchterm inputted",
-        login: loggedIn,
-        HTML_title:"Game Catalog"
+        HTML_title:"Game Catalog",
+        id: id
       });
     return;
   }
   try {
     gamelist = await games.getGameSearchTerm(search);
+    let id = req.session.user?.id;
     if (gamelist.length == 0) {
       res
         .status(400)
@@ -48,23 +50,25 @@ router.post("/", async (req, res) => {
           error: true,
           errormsg: "No results",
           login: loggedIn,
-          HTML_title:"Game Catalog"
+          HTML_title:"Game Catalog",
+          id: id
         });
       return;
     }
-    res.render("pages/catalog", { games: gamelist, HTML_title:"Game Catalog" });
+    res.render("pages/catalog", { games: gamelist, HTML_title:"Game Catalog", id: id });
   } catch (e) {
-    res.status(500).render("pages/catalog", { error: true, errormsg: e, HTML_title:"Game Catalog" });
+    res.status(500).render("pages/catalog", { error: true, errormsg: e, HTML_title:"Game Catalog", id: id });
   }
 });
 
 //GET http://localhost:3000/GameCatalog/gameform'
 router.route("/gameform").get(async (req, res) => {
   try {
-    // let loggedIn = (req.session.user) ? true : false;
-    res.render("pages/gameform", {HTML_title:"Game Form"});
+    let id = req.session.user?.id;
+    res.render("pages/gameform", {HTML_title:"Game Form", id: id});
   } catch (e) {
-    res.status(500).render("pages/gameform",{HTML_title:"Game Form"});
+    let id = req?.session?.user?.id;
+    res.status(500).render("pages/gameform",{HTML_title:"Game Form", id: id});
   }
 });
 
