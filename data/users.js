@@ -9,6 +9,14 @@ const { ObjectId } = require("mongodb");
 const saltRounds = 8;
 const numRecs = 2;
 
+//https://advancedweb.hu/asynchronous-array-functions-in-javascript/
+const asyncFilter = async (arr, predicate) => {
+	const results = await Promise.all(arr.map(predicate));
+	return arr.filter((_v, index) => results[index]);
+}
+const asyncSome =
+	async (arr, predicate) => (await asyncFilter(arr, predicate)).length > 0;
+
 const createUser = async function createUser(username, email, password) {
   if (!username || !email || !password)
     throw "All fields need to have valid values.";
@@ -124,8 +132,8 @@ const getRecommendations = async function getRecommendations(username) {
     }
   }
   let games = await gameData.getRecommendations(fav);
-  games = games.filter((game) => {
-    return !reviews.some(e => reviewData.getGameFromReview(e)._id === game._id);
+  games = await asyncFilter(games, async game => {
+    return !await asyncSome(reviews, async r => (await reviewData.getGameFromReview(r)).toString() === game._id);
   });
   games = games.sort(function(){return .5 - Math.random()});
   return games.slice(0, numRecs);
