@@ -20,10 +20,11 @@ Reviews
 
     <h3>Reviews</h3>
     <ul>
-    {{#each review}}
+    {{#each reviews}}
         <li>
-            <h4>{{self.reviewUsername}}</h4>
-            <p>{{self.reviewText}}</p>
+            <h4>{{this.reviewUsername}}</h4>
+            <p>Rating: {{this.rating}}</p>
+            <p>{{this.reviewText}}</p>
         </li>
     {{/each}}
     </ul>
