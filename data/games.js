@@ -42,6 +42,7 @@ const addGame = async function addGame(title, description, image) {
     reviews: [],
     comments: [],
     overallRating: 0,
+    totalRatings: 0,
   };
   const insertInfo = await gameCollection.insertOne(newGame);
   if (!insertInfo.acknowledged || !insertInfo.insertedId) {
@@ -226,7 +227,7 @@ let getAverageRatingAmongFriends = async function (userID, gameID) {
     throw "expects 2 args";
   }
   if (!userID) {
-    return "N/A";
+    return null;
   }
 
   const userCollection = await users();
@@ -235,7 +236,7 @@ let getAverageRatingAmongFriends = async function (userID, gameID) {
   console.log(user);
   const friendList = user.friends;
   if (friendList.length == 0) {
-    return "N/A";
+    return null;
   }
   let total = 0; //running total of the reviews
   let reviewCount = 0; //number of freinds that rated the game
@@ -257,6 +258,9 @@ let getAverageRatingAmongFriends = async function (userID, gameID) {
 
     console.log("frrr")
     console.log(friend);
+  }
+  if (reviewCount == 0) {
+    return null;
   }
   return total / reviewCount;
 };
