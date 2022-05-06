@@ -107,10 +107,19 @@ const IDtoUsername = async function(uID) {
   return user.username;
 }
 
+const favorite = async function(uID, gameID) {
+  const userCollection = await users();
+  await userCollection.updateOne(
+    { _id: ObjectId(uID) },
+    { $set: {favoriteGameId : gameID} }
+  );
+}
+
 module.exports = {
   createUser,
   checkUser,
   usernameToID,
   addFriend,
   IDtoUsername,
+  favorite,
 };

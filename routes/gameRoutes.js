@@ -38,4 +38,20 @@ router.route("/:id").get(async (req, res) => {
     }
 });
 
+//POST http://localhost:3000/game/{id}/fav
+router.route("/:id/fav").post(async (req, res) => {
+    try {
+        //todo validation
+        let argId = req?.params?.id;
+        if (argId == undefined || typeof argId != 'string') {
+            //todo error page
+        }
+        let userId = req?.session?.user?.id;
+        await users.favorite(userId, argId);
+    } catch (e) {
+        console.log("post routecatch "+ e)
+        return res.status(400).send("post routecatch "+e);
+    }
+});
+
 module.exports = router;

@@ -8,6 +8,11 @@ Reviews
 
 <article>
     <h2>{{game_name}}</h2>
+    <form id="fav_btn">
+        <button type="submit">Favorite</button>
+    </form>
+    <button id="least_fav_btn" type='button'>Least Favorite</button>
+    
     <img src="{{image}}" alt="{{alt}}" width="300" 
      height="300"></img>
      {{!-- todo place holder to resize image --}}
@@ -18,14 +23,28 @@ Reviews
         <p>Among all users: {{overall_rating}}</p>
     </div>
 
+    {{!-- Todo form to add a new review --}}
+
     <h3>Reviews</h3>
     <ul>
-    {{#each reviews}}
-        <li>
-            <h4>{{this.reviewUsername}}</h4>
-            <p>Rating: {{this.rating}}</p>
-            <p>{{this.reviewText}}</p>
-        </li>
-    {{/each}}
+    {{#if reviews}}
+        {{#each reviews}}
+            <li>
+                <h4>By {{this.reviewUsername}}</h4>
+                <p>Rating: {{this.rating}}</p>
+                <p>{{this.reviewText}}</p>
+            </li>
+        {{/each}}
+    {{else}}
+        <p>There are no reviews for this game yet! Be the first to add one.</p>
+    {{/if}}
+    
     </ul>
 </article>
+{{!-- for ajax buttons and forms --}}
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"
+></script>
+<script src="/public/js/game.js"></script>
