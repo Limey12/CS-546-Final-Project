@@ -230,6 +230,22 @@ let getImage = async function(gameID) {
   return game.image;
 };
 
+const getRecommendations = async function getRecommendations(gameID) {
+  if (!gameID) throw "gameID must be provided";
+  const gameCollection = await games();
+  const userCollection = await users();
+  const game = await gameCollection.findOne({ _id: ObjectId(gameID)});
+  const reviews = game.reviews;
+  let games = [];
+  for(let i = 0; i < reviews.legnth; i++) {
+    if(reviews[i].rating >= 4) {
+      let user = await userCollection.findOne({ _id:reviews.userId });
+      games.push(getGame(user.favoriteGameId));
+    }
+  }
+  return games;
+}
+
 module.exports = {
   addGame,
   getAllGames,
@@ -238,5 +254,6 @@ module.exports = {
   updateGame,
   getAverageRatingAmongFriends,
   getImage,
-  getGameSearchTerm
+  getGameSearchTerm,
+  getRecommendations
 };
