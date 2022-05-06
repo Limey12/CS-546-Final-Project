@@ -19,7 +19,19 @@ app.use(
   })
 );
 
-app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
+const hmissing = function(context, options) {
+  console.error("Template defines {{" + context.name + "}}, but not provided in context");
+  return "{{" + context.name + "}}";
+}
+
+var hbs = exphbs.create({
+  helpers: {
+    helperMissing: hmissing
+  },
+  defaultLayout: "main"
+})
+
+app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
 configRoutes(app);
