@@ -1,7 +1,7 @@
 const express = require("express");
 const constructorMethod = require(".");
 const router = express.Router();
-const { games, users, comments } = require("../data");
+const { games, users, comments, reviews } = require("../data");
 
 //GET http://localhost:3000/game/{id}
 router.route("/:id").get(async (req, res) => {
@@ -19,10 +19,12 @@ router.route("/:id").get(async (req, res) => {
         }
         let userId = req?.session?.user?.id;
         let reviews = game?.reviews;
+        console.log(reviews)
         for (r of reviews) {
             r.reviewUsername = await users.IDtoUsername(r.userId);
         }
         let comments = game?.comments;
+        console.log(comments)
         for (c of comments) {
             c.commentUsername = await users.IDtoUsername(c.userId);
         }
@@ -69,6 +71,28 @@ router.route("/:id/lfav").post(async (req, res) => {
         }
         let userId = req?.session?.user?.id;
         await users.leastfavorite(userId, argId);
+    } catch (e) {
+        console.log("post routecatch "+ e)
+        return res.status(400).send("post routecatch "+e);
+    }
+});
+
+//POST http://localhost:3000/game/{id}/lfav
+router.route("/:id").post(async (req, res) => {
+    try {
+        //todo validation
+        let argId = req?.params?.id;
+        if (argId == undefined || typeof argId != 'string') {
+            //todo error page
+        }
+        let userId = req?.session?.user?.id;
+        console.log(req.body)
+        if (!req.body.rating || !req.body.review) {
+            throw "rating and review must both be supplied";
+        }
+        let rating = req.body.rating;
+        let review = req.body.review;
+        await reviews.createReview(userId, argId, review, rating);
     } catch (e) {
         console.log("post routecatch "+ e)
         return res.status(400).send("post routecatch "+e);
