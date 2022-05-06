@@ -27,6 +27,7 @@ router.route("/:id").get(async (req, res) => {
             f_rating: await games.getAverageRatingAmongFriends(userId, argId) ?? "None of your freinds have rated this game!", //todo should depend on if the user is logged in
             overall_rating: game?.overallRating ?? "No one has rated this game!",
             reviews: game?.reviews, //todo apply function to grab usernames from ids
+            HTML_title: game?.title
         };
         res.render("pages/game", hobj);
     } catch (e) {

@@ -12,12 +12,12 @@ router.route("/").get(async (req, res) => {
         throw "games not found"
     }
     if (allGames.length == 0) {
-        res.render("pages/catalog", { games: allGames, login: loggedIn, errormsg: 'No games in database' });
+        res.render("pages/catalog", { games: allGames, login: loggedIn, errormsg: 'No games in database', HTML_title:"Game Catalog" });
         return;
     }
-    res.render("pages/catalog", { games: allGames, login: loggedIn });
+    res.render("pages/catalog", { games: allGames, login: loggedIn,HTML_title:"Game Catalog" });
   } catch (e) {
-    res.status(500).render("pages/catalog", { error: true, errormsg: e });
+    res.status(500).render("pages/catalog", { error: true, errormsg: e, HTML_title:"Game Catalog" });
   }
 });
 
@@ -33,7 +33,8 @@ router.post("/", async (req, res) => {
         games: [],
         error: true,
         errormsg: "No searchterm inputted",
-        login: loggedIn
+        login: loggedIn,
+        HTML_title:"Game Catalog"
       });
     return;
   }
@@ -46,13 +47,14 @@ router.post("/", async (req, res) => {
           games: [],
           error: true,
           errormsg: "No results",
-          login: loggedIn
+          login: loggedIn,
+          HTML_title:"Game Catalog"
         });
       return;
     }
-    res.render("pages/catalog", { games: gamelist });
+    res.render("pages/catalog", { games: gamelist, HTML_title:"Game Catalog" });
   } catch (e) {
-    res.status(500).render("pages/catalog", { error: true, errormsg: e });
+    res.status(500).render("pages/catalog", { error: true, errormsg: e, HTML_title:"Game Catalog" });
   }
 });
 
@@ -60,9 +62,9 @@ router.post("/", async (req, res) => {
 router.route("/gameform").get(async (req, res) => {
   try {
     // let loggedIn = (req.session.user) ? true : false;
-    res.render("pages/gameform");
+    res.render("pages/gameform", {HTML_title:"Game Form"});
   } catch (e) {
-    res.status(500).render("pages/gameform");
+    res.status(500).render("pages/gameform",{HTML_title:"Game Form"});
   }
 });
 
