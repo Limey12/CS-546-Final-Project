@@ -1,7 +1,7 @@
 const express = require("express");
 const constructorMethod = require(".");
 const router = express.Router();
-const { games, users } = require("../data");
+const { games, users, comments } = require("../data");
 
 //GET http://localhost:3000/game/{id}
 router.route("/:id").get(async (req, res) => {
@@ -20,7 +20,11 @@ router.route("/:id").get(async (req, res) => {
         let userId = req?.session?.user?.id;
         let reviews = game?.reviews;
         for (r of reviews) {
-            r.reviewUsername = await users.IDtoUsername(r.userId)
+            r.reviewUsername = await users.IDtoUsername(r.userId);
+        }
+        let comments = game?.comments;
+        for (c of comments) {
+            c.commentUsername = await users.IDtoUsername(c.userId);
         }
         let hobj = {
             logged_in: userId != undefined,
@@ -30,7 +34,8 @@ router.route("/:id").get(async (req, res) => {
             description: game?.description ?? "No description available",
             f_rating: await games.getAverageRatingAmongFriends(userId, argId) ?? "None of your freinds have rated this game!", //todo should depend on if the user is logged in
             overall_rating: game?.overallRating ?? "No one has rated this game!",
-            reviews: reviews, //todo apply function to grab usernames from ids
+            reviews: reviews,
+            comments: comments, //todo
         };
         res.render("pages/game", hobj);
     } catch (e) {
@@ -48,6 +53,22 @@ router.route("/:id/fav").post(async (req, res) => {
         }
         let userId = req?.session?.user?.id;
         await users.favorite(userId, argId);
+    } catch (e) {
+        console.log("post routecatch "+ e)
+        return res.status(400).send("post routecatch "+e);
+    }
+});
+
+//POST http://localhost:3000/game/{id}/lfav
+router.route("/:id/lfav").post(async (req, res) => {
+    try {
+        //todo validation
+        let argId = req?.params?.id;
+        if (argId == undefined || typeof argId != 'string') {
+            //todo error page
+        }
+        let userId = req?.session?.user?.id;
+        await users.leastfavorite(userId, argId);
     } catch (e) {
         console.log("post routecatch "+ e)
         return res.status(400).send("post routecatch "+e);

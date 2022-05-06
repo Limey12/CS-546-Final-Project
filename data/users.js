@@ -160,6 +160,14 @@ const favorite = async function(uID, gameID) {
   );
 }
 
+const leastfavorite = async function(uID, gameID) {
+  const userCollection = await users();
+  await userCollection.updateOne(
+    { _id: ObjectId(uID) },
+    { $set: {leastFavoriteGameId : gameID} }
+  );
+}
+
 module.exports = {
   createUser,
   checkUser,
@@ -167,5 +175,6 @@ module.exports = {
   addFriend,
   getRecommendations,
   IDtoUsername,
-  favorite
+  favorite,
+  leastfavorite,
 };
