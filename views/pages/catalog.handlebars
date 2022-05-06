@@ -2,7 +2,7 @@
   Game Catalog
 </h1>
 {{#if login}}
-<button><a href='/GameCatalog/gameform'>Enter a new game</a></button>
+  <button><a href="/GameCatalog/gameform">Enter a new game</a></button>
 {{/if}}
 <form method="POST" action="/gamecatalog" id="gamesearch">
   <label for="gameSearchTerm" id="Search">Search:</label>
@@ -14,11 +14,18 @@
       <a href="/game/{{_id}}">{{title}}</a>
     </li>
   {{/each}}</ul>
+  <p id="searcherror"></p>
 {{#if error}}
   <p class="error">
     {{errormsg}}
   </p>
 {{/if}}
 <a href="/GameCatalog" id="backLink">Get All Games</a>
-<br></br>
+<br />
 <a href="/" id="homeLink">Back to Home Page</a>
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"
+></script>
+<script src="/public/js/gamecatalog.js"></script>

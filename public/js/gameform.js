@@ -27,7 +27,7 @@ async function checkImage(url) {
     description = description.trim();
     image = imageInput.val();
     image = image.trim();
-    alt = "/public/images/no_image.jpeg";
+    alt = title;
 
     
     let imbool = await checkImage(image);
@@ -80,7 +80,7 @@ async function checkImage(url) {
         var addedgameimage = res.addedgame.image;
         const dt = `<dt> ${addedgametitle}  </dt>`;
         const dd = `<dd> Description: ${addedgamedesc}  </dd>`;
-        const dd2 = `<dd>  <img src="${addedgameimage}"  width="300" 
+        const dd2 = `<dd>  <img src="${addedgameimage}"  alt = ${alt} width="300" 
         height="300"></img>  </dd>`;
         addedGameElem.append(dt);
         addedGameElem.append(dd);
