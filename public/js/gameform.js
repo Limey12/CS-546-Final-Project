@@ -3,11 +3,12 @@ async function checkImage(url) {
   try{
     let req = await axios.get(url);
     console.log(req.status)
-    if(req.status == 200){
-      return true;
-    } else{
-      return false;
-    }
+    return req.status == 200;
+    // if(req.status == 200){
+    //   return true;
+    // } else{
+    //   return false;
+    // }
   } catch(e){
     console.log(e);
     return false;
