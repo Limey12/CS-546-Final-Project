@@ -3,7 +3,7 @@ async function checkImage(url) {
   try{
     let req = await axios.get(url);
     console.log(req.status)
-    return req.status == 200;
+    return req.status == 200 && req.headers["content-type"].includes("image");
     // if(req.status == 200){
     //   return true;
     // } else{
@@ -12,7 +12,6 @@ async function checkImage(url) {
   } catch(e){
     console.log(e);
     return false;
-    
   }
   
 }
