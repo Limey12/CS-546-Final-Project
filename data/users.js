@@ -94,9 +94,23 @@ const usernameToID = async function usernameToID(username) {
   return user._id.toString();
 }
 
+const IDtoUsername = async function(uID) {
+  if (!uID) {
+    throw "uID must be provided";
+  }
+  if (typeof uID !== "string") throw "uID must be a string.";
+  const userCollection = await users();
+  const user = await userCollection.findOne({ _id: ObjectId(uID) });
+  if (!user?._id) {
+    throw "no user with that id"
+  }
+  return user.username;
+}
+
 module.exports = {
   createUser,
   checkUser,
   usernameToID,
-  addFriend
+  addFriend,
+  IDtoUsername,
 };
