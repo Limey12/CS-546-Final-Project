@@ -1,12 +1,31 @@
-(function ($) {
+//TODO No clue why this does not catch errors
+async function checkImage(url) {
+  try{
+    let req = await axios.get(url);
+    console.log(req.status)
+    if(req.status == 200){
+      return true;
+    } else{
+      return false;
+    }
+  } catch(e){
+    console.log(e);
+    return false;
+    
+  }
+  
+}
+
+(async function ($) {
   var form = $("#gameform");
   var titleInput = $("#title");
   var descriptionInput = $("#description");
   var imageInput = $("#image");
   var error = $("#error");
   var addedGameElem = $("#addedgame");
+  var imgerror = $("#imgerror");
 
-  form.submit(function (event) {
+  form.submit(async function (event) {
     event.preventDefault();
     title = titleInput.val();
     title = title.trim();
@@ -16,25 +35,33 @@
     image = image.trim();
     alt = "/public/images/no_image.jpeg";
 
-    if(!image){
+    
+    let imbool = await checkImage(image);
+    console.log(imbool)
+    if (!image) {
       image = "/public/images/no_image.jpeg";
+      imgerror.hide();
+    } else if (!imbool) {
+      imgerror.html("Image link not valid");
+      imgerror.show();
+      return;
+    } else {
+      imgerror.hide();
     }
+
     if (!title && !description) {
-      error.html("Title Input and Description Input is missing")
+      error.html("Title Input and Description Input is missing");
       error.show();
-    }
-    else if (!description) {
-      error.html("Description Input is missing")
+    } else if (!description) {
+      error.html("Description Input is missing");
       error.show();
-    }
-    else if(!title){
-      error.html("Title Input is missing")
+    } else if (!title) {
+      error.html("Title Input is missing");
       error.show();
-    }
-    else if(typeof description !== "string" || typeof title !== "string"){
-      error.html("Inputs should be strings")
+    } else if (typeof description !== "string" || typeof title !== "string") {
+      error.html("Inputs should be strings");
       error.show();
-    }else {
+    } else {
       error.hide();
     }
 
@@ -45,15 +72,15 @@
       data: JSON.stringify({
         title: title,
         description: description,
-        image:image
+        image: image,
       }),
     };
     $.ajax(requestConfig).then(function (res) {
       //Checking is reponse has an error
-      if(res.error){
+      if (res.error) {
         error.html(res.error);
         error.show();
-      }else{
+      } else {
         var addedgametitle = res.addedgame.title;
         var addedgamedesc = res.addedgame.description;
         var addedgameimage = res.addedgame.image;
@@ -67,6 +94,6 @@
         addedGameElem.show();
         form[0].reset();
       }
-      });
+    });
   });
 })(window.jQuery);

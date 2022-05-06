@@ -25,6 +25,7 @@ router.route("/").get(async (req, res) => {
 router.post("/", async (req, res) => {
   let search = req.body.gameSearchTerm;
   search = search.trim();
+  let loggedIn = req.session.user ? true : false;
   if (!search) {
     res
       .status(400)
@@ -32,6 +33,7 @@ router.post("/", async (req, res) => {
         games: [],
         error: true,
         errormsg: "No searchterm inputted",
+        login: loggedIn
       });
     return;
   }
@@ -44,6 +46,7 @@ router.post("/", async (req, res) => {
           games: [],
           error: true,
           errormsg: "No results",
+          login: loggedIn
         });
       return;
     }
