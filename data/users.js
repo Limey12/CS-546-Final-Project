@@ -136,6 +136,14 @@ const getRecommendations = async function getRecommendations(username) {
     return !await asyncSome(reviews, async r => (await reviewData.getGameFromReview(r)).toString() === game._id);
   });
   games = games.sort(function(){return .5 - Math.random()});
+  if(games.length < numRecs) {
+    let tmp = await gameData.getAllGames()
+    tmp = tmp.sort(function(){return .5 - Math.random()});
+    tmp = tmp.filter(g1 => {
+      return !games.some(g2 => (g1._id === g2._id));
+    });
+    games = games.concat(tmp);
+  }
   return games.slice(0, numRecs);
 }
 
