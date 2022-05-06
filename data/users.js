@@ -131,10 +131,33 @@ const getRecommendations = async function getRecommendations(username) {
   return games.slice(0, numRecs);
 }
 
+const IDtoUsername = async function(uID) {
+  if (!uID) {
+    throw "uID must be provided";
+  }
+  if (typeof uID !== "string") throw "uID must be a string.";
+  const userCollection = await users();
+  const user = await userCollection.findOne({ _id: ObjectId(uID) });
+  if (!user?._id) {
+    throw "no user with that id"
+  }
+  return user.username;
+}
+
+const favorite = async function(uID, gameID) {
+  const userCollection = await users();
+  await userCollection.updateOne(
+    { _id: ObjectId(uID) },
+    { $set: {favoriteGameId : gameID} }
+  );
+}
+
 module.exports = {
   createUser,
   checkUser,
   usernameToID,
   addFriend,
-  getRecommendations
+  getRecommendations,
+  IDtoUsername,
+  favorite
 };
