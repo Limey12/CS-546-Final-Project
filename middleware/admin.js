@@ -6,9 +6,8 @@ const admin = async function(req, res, next) {
   try {
     id = await userData.usernameToID("admin");
   } catch (e) {
-     console.log(e)
+    console.log(e)
   }
-
   req.session.user = { username: "admin", id: id};
   next();
 }
