@@ -118,12 +118,12 @@ const getRecommendations = async function getRecommendations(username) {
     let max = 0;
     for(let i = 0; i < reviews.length; i++) {
       if(reviewData.getRatingFromReview(reviews[i]) > max) {
-        max = reviewData.getRatingFromReview();
-        fav = reviews[i];
+        max = reviewData.getRatingFromReview(reviews[i]);
+        fav = reviewData.getGameFromReview(reviews[i]);
       }
     }
   }
-  return gameData.getRecommendations(reviewData.getGameFromReview(fav));
+  return gameData.getRecommendations(fav);
 }
 
 module.exports = {
