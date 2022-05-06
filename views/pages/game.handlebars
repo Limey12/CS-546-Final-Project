@@ -40,6 +40,20 @@ Reviews
     {{else}}
         <p>There are no reviews for this game yet! Be the first to add one.</p>
     {{/if}}
+    </ul>
+    
+    <h3>Comments</h3>
+    <ul>
+    {{#if comments}}
+        {{#each comments}}
+            <li>
+                <h4>By {{this.commentUsername}}</h4>
+                <p>{{this.commentText}}</p>
+            </li>
+        {{/each}}
+    {{else}}
+        <p>There are no comments for this game yet! Be the first to add one.</p>
+    {{/if}}
     
     </ul>
 </article>

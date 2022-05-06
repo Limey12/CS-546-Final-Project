@@ -3,6 +3,7 @@ const data = require("../data/");
 const games = data.games;
 const users = data.users;
 const reviews = data.reviews;
+const comments = data.comments;
 
 async function main() {
   
@@ -67,6 +68,11 @@ async function main() {
     const r1 = await reviews.createReview(u4._id, Persona4._id, "pretty good", 3);
     const r2 = await reviews.createReview(u2._id, Persona4._id, "is persona = bad", 1);
     console.log(r1)
+
+    //creating comments
+    const c1 = await comments.createComment(u2._id, Persona4._id, "u2 comment on persona 4");
+    const c2 = await comments.createComment(u3._id, Minecraft._id, "u3 comment on minecraft");
+    
 
   } catch (e) {
     console.log(e);
