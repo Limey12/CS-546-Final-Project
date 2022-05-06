@@ -41,7 +41,8 @@ const addGame = async function addGame(title, description, image) {
     image: image,
     reviews: [],
     comments: [],
-    overallRating: 0,
+    overallRating: null,
+    totalRatings: 0,
   };
   const insertInfo = await gameCollection.insertOne(newGame);
   if (!insertInfo.acknowledged || !insertInfo.insertedId) {
@@ -85,6 +86,9 @@ const getGame = async function getGame(id) {
   }
   const gameCollection = await games();
   const game = await gameCollection.findOne({ _id: ObjectId(id) });
+  if (game === null) {
+    throw "game with that id does not exist"
+  }
   game["_id"] = game["_id"].toString();
   return game;
 };
@@ -218,26 +222,21 @@ let getGameSearchTerm = async function getGameSearchTerm(term) {
 
 let getAverageRatingAmongFriends = async function (userID, gameID) {
   //todo validation
-  //steps:
-  // get list of friend ids (easy)
-  // get rating for each freind
-  // average ratings
 
   if (arguments.length != 2) {
     throw "expects 2 args";
   }
   if (!userID) {
-    return "N/A";
+    return null;
   }
 
-  const gameCollection = await games();
   const userCollection = await users();
 
   const user = await userCollection.findOne({ _id: ObjectId(userID) });
   console.log(user);
   const friendList = user.friends;
   if (friendList.length == 0) {
-    return "N/A";
+    return null;
   }
   let total = 0; //running total of the reviews
   let reviewCount = 0; //number of freinds that rated the game
@@ -246,12 +245,24 @@ let getAverageRatingAmongFriends = async function (userID, gameID) {
     let friend = await userCollection.findOne({ _id: ObjectId(f) });
     console.log(friend);
     const reviewList = friend.reviews;
-    await reviews.getGameFromReview(reviewList[0]);
+    for (r of reviewList) {
+      if (await reviews.getGameFromReview(r) == gameID && await reviews.getRatingFromReview(r) != null) {
+        total += await reviews.getRatingFromReview(r);
+        reviewCount++;
+      }
+    }
+
+
+    // await reviews.getGameFromReview(reviewList[0]);
     //todo look in reviews subdocument of the particular game to see if the friend reviewed the game.
+
     console.log("frrr")
     console.log(friend);
   }
-  return total / friendList.legnth;
+  if (reviewCount == 0) {
+    return null;
+  }
+  return total / reviewCount;
 };
 
 let getImage = async function (gameID) {

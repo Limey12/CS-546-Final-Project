@@ -13,14 +13,29 @@ let createReview = async function (userID, gameID, reviewText, rating) {
   const gameCollection = await games();
   const userCollection = await users();
   const newReview = {
-    _id : new ObjectId(),
+    _id: new ObjectId(),
     userId: userID,
     reviewText: reviewText,
-    rating: rating
+    rating: rating,
   };
-  await gameCollection.updateOne({_id : ObjectId(gameID)}, {$push : {reviews : newReview}});
+  const game = await gameCollection.findOne({ _id: ObjectId(gameID) });
+  await gameCollection.updateOne(
+    { _id: ObjectId(gameID) },
+    {
+      $push: { reviews: newReview },
+      $inc: { totalRatings: rating != null ? 1 : 0 },
+      $set: {
+        overallRating:
+          (game.overallRating * game.totalRatings + rating) /
+          (game.totalRatings + 1),
+      },
+    }
+  );
   //new review is added to video game. Id must be added to user.
-  await userCollection.updateOne({_id : ObjectId(userID)}, {$push : {reviews : newReview._id.toString()}});
+  await userCollection.updateOne(
+    { _id: ObjectId(userID) },
+    { $push: { reviews: newReview._id.toString() } }
+  );
   return newReview;
 };
 
@@ -30,12 +45,29 @@ let getGameFromReview = async function (reviewID) {
   const game = await gameCollection.findOne({
     "reviews._id": ObjectId(reviewID),
   });
-  console.log("game:");
-  console.log(game);
+  if (game === null) throw "No review with that id.";
+  return game._id;
 };
 
 let getRatingFromReview = async function (reviewID) {
   //from a reviewID, return the rating
+  const gameCollection = await games();
+  const game = await gameCollection.findOne(
+    { "reviews._id": ObjectId(reviewID) },
+    { projection: { reviews: 1 } }
+  );
+  if (game === null) throw "No review with that id.";
+  const gameId = game._id;
+  const review = await gameCollection
+    .aggregate([
+      { $match: { _id: gameId } },
+      { $unwind: "$reviews" },
+      { $match: { "reviews._id": ObjectId(reviewID) } },
+      { $replaceRoot: { newRoot: "$reviews" } },
+    ])
+    .toArray();
+  if (review === null) throw "No review with that id.";
+  return review[0].rating;
 };
 
 module.exports = {

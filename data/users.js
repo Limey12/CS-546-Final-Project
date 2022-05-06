@@ -20,7 +20,7 @@ const createUser = async function createUser(username, email, password) {
   if (!validator.validate(email)) throw "Email must be valid.";
   if (typeof password !== "string") throw "Password must be a string.";
   if (/\s/.test(password)) throw "Password must not contain any spaces.";
-  if (password.length < 6) throw "Username must be at least 6 characters long.";
+  if (password.length < 6) throw "Password must be at least 6 characters long.";
   const hash = await bcrypt.hash(password, saltRounds);
   const userCollection = await users();
   const user1 = await userCollection.findOne({ username: username });
