@@ -2,9 +2,12 @@ const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const bcrypt = require("bcrypt");
 const validator = require("email-validator");
+const reviewData = require("./reviews");
+const gameData = require("./games");
 const { ObjectId } = require("mongodb");
 
 const saltRounds = 8;
+const numRecs = 2;
 
 const createUser = async function createUser(username, email, password) {
   if (!username || !email || !password)
@@ -51,7 +54,7 @@ const checkUser = async function checkUser(username, password) {
   if (username.length < 4) throw "Username must be at least 4 characters long.";
   if (typeof password !== "string") throw "Password must be a string.";
   if (/\s/.test(password)) throw "Password must not contain any spaces.";
-  if (password.length < 6) throw "Username must be at least 6 characters long.";
+  if (password.length < 6) throw "Password must be at least 6 characters long.";
   const userCollection = await users();
   const user = await userCollection.findOne({ username: username });
   if (!user) throw "Either the username or password is invalid";
@@ -82,21 +85,51 @@ const addFriend = async function addFriend(uID1, uID2) {
 
 const usernameToID = async function usernameToID(username) {
   if (!username) {
-    throw "username must be provided";
+    throw "Username must be provided.";
   }
   if (typeof username !== "string") throw "Username must be a string.";
   username = username.trim().toLowerCase();
   const userCollection = await users();
   const user = await userCollection.findOne({ username: username });
   if (!user?._id) {
-    throw "no user with that name"
+    throw "No user with that name."
   }
   return user._id.toString();
+}
+
+const getRecommendations = async function getRecommendations(username) {
+  if (!username) throw "Username must be a valid value.";
+  if (typeof username !== "string") throw "Username must be a string.";
+  username = username.trim();
+  username = username.toLowerCase();
+  if (!/^[a-z0-9]+$/i.test(username)) throw "Username must be alphanumeric.";
+  if (username.length < 4) throw "Username must be at least 4 characters long.";
+  const userCollection = await users();
+  const user = await userCollection.findOne({ username: username });
+  if (!user) throw "No user with that username.";
+  const fav = user.favoriteGameId;
+  const reviews = user.reviews;
+  if(!fav && reviews.length == 0) {
+    let games = gameData.getAllGames();
+    games = games.sort(function(){return .5 - Math.random()});
+    return games.slice(0, numRecs);
+  }
+  else if(!fav) {
+    let max = 0;
+    for(let i = 0; i < reviews.length; i++) {
+      if(reviewData.getRatingFromReview(reviews[i]) > max) {
+        max = reviewData.getRatingFromReview();
+        fav = reviews[i];
+      }
+    }
+  }
+  return gameData.getRecommendations(reviewData.getGameFromReview(fav));
 }
 
 module.exports = {
   createUser,
   checkUser,
   usernameToID,
-  addFriend
+  addFriend,
+  getRecommendations
 };
