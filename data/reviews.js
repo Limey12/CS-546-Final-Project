@@ -28,7 +28,7 @@ let getGameFromReview = async function (reviewID) {
   //from a reviewID, return a gameID
   const gameCollection = await games();
   const game = await gameCollection.findOne(
-    {"reviews._id": reviewID}
+    {"reviews._id": ObjectId(reviewID)}
   );
   if(game === null) throw 'No review with that id.';
   return game._id;
@@ -38,7 +38,7 @@ let getRatingFromReview = async function (reviewID) {
   //from a reviewID, return the rating
   const gameCollection = await games();
   const game = await gameCollection.findOne(
-    {"reviews._id": reviewID},
+    {"reviews._id": ObjectId(reviewID)},
     {projection: {reviews: 1}}
   );
   if(game === null) throw 'No review with that id.';
@@ -46,7 +46,7 @@ let getRatingFromReview = async function (reviewID) {
   const review = await gameCollection.aggregate([
     {"$match": {"_id": gameId}},
     {"$unwind": "$reviews"},
-    {"$match": {"reviews._id": reviewID}},
+    {"$match": {"reviews._id": ObjectId(reviewID)}},
     {"$replaceRoot": {"newRoot": "$reviews"}}
   ]).toArray();
   if(review === null) throw 'No review with that id.';
