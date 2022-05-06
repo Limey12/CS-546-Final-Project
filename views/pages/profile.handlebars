@@ -5,23 +5,49 @@
         </h1>
     </header>
     <p>About {{username}}</p>
-    <p>{{bio}}</p>
-    <h2>My Games List</h2>
-    <ul>
-        {{#each game}}
-            <li>
-                <h3>{{game_name}}</h3>
-                <img src="{{image}}" alt="{{alt}}"></img>
-            </li>
-        {{/each}}
-    </ul>
+    <p>
+        {{#if bio}}
+            {{bio}}
+        {{else}}
+            No bio available.
+        {{/if}}
+    </p>
     <h2>My Reviews</h2>
     <ul>
-        {{#each review}}
-            <li>
-                <h4>{{self.reviewUsername}}</h4>
-                <p>{{self.reviewText}}</p>
-            </li>
-        {{/each}}
+        {{#if reviews}}
+            {{#each reviews}}
+                <li>
+                    <h4>Game: {{self.reviewGame}}</h4>
+                    <p>Comment: {{self.reviewText}}</p>
+                </li>
+            {{/each}}
+        {{else}}
+            <p>No reviews yet</p>
+        {{/if}}
+    </ul>
+    <h2>Friends</h2>
+    <ul>
+        {{#if friends}}
+            {{#each friends}}
+                <li>
+                    <h4>{{self.username}}</h4>
+                </li>
+            {{/each}}
+        {{else}}
+            <p>I have no friends</p>
+        {{/if}}
+    </ul>
+    <h2>My Comments</h2>
+    <ul>
+        {{#if comments}}
+            {{#each comments}}
+                <li>
+                    <h4>{{self.commentUsername}}</h4>
+                    <p>{{self.commentText}}</p>
+                </li>
+            {{/each}}
+        {{else}}
+            <p>No comments</p>
+        {{/if}}
     </ul>
 </body>

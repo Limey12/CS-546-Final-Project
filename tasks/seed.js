@@ -13,34 +13,41 @@ async function main() {
   try {
     const Minecraft = await games.addGame(
       "Minecraft",
-      "Block Game Big Man Steve"
+      "Block Game Big Man Steve",
+      "https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png"
     );
     const Pokemon = await games.addGame(
       "Pokemon",
-      "Catch them All"
+      "Catch them All",
+      "https://m.media-amazon.com/images/M/MV5BNDcwZDc2NTEtMzU0Ni00YTQyLWIyYTQtNTI3YjM0MzhmMmI4XkEyXkFqcGdeQXVyNTgyNTA4MjM@._V1_.jpg"
     );
     const RiskofRain2 = await games.addGame(
       "Risk of Rain 2",
-      "Rougelike 3d shooter"
+      "Rougelike 3d shooter",
+      null
     );
     const Persona5 = await games.addGame(
       "Persona 5",
-      "aaaaa"
+      "Joker RPG",
+      "https://image.api.playstation.com/vulcan/img/cfn/11307XlqDFlHmHWGjBPndSappCDTnE9OmnP2P-dSzcvLX9i0pvH_okJOl6dP1AnZefxthD-2k3RrsdzYU_BqUy9K5_sv-Tnx.png"
     );
     const LeagueofLegends = await games.addGame(
       "League of Legends",
-      "Cringe"
+      "Cringe",
+      null
     );
     const Persona4 = await games.addGame(
       "Persona 4",
-      "aaaaaa2"
+      "aaaaaa2",
+      null
     );
     //Update Game
-    const Minecraft2 = await games.updateGame(
-      Minecraft._id.toString(),
-      "Minecraft 2",
-      "Bigger Game"
-    );
+    // const Minecraft2 = await games.updateGame(
+    //   Minecraft._id.toString(),
+    //   "Minecraft 2",
+    //   "Bigger Game",
+    //   null
+    // );
     console.log(Persona4);
     // console.log(await games.getGame(Minecraft._id.toString()));
     console.log(await games.getGameSearchTerm("Persona"));
