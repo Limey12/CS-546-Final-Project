@@ -54,4 +54,20 @@ router.route("/:id/fav").post(async (req, res) => {
     }
 });
 
+//POST http://localhost:3000/game/{id}/lfav
+router.route("/:id/lfav").post(async (req, res) => {
+    try {
+        //todo validation
+        let argId = req?.params?.id;
+        if (argId == undefined || typeof argId != 'string') {
+            //todo error page
+        }
+        let userId = req?.session?.user?.id;
+        await users.leastfavorite(userId, argId);
+    } catch (e) {
+        console.log("post routecatch "+ e)
+        return res.status(400).send("post routecatch "+e);
+    }
+});
+
 module.exports = router;

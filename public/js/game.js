@@ -11,5 +11,14 @@
       e.preventDefault();
       $.ajax(requestConfig);
     });
+
+    requestConfig = {
+      method: "POST",
+      url: window.location.pathname + "/lfav",
+    };
+    lfav.submit(function (e) {
+      e.preventDefault();
+      $.ajax(requestConfig);
+    });
   };
 })(window.jQuery);
