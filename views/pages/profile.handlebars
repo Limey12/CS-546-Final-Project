@@ -1,38 +1,49 @@
 <body>
-    <header>
-        <h1>
-            User Profile
-        </h1>
-    </header>
-    <p>About {{username}}</p>
-    <p>
-        {{#if bio}}
-            {{bio}}
-        {{else}}
-            No bio available.
-        {{/if}}
-    </p>
-    <h2>Preferences</h2>
-    {{#if favoriteGameName}}
-        <p>Favorite game: {{favoriteGameName}}</p>
+  <header>
+    <h1>
+      User Profile
+    </h1>
+  </header>
+  <p>About {{username}}</p>
+  <p>
+    {{#if bio}}
+      {{bio}}
     {{else}}
-        <p>No favorite game</p>
+      No bio available.
     {{/if}}
-    {{#if leastFavoriteGameName}}
-        <p>Least favorite game: {{leastFavoriteGameName}}</p>
+  </p>
+  <h2>Preferences</h2>
+  {{#if favoriteGameName}}
+    <p>Favorite game: {{favoriteGameName}}</p>
+  {{else}}
+    <p>No favorite game</p>
+  {{/if}}
+  {{#if leastFavoriteGameName}}
+    <p>Least favorite game: {{leastFavoriteGameName}}</p>
+  {{else}}
+    <p>No least favorite game</p>
+  {{/if}}
+  <h2>Friends</h2>
+  <ul>
+    {{#if friends}}
+      {{#each friends}}
+        <li>
+          <a href="/profile/{{id}}">{{username}}</a>
+        </li>
+      {{/each}}
     {{else}}
-        <p>No least favorite game</p>
+      <p>I have no friends</p>
     {{/if}}
-    <h2>Friends</h2>
-    <ul>
-        {{#if friends}}
-            {{#each friends}}
-                <li>
-                    <a href="/profile/{{id}}">{{username}}</a>
-                </li>
-            {{/each}}
-        {{else}}
-            <p>I have no friends</p>
-        {{/if}}
-    </ul>
+  </ul>
+  {{#if id}}
+    {{#unless pageOwned}}
+      {{#if friended}}
+        <p>You are friends!</p>
+      {{else}}
+        <form method="POST" action="/profile/add/{{pageId}}" id="addFriend">
+          <button type="submit">Add Friend</button>
+        </form>
+      {{/if}}
+    {{/unless}}
+  {{/if}}
 </body>
