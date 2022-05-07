@@ -23,8 +23,13 @@ router.route("/").get(async (req, res) => {
 router.route("/:id").get(async (req, res) => {
     let id = req.params.id;
     if(!ObjectId.isValid(id)){
-        res.status(400).send("Invalid ID");
-        return;
+        return res.status(404).render("pages/error", {
+            id :req?.session?.user?.id,
+            HTML_title: "user not found",
+            class: "error",
+            status: 404,
+            message: "user not found"
+        });
     }
     let loggedIn = false;
     let sessionUser = req.session.user; 
