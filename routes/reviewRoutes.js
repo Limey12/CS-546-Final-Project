@@ -34,11 +34,17 @@ router.route("/:id").get(async (req, res) => {
         res.status(404).json({ message: "User not found" });
     }
     let userdId = req?.session?.user?.id;
+    let reviews = [];
+    for(let x = 0; x < user.reviews.length; x++){
+        let review = {game: "Placeholder game", review: "Placeholder review", rating: x};
+        reviews.push(review);
+    }
+    //console.log(user);
     res.render("pages/reviews", {
         HTML_title: "Reviews",
         id: userdId,
         username: user.username,
-        reviews: user.reviews,
+        reviews: reviews,
     });
 });
 

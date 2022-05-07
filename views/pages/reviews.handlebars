@@ -4,8 +4,9 @@
         <ul>
             {{#each reviews}}
                 <li>
-                    <h4>Game: {{self.reviewGame}}</h4>
-                    <p>Comment: {{self.reviewText}}</p>
+                    <h4>Game: {{self.game}}</h4>
+                    <p>Review: {{self.review}}</p>
+                    <p>Rating: {{self.rating}}/5</p>
                 </li>
             {{/each}}
         </ul>
