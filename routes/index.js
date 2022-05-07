@@ -20,7 +20,7 @@ const constructorMethod = (app) => {
   app.use("/signup", signupRoutes);
   app.use("/logout", logoutRoutes);
   app.use("/game", gameRoutes);
-  app.use("/GameCatalog", catalogRoutes);
+  app.use("/gamecatalog", catalogRoutes);
   app.use("/Profile", profileRoutes);
   app.use("/Reviews", reviewRoutes);
   app.use("*", (req, res) => {
