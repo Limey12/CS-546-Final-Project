@@ -28,6 +28,8 @@
     let ratinginput = $("#rating_input");
     let reviewinput = $("#review_input");
     let addedReviewElem = $("#addedreviews");
+    let noreviews = $("#noreviews");
+    let reviewerror = $("#reviewerror");
   reviewbut.submit(async function (event) {
     event.preventDefault();
     rating = ratinginput.val();
@@ -35,23 +37,27 @@
     review = reviewinput.val();
     review = review.trim();
 
-    
-   //ToDo error checking
-    // if (!title && !description) {
-    //   error.html("Title Input and Description Input is missing");
-    //   error.show();
-    // } else if (!description) {
-    //   error.html("Description Input is missing");
-    //   error.show();
-    // } else if (!title) {
-    //   error.html("Title Input is missing");
-    //   error.show();
-    // } else if (typeof description !== "string" || typeof title !== "string") {
-    //   error.html("Inputs should be strings");
-    //   error.show();
-    // } else {
-    //   error.hide();
-    // }
+    if (!rating && !review) {
+      reviewerror.html("Rating and Review Inputs is missing");
+      reviewerror.show();
+      return;
+    }
+    else if (!rating) {
+      reviewerror.html("Rating Input is missing");
+      reviewerror.show();
+      return;
+    } else if(!review){
+      reviewerror.html("Review Input is missing");
+      reviewerror.show();
+      return;
+    } else if( typeof review !== "string") {
+      reviewerror.html("Review should be a string");
+      reviewerror.show();
+      return;
+    }
+    else {
+      reviewerror.hide();
+    }
     
     var requestConfig = {
       method: "POST",
@@ -64,11 +70,6 @@
     };
     $.ajax(requestConfig).then(function (res) {
       //Checking is reponse has an error
-      // if (res.error) {
-      //   error.html(res.error);
-      //   error.show();
-      // } else {
-        console.log(res.addedreview)
         var addedrating = res.addedreview.rating;
         var addedreviewtext = res.addedreview.reviewText;
         var username = res.user;
@@ -79,6 +80,7 @@
         </li>`;
         addedReviewElem.append(li);
         addedReviewElem.show();
+        noreviews.hide();
         reviewbut[0].reset();
       });
   });

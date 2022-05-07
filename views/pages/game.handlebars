@@ -49,8 +49,10 @@ Reviews
             </li>
         {{/each}}
     {{else}}
-        <p>There are no reviews for this game yet!{{#if id}} Be the first {{else}} Log in {{/if}}to add one.</p>
+        <p id="noreviews">There are no reviews for this game yet!{{#if id}} Be the first {{else}} Log in {{/if}}to add one.</p>
     {{/if}}
+    <p id="reviewerror">
+    </p>
     </ul>
     <ul id="addedreviews">
     </ul>
@@ -72,7 +74,7 @@ Reviews
             </li>
         {{/each}}
     {{else}}
-        <p>There are no comments for this game yet!{{#if id}} Be the first {{else}} Log in {{/if}}to add one.</p>
+        <p id="nocomments">There are no comments for this game yet!{{#if id}} Be the first {{else}} Log in {{/if}}to add one.</p>
     {{/if}}
     
     </ul>
