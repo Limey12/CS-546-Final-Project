@@ -8,6 +8,7 @@ const rootRoute = require("./rootRoute");
 const catalogRoutes = require("./catalogRoutes");
 const profileRoutes = require("./profileRoutes");
 const reviewRoutes = require("./reviewRoutes");
+const userRoutes = require("./userRoutes");
 const middle = require("../middleware");
 const constructorMethod = (app) => {
   //middleware that keeps you logged in as "admin1" (no special privalages at the moment) based on how the server was started
@@ -23,6 +24,7 @@ const constructorMethod = (app) => {
   app.use("/gamecatalog", catalogRoutes);
   app.use("/Profile", profileRoutes);
   app.use("/Reviews", reviewRoutes);
+  app.use("/users", userRoutes);
   app.use("*", (req, res) => {
     res.status(404).json({ error: "Not found" });
   });
