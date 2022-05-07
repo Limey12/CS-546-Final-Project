@@ -85,7 +85,51 @@
       });
   });
   };
-  
+    let commentbut = $("#commentform");
+    let commentInput = $("#comment_input");
+    let addedCommentElem = $("#addedcomments");
+    let nocomments = $("#nocomments");
+    let commenterror = $("#commenterror");
+  commentbut.submit(async function (event) {
+    event.preventDefault();
+    comment = commentInput.val();
+    comment = comment.trim();
+
+    if (!comment) {
+      commenterror.html("Comment Input is missing");
+      commenterror.show();
+      return;
+    } else if( typeof comment !== "string") {
+      commenterror.html("Comment should be a string");
+      commenterror.show();
+      return;
+    }
+    else {
+      commenterror.hide();
+    }
+    
+    var requestConfig = {
+      method: "POST",
+      url: window.location.pathname,
+      contentType: "application/json",
+      data: JSON.stringify({
+        comment:comment
+      }),
+    };
+    $.ajax(requestConfig).then(function (res) {
+      //Checking is reponse has an error
+        var addedcomment = res.addedcomment.commentText;
+        var username = res.user;
+        const li = `<li>
+        <h4>By ${username}</h4>
+        <p>${addedcomment}</p>
+        </li>`;
+        addedCommentElem.append(li);
+        addedCommentElem.show();
+        nocomments.hide();
+        commentbut[0].reset();
+      });
+  });
 
   
 })(window.jQuery);
