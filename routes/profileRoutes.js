@@ -40,7 +40,6 @@ router.route("/:id").get(async (req, res) => {
     let userdId = req?.session?.user?.id;
     let username = user.username;
     let bio = user.bio;
-    let comments = user.comments; // fix
     let friends = user.friends; // fix
     let favoriteGameId = user.favoriteGameId;
     let favoriteGameName = null;
@@ -63,7 +62,6 @@ router.route("/:id").get(async (req, res) => {
         id: id,
         username: username,
         bio: bio,
-        comments: comments,
         friends: friends,
         favoriteGameName: favoriteGameName,
         leastFavoriteGameName: leastFavoriteGameName,

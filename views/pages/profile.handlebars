@@ -28,25 +28,11 @@
         {{#if friends}}
             {{#each friends}}
                 <li>
-                    <h4>{{self.username}}</h4>
+                    <h4>{{this.username}}</h4>
                 </li>
             {{/each}}
         {{else}}
             <p>I have no friends</p>
         {{/if}}
     </ul>
-    <h2>My Comments</h2>
-    <ul>
-        {{#if comments}}
-            {{#each comments}}
-                <li>
-                    <h4>{{self.commentUsername}}</h4>
-                    <p>{{self.commentText}}</p>
-                </li>
-            {{/each}}
-        {{else}}
-            <p>No comments</p>
-        {{/if}}
-    </ul>
-    <a href="/Reviews/{{id}}">My reviews</a>
 </body>
