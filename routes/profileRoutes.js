@@ -39,10 +39,9 @@ router.route("/:id").get(async (req, res) => {
     if(!user){
         res.status(404).json({ message: "User not found" });
     }
-    let userdId = req?.session?.user?.id;
+    let userId = req?.session?.user?.id;
     let username = user.username;
     let bio = user.bio;
-    let friends = user.friends; // fix
     let favoriteGameId = user.favoriteGameId;
     let favoriteGameName = null;
     let favoriteGameImage = null;
@@ -57,23 +56,28 @@ router.route("/:id").get(async (req, res) => {
         let leastFavoriteGame = await games.getGame(leastFavoriteGameId);
         leastFavoriteGameName = leastFavoriteGame.title;
     }
-    let pageOwned = loggedIn && (id === userdId);
+    let pageOwned = loggedIn && (id === userId);
 
     let friendsList = [];
+    let friended = false;
     for(let x = 0; x < user.friends.length; x++){
         let friend = await users.getUser(user.friends[x]);
+        if(friend._id.toString() == userId) {
+            friended = true;
+        }
         friendsList.push({username: friend.username, id: friend._id});
     }
 
     res.render("pages/profile", {
         HTML_title: "Profile",
-        id: id,
+        id: userId,
         username: username,
         bio: bio,
         friends: friendsList,
         favoriteGameName: favoriteGameName,
         leastFavoriteGameName: leastFavoriteGameName,
         pageOwned: pageOwned,
+        friended, friended
     });
 });
 
