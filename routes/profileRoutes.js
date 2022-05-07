@@ -77,6 +77,7 @@ router.route("/:id").get(async (req, res) => {
         favoriteGameName: favoriteGameName,
         leastFavoriteGameName: leastFavoriteGameName,
         pageOwned: pageOwned,
+        pageId: id,
         friended, friended
     });
 });
