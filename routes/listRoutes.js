@@ -38,7 +38,13 @@ router.route("/:id").get(async (req, res) => {
         var userLists = await lists.gameListsByUser(id);
         //now we replace each game id with the real game data.
         if (!userLists) {
-            userLists = [];
+            return res.status(404).render("pages/error", {
+                id :req?.session?.user?.id,
+                HTML_title: "user not found",
+                class: "error",
+                status: 404,
+                message: "user not found"
+            });
         }
         for (l of userLists) {
             //l is a "list"

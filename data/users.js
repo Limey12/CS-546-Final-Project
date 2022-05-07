@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const validator = require("email-validator");
 const reviewData = require("./reviews");
 const gameData = require("./games");
+const listData = require("./lists");
 const { ObjectId } = require("mongodb");
 
 const saltRounds = 8;
@@ -50,6 +51,7 @@ const createUser = async function createUser(username, email, password) {
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
     throw "Could not add user.";
   newUser._id = newUser._id.toString();
+  await listData.createList(newUser._id, "Played Games", true);
   return newUser;
 };
 

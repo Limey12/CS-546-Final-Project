@@ -1,6 +1,7 @@
 const mongoCollections = require("../config/mongoCollections");
 const games = mongoCollections.games;
 const users = mongoCollections.users;
+const listsApi = require("./lists");
 const gamesApi = require('./games');
 const { ObjectId } = require("mongodb");
 
@@ -37,6 +38,9 @@ let createReview = async function (userID, gameID, reviewText, rating) {
     { _id: ObjectId(userID) },
     { $push: { reviews: newReview._id.toString() } }
   );
+
+  //reviewing a game means you have played it. add game to played games list
+  await listsApi.addGameToList(userID, "Played Games", gameID);
   return newReview;
 };
 

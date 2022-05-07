@@ -14,6 +14,7 @@ async function main() {
   } 
   //Add Games
   try {
+    console.log("creating games")
     const Minecraft = await games.addGame(
       "Minecraft",
       "Block Game Big Man Steve",
@@ -52,11 +53,13 @@ async function main() {
     //   "Bigger Game",
     //   null
     // );
+    console.log("logging persona4")
     console.log(Persona4);
     // console.log(await games.getGame(Minecraft._id.toString()));
     console.log(await games.getGameSearchTerm("Persona"));
 
     //seeding users database
+    console.log("creating users")
     const u1 = await users.createUser("user01", "user01@email.com", "1234567890");
     const u2 = await users.createUser("user02", "user02@email.com", "1234567890");
     const u3 = await users.createUser("user03", "user03@email.com", "1234567890");
@@ -68,6 +71,7 @@ async function main() {
     await users.addFriend(u3._id, u4._id);
     
     //creating reviews
+    console.log("creating reviews")
     const r1 = await reviews.createReview(u4._id, Persona4._id, "pretty good", 3);
     const r2 = await reviews.createReview(u2._id, Persona4._id, "is persona = bad", 1);
     const r3 = await reviews.createReview(u1._id, Persona4._id, "good!", 4);

@@ -31,8 +31,7 @@ let addGameToList = async function (userID, listName, gameID) {
   }
   const userCollection = await users();
   const user = await userCollection.findOne(
-     {"lists.listName": listName} ,
-     {"lists.$": 1, _id : ObjectId(userID) }
+     { _id : ObjectId(userID) }
   );
  
   for (l of user.lists) {
