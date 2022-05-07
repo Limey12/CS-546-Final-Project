@@ -2,6 +2,7 @@ const express = require("express");
 const { ReturnDocument } = require("mongodb");
 const router = express.Router();
 const { games } = require("../data");
+const validate = require("../validation/gameValidation")
 
 //GET http://localhost:3000/GameCatalog
 router.route("/").get(async (req, res) => {
@@ -78,23 +79,14 @@ router.route("/gameform").post(async (req, res) => {
   let description = req.body.description; //need xss
   let image = req.body.image; //need xss
   try {
-    if (!title || !description) {
-      throw "field not provided";
+    if(image == "/public/images/no_image.jpeg"){
+      image = null;
+    } else{
+      await validate.checkImage(image);
     }
-    if (!image) {
-      image = "/public/images/no_image.jpeg";
-    }
-    if (typeof title !== "string" || typeof description !== "string") {
-      throw "not string";
-    }
-
-    title = title.trim();
-    description = description.trim();
-    image = image.trim();
-
-    if (title.length <= 0 || description.length <= 0) {
-      throw "Cannot be an empty string";
-    }
+    
+    await validate.checkTitle(title);
+    await validate.checkDescription(description);
   } catch (e) {
     res.status(400).json({ success: false, error: e });
     return;

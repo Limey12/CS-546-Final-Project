@@ -27,6 +27,7 @@ async function main() {
       "Risk of Rain 2",
       "Rougelike 3d shooter",
       null
+      
     );
     const Persona5 = await games.addGame(
       "Persona 5",
