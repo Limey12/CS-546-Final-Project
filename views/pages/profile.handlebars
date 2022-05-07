@@ -38,9 +38,7 @@
   {{#if id}}
     {{#unless pageOwned}}
       {{#if friended}}
-        <form method="POST" action="/profile/remove/{{pageId}}" id="removeFriend">
-          <button type="submit">Remove Friend</button>
-        </form>
+        <p>You are friends!</p>
       {{else}}
         <form method="POST" action="/profile/add/{{pageId}}" id="addFriend">
           <button type="submit">Add Friend</button>
