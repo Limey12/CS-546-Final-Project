@@ -38,11 +38,11 @@ router.route("/:id").get(async (req, res) => {
             throw "User not found";
         }
     } catch (e) {
-        return res.status(400).render("pages/error", {
+        return res.status(404).render("pages/error", {
             id: req?.session?.user?.id,
             HTML_title: "error",
             class: "error",
-            status: 400,
+            status: 404,
             message: e
         });
     }
@@ -115,6 +115,16 @@ router.route("/add/:id").post(async (req, res) => {
         if(!user){
             throw "User not found";
         }
+    } catch (e) {
+        return res.status(404).render("pages/error", {
+            id :req?.session?.user?.id,
+            HTML_title: "error",
+            class: "error",
+            status: 404,
+            message: e
+        });
+    }
+    try {
         loggedIn = false;
         userId = req?.session?.user?.id; 
         if(userId){
@@ -143,6 +153,44 @@ router.route("/add/:id").post(async (req, res) => {
             class: "error",
             status: 500,
             message: e
+        });
+    }
+});
+
+//GET http://localhost:3000/profile/update/bio
+router.route("/update/bio").get(async (req, res) => {
+    if (req?.session?.user) {
+        res.render("pages/bio", {
+            HTML_title: "Update Bio",
+            id: req?.session?.user?.id,
+            error: false,
+            errorMsg: ""
+        });
+    } else {
+        res.redirect("/");
+    }
+});
+
+//POST http://localhost:3000/profile/update/bio
+router.route("/update/bio").post(async (req, res) => {
+    if (!req?.session?.user) {
+        res.redirect("/");
+    }
+    try {
+        let updateData = req.body;
+        let bio = updateData.newBio;
+        if (!bio) throw "Must provide bio";
+        if (typeof bio !== "string") throw "Bio must be a string";
+        bio = bio.trim();
+        if (bio.length == 0) throw "Bio must be a non empty string";
+        users.updateBio(req?.session?.user?.id, bio)
+        res.redirect("/profile");
+    } catch (e) {
+        return res.status(400).render("pages/bio", {
+            HTML_title: "Update Bio",
+            id: req?.session?.user?.id,
+            error: true,
+            errorMsg: e
         });
     }
 });
