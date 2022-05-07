@@ -1,0 +1,25 @@
+<h1>
+  Users
+</h1>
+<form method="POST" action="/users" id="usersearch">
+  <label for="userSearchTerm" id="Search">Search:</label>
+  <input type="text" name="userSearchTerm" id="userSearchTerm" />
+  <button type="submit">Submit</button>
+</form>
+<ul id="userlist">{{#each users}}
+    <li>
+      <a href="/profile/{{_id}}">{{username}}</a>
+    </li>
+  {{/each}}</ul>
+<p id="searcherror"></p>
+{{#if error}}
+  <p class="error">
+    {{errormsg}}
+  </p>
+{{/if}}
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"
+></script>
+<script src="/public/js/users.js"></script>

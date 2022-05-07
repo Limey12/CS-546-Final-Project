@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
     if (/\s/.test(signupData.password))
       throw "Password must not contain any spaces.";
     if (signupData.password.length < 6)
-      throw "Username must be at least 6 characters long.";
+      throw "Password must be at least 6 characters long.";
     let result = await userData.checkUser(
       signupData.username,
       signupData.password

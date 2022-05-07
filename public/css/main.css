@@ -1,0 +1,91 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+p {
+  width: 50%;
+  word-wrap: break-word;
+}
+
+form {
+  display: block;
+  padding: 1.5rem;
+}
+
+#gamesearch {
+  padding: 0;
+}
+
+input,
+label {
+  display: block;
+  font-size: inherit;
+  margin-bottom: 10px;
+}
+
+a {
+  color: #118bee;
+  display: inline-block;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+a:hover,
+a:active {
+  color: #0f7fdb;
+  text-decoration: underline;
+}
+
+button {
+  display: inline-block;
+  border: none;
+  padding: 0.5rem 1rem;
+  background: #118bee;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background 250ms ease-in-out, transform 150ms ease;
+}
+
+button:hover,
+button:focus {
+  background: #0f7fdb;
+}
+
+button:focus {
+  outline: 1px solid white;
+  outline-offset: -4px;
+}
+
+button:active {
+  transform: scale(0.99);
+}
+
+#navBar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+#navBar li {
+  float: left;
+  border-right: 1px solid #bbb;
+}
+
+#navBar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+#navBar li a:hover {
+  background-color: #111;
+}

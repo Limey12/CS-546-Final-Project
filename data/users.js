@@ -176,6 +176,32 @@ const leastfavorite = async function(uID, gameID) {
   );
 }
 
+//Get Users Stuff
+
+let getUserSearchTerm = async function getUserSearchTerm(term) {
+  if (arguments.length !== 1) {
+    throw "should have 1 argument";
+  }
+  if (!term) {
+    throw "Should provide search term";
+  }
+  if (typeof term !== "string") {
+    throw "term must be a string";
+  }
+  term = term.trim();
+  if (term.length === 0) {
+    throw "term cannot be an empty string or just spaces";
+  }
+  const userCollection = await users();
+  const userlist = await userCollection
+    .find({ username: { $regex: term, $options: "i" } })
+    .toArray();
+  for (i of userlist) {
+    i["_id"] = i["_id"].toString();
+  }
+  return userlist;
+};
+
 module.exports = {
   createUser,
   checkUser,
@@ -185,4 +211,5 @@ module.exports = {
   IDtoUsername,
   favorite,
   leastfavorite,
+  getUserSearchTerm
 };

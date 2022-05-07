@@ -4,7 +4,7 @@ const router = express.Router();
 const { games } = require("../data");
 const validate = require("../validation/gameValidation")
 
-//GET http://localhost:3000/GameCatalog
+//GET http://localhost:3000/gamecatalog
 router.route("/").get(async (req, res) => {
   try {
     let id = req.session.user?.id;

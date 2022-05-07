@@ -1,24 +1,28 @@
-<!DOCTYPE html>
 <html lang="en">
 
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/public/main.css" />
+    <link rel="stylesheet" href="/public/css/main.css" />
     <title>{{HTML_title}}</title>
   </head>
 
   <body>
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/gamecatalog">Games</a></li>
-      {{#if id}}
-        <li><a href="/profile/{{id}}">Profile</a></li>
-        <li><a href="/logout">Logout</a></li>
-      {{else}}
-        <li><a href="/login">Login</a></li>
-        <li><a href="/signup">Signup</a></li>
-      {{/if}}
-    </ul>
+    <header>
+      <nav>
+        <ul id="navBar">
+          <li><a href="/">Home</a></li>
+          <li><a href="/gamecatalog">Games</a></li>
+          <li><a href="/users">Users</a></li>
+          {{#if id}}
+            <li><a href="/profile/{{id}}">Profile</a></li>
+            <li><a href="/logout">Logout</a></li>
+          {{else}}
+            <li><a href="/login">Login</a></li>
+            <li><a href="/signup">Signup</a></li>
+          {{/if}}
+        </ul>
+      </nav>
+    </header>
     <main>
       {{{body}}}
     </main>
