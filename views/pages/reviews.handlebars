@@ -1,6 +1,6 @@
 <article>
+    <h2>{{username}}'s Reviews</h2>
     {{#if reviews}}
-        <h2>{{username}}'s Reviews</h2>
         <ul>
             {{#each reviews}}
                 <li>
@@ -13,4 +13,5 @@
     {{else}}
         <p>{{username}} has no reviews</p>
     {{/if}}
+    <a href="/profile/{{id}}">Back to {{username}}'s profile</a>
 </article>
