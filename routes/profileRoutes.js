@@ -183,7 +183,7 @@ router.route("/update/bio").post(async (req, res) => {
         if (typeof bio !== "string") throw "Bio must be a string";
         bio = bio.trim();
         if (bio.length == 0) throw "Bio must be a non empty string";
-        // Call update profile function
+        users.updateBio(req?.session?.user?.id, bio)
         res.redirect("/profile");
     } catch (e) {
         return res.status(400).render("pages/bio", {

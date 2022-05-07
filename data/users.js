@@ -176,6 +176,14 @@ const leastfavorite = async function(uID, gameID) {
   );
 }
 
+const updateBio = async function(uID, bio) {
+  const userCollection = await users();
+  await userCollection.updateOne(
+    { _id: ObjectId(uID) },
+    { $set: {bio : bio} }
+  );
+}
+
 const getUser = async function getUser(id) {
   if (!id) throw "ID must be provided.";
   if (typeof id !== "string") throw "ID must be a string.";
@@ -222,6 +230,7 @@ module.exports = {
   IDtoUsername,
   favorite,
   leastfavorite,
+  updateBio,
   getUserSearchTerm,
   getUser,
 };
