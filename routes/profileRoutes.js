@@ -60,7 +60,7 @@ router.route("/:id").get(async (req, res) => {
 
     res.render("pages/profile", {
         HTML_title: "Profile",
-        id: userdId,
+        id: id,
         username: username,
         bio: bio,
         comments: comments,
