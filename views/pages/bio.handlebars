@@ -6,7 +6,11 @@
   <input type="text" name="newBio" id="newBio" />
   <button type="submit">Submit</button>
 </form>
-<p id="error"></p>
+{{#if error}}
+  <p id="error">{{errorMsg}}</p>
+{{else}}
+  <p id="error"></p>
+{{/if}}
 <script
   src="https://code.jquery.com/jquery-2.2.4.min.js"
   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="

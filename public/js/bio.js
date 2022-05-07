@@ -1,7 +1,8 @@
-$(function ($) {
+(async function ($) {
   var bioForm = $("#bio-form");
   var bioInput = $("#newBio");
-  var error = $("error");
+  var error = $("#error");
+
   bioForm.submit(function () {
     try {
       var bio = bioInput.val();

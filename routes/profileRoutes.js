@@ -157,12 +157,14 @@ router.route("/add/:id").post(async (req, res) => {
     }
 });
 
-//Get http://localhost:3000/profile/update/bio
+//GET http://localhost:3000/profile/update/bio
 router.route("/update/bio").get(async (req, res) => {
     if (req.session.user) {
         res.render("pages/bio", {
             HTML_title: "Update Bio",
             id: req?.session?.user?.id,
+            error: false,
+            errorMsg: ""
         });
     } else {
         res.redirect("/");
