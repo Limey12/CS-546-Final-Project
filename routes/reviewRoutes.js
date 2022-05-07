@@ -1,9 +1,7 @@
 const express = require("express");
 const { ObjectId } = require("mongodb");
 const router = express.Router();
-const { games, reviews } = require("../data");
-const mongoCollections = require("../config/mongoCollections");
-const users = mongoCollections.users;
+const { games, reviews, users } = require("../data");
 
 router.route("/").get(async (req, res) => {
     if(req.session.user){
@@ -27,25 +25,26 @@ router.route("/:id").get(async (req, res) => {
         return;
     }
     let loggedIn = false;
-    const userCollection = await users();
-    const user = await userCollection.findOne({ _id: ObjectId(id) });
-    //console.log(user);
+    let user = await users.getUser(id);
     if(!user){
         res.status(404).json({ message: "User not found" });
     }
     let userdId = req?.session?.user?.id;
     let reviewList = [];
-    for(let x = 0; x < user.reviews.length; x++){
-        let reviewTemp = await reviews.getReview(user.reviews[x]);
-        //console.log(reviewTemp);
-        let reviewContent = reviewTemp.reviewText;
-        let reviewGameId = await reviews.getGameFromReview(reviewTemp._id);
-        let reviewGame = await games.getGame(reviewGameId.toString());
-        let rating = reviewTemp.rating;
-        let review = {game: reviewGame.title, review: reviewContent, rating: rating};
-        reviewList.push(review);
+    if(!user.reviews){
+        res.status(404).json({ message: "User has no reviews" });
+    }else{
+        for(let x = 0; x < user.reviews.length; x++){
+            let reviewTemp = await reviews.getReview(user.reviews[x]);
+            //console.log(reviewTemp);
+            let reviewContent = reviewTemp.reviewText;
+            let reviewGameId = await reviews.getGameFromReview(reviewTemp._id);
+            let reviewGame = await games.getGame(reviewGameId.toString());
+            let rating = reviewTemp.rating;
+            let review = {game: reviewGame.title, review: reviewContent, rating: rating};
+            reviewList.push(review);
+        }
     }
-    console.log(reviewList);
     res.render("pages/reviews", {
         HTML_title: "Reviews",
         id: userdId,
