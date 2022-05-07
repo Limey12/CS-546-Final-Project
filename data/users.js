@@ -127,7 +127,7 @@ const getRecommendations = async function getRecommendations(username) {
     for(let i = 0; i < reviews.length; i++) {
       if(await reviewData.getRatingFromReview(reviews[i]) > max) {
         max = await reviewData.getRatingFromReview(reviews[i]);
-        fav = await reviewData.getGameFromReview(reviews[i]);
+        fav = (await reviewData.getGameFromReview(reviews[i])).toString();
       }
     }
   }

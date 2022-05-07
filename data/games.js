@@ -298,10 +298,11 @@ const getRecommendations = async function getRecommendations(gameID) {
       if(!user){
         continue;
       }
-      gameList.push(await getGame(user.favoriteGameId));
+      if(user?.favoriteGameId) {
+        gameList.push(await getGame(user.favoriteGameId));
+      }
     }
   }
-
   return gameList;
 }
 

@@ -4,16 +4,28 @@ const { games, users } = require("../data");
 
 //GET http://localhost:3000/
 router.route("/").get(async (req, res) => {
-  let id = req.session.user?.id;
-  let recs = [];
-  if(req.session.user) {
-    recs = await users.getRecommendations(req.session.user.username);
-  }
-  res.render("pages/home", {
-    HTML_title: "Game Ranker",
-    id: id,
-    recs: recs
+  try{
+    let id = req.session.user?.id;
+    console.log("hello:" + id);
+    let recs = [];
+    if(req.session.user) {
+      recs = await users.getRecommendations(req.session.user.username);
+    }
+    res.render("pages/home", {
+      HTML_title: "Game Ranker",
+      id: id,
+      recs: recs
+    });
+  } catch(e){
+    return res.status(500).render("pages/error", {
+      id :req?.session?.user?.id,
+      HTML_title: "Error",
+      class: "error",
+      status: 500,
+      message: e
   });
+  }
+  
 });
 
 module.exports = router;
