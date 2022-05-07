@@ -30,10 +30,19 @@ let addGameToList = async function (userID, listName, gameID) {
       throw "expects 3 args";
   }
   const userCollection = await users();
-  await userCollection.updateOne(
-    { _id : ObjectId(userID), 'lists.listName' : listName },
-    { $push : { 'games' : gameID} }
+  const user = await userCollection.findOne(
+     {"lists.listName": listName} ,
+     {"lists.$": 1, _id : ObjectId(userID) }
   );
+ 
+  for (l of user.lists) {
+    if (l.listName == listName) {
+      l.games.push(gameID);
+    }
+  }
+  await userCollection.replaceOne(
+    { _id: ObjectId(userID) }, user
+  )
 }
 
 module.exports = {
