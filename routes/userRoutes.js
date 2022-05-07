@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
       res
         .status(400)
         .render("pages/users", {
-          games: [],
+          users: [],
           error: true,
           errormsg: "No results",
           id: id,
