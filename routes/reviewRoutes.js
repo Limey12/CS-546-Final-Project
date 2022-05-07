@@ -39,18 +39,18 @@ router.route("/:id").get(async (req, res) => {
         let reviewTemp = await reviews.getReview(user.reviews[x]);
         //console.log(reviewTemp);
         let reviewContent = reviewTemp.reviewText;
-        let reviewGame = await reviews.getGameFromReview(reviewTemp._id).title;
+        let reviewGameId = await reviews.getGameFromReview(reviewTemp._id);
+        let reviewGame = await games.getGame(reviewGameId.toString());
         let rating = reviewTemp.rating;
-        let review = {game: reviewGame, review: reviewContent, rating: rating};
-        //console.log(review);
+        let review = {game: reviewGame.title, review: reviewContent, rating: rating};
         reviewList.push(review);
     }
-    //console.log(reviewList);
+    console.log(reviewList);
     res.render("pages/reviews", {
         HTML_title: "Reviews",
         id: userdId,
         username: user.username,
-        reviews: reviews,
+        reviews: reviewList,
     });
 });
 
