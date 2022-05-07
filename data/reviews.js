@@ -49,6 +49,28 @@ let getGameFromReview = async function (reviewID) {
   return game._id;
 };
 
+let getReview = async function (reviewID) {
+  //from a reviewID, return the rating
+  const gameCollection = await games();
+  const game = await gameCollection.findOne(
+    { "reviews._id": ObjectId(reviewID) },
+    { projection: { reviews: 1 } }
+  );
+  if (game === null) throw "No review with that id.";
+  const gameId = game._id;
+  const review = await gameCollection
+    .aggregate([
+      { $match: { _id: gameId } },
+      { $unwind: "$reviews" },
+      { $match: { "reviews._id": ObjectId(reviewID) } },
+      { $replaceRoot: { newRoot: "$reviews" } },
+    ])
+    .toArray();
+  if (review === null) throw "No review with that id.";
+  return review[0];
+};
+
+
 let getRatingFromReview = async function (reviewID) {
   //from a reviewID, return the rating
   const gameCollection = await games();
@@ -74,4 +96,5 @@ module.exports = {
   createReview,
   getGameFromReview,
   getRatingFromReview,
+  getReview,
 };

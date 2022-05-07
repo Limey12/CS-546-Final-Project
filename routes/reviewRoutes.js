@@ -1,7 +1,7 @@
 const express = require("express");
 const { ObjectId } = require("mongodb");
 const router = express.Router();
-const { games } = require("../data");
+const { games, reviews } = require("../data");
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 
@@ -34,12 +34,18 @@ router.route("/:id").get(async (req, res) => {
         res.status(404).json({ message: "User not found" });
     }
     let userdId = req?.session?.user?.id;
-    let reviews = [];
+    let reviewList = [];
     for(let x = 0; x < user.reviews.length; x++){
-        let review = {game: "Placeholder game", review: "Placeholder review", rating: x};
-        reviews.push(review);
+        let reviewTemp = await reviews.getReview(user.reviews[x]);
+        //console.log(reviewTemp);
+        let reviewContent = reviewTemp.reviewText;
+        let reviewGame = await reviews.getGameFromReview(reviewTemp._id).title;
+        let rating = reviewTemp.rating;
+        let review = {game: reviewGame, review: reviewContent, rating: rating};
+        //console.log(review);
+        reviewList.push(review);
     }
-    //console.log(user);
+    //console.log(reviewList);
     res.render("pages/reviews", {
         HTML_title: "Reviews",
         id: userdId,
