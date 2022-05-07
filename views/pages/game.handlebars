@@ -50,7 +50,13 @@ Reviews
     </ul>
 
     <h3>Comments</h3>
-    <ul>
+    <form id="commentform" action = "?" method="post">
+        <label for="comment" id="comment_label">Comment:</label>
+        <textarea type="text" name="comment" id="comment_input" /></textarea>
+        <button type="submit">Submit</button>
+    </form>
+    
+    <ul>   
     {{#if comments}}
         {{#each comments}}
             <li>
