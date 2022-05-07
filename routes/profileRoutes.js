@@ -62,12 +62,18 @@ router.route("/:id").get(async (req, res) => {
     }
     let pageOwned = loggedIn && (id === userdId);
 
+    let friendsList = [];
+    for(let x = 0; x < user.friends.length; x++){
+        let friend = await userCollection.findOne({ _id: ObjectId(user.friends[x]) });
+        friendsList.push({username: friend.username, id: friend._id});
+    }
+
     res.render("pages/profile", {
         HTML_title: "Profile",
         id: id,
         username: username,
         bio: bio,
-        friends: friends,
+        friends: friendsList,
         favoriteGameName: favoriteGameName,
         leastFavoriteGameName: leastFavoriteGameName,
         pageOwned: pageOwned,
