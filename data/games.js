@@ -5,6 +5,8 @@ const { ObjectId } = require("mongodb");
 
 const reviews = require("./reviews");
 
+const validate = require("../validation/gameValidation")
+
 const goodRank = 3;
 
 //Add a Game
@@ -17,20 +19,23 @@ const addGame = async function addGame(title, description, image) {
     throw "should have 3 arguments";
   }
 
-  if (!title || !description) {
-    throw "field not provided";
-  }
+  // if (!title || !description) {
+  //   throw "field not provided";
+  // }
 
-  if (typeof title !== "string" || typeof description !== "string") {
-    throw "not string";
-  }
+  // if (typeof title !== "string" || typeof description !== "string") {
+  //   throw "not string";
+  // }
 
-  title = title.trim();
-  description = description.trim();
+  // title = title.trim();
+  // description = description.trim();
 
-  if (title.length <= 0 || description.length <= 0) {
-    throw "Cannot be an empty string";
-  }
+  // if (title.length <= 0 || description.length <= 0) {
+  //   throw "Cannot be an empty string";
+  // }
+  await validate.checkImage(image);
+  await validate.checkTitle(title);
+  await validate.checkDescription(description);
 
   if (!image) {
     image = "/public/images/no_image.jpeg";
