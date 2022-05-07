@@ -38,11 +38,11 @@ router.route("/:id").get(async (req, res) => {
             throw "User not found";
         }
     } catch (e) {
-        return res.status(400).render("pages/error", {
+        return res.status(404).render("pages/error", {
             id: req?.session?.user?.id,
             HTML_title: "error",
             class: "error",
-            status: 400,
+            status: 404,
             message: e
         });
     }
@@ -115,6 +115,16 @@ router.route("/add/:id").post(async (req, res) => {
         if(!user){
             throw "User not found";
         }
+    } catch (e) {
+        return res.status(404).render("pages/error", {
+            id :req?.session?.user?.id,
+            HTML_title: "error",
+            class: "error",
+            status: 404,
+            message: e
+        });
+    }
+    try {
         loggedIn = false;
         userId = req?.session?.user?.id; 
         if(userId){
