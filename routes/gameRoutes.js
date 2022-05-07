@@ -8,14 +8,19 @@ router.route("/:id").get(async (req, res) => {
     try {
         let argId = req?.params?.id;
         if (argId == undefined || typeof argId != 'string') {
-            //todo error page
+            return res.status(400).send({ "error" : "bad request. Must include id parameter"});
         }
         let game;
         try {
             game = await games.getGame(argId);
         } catch {
-            //todo error page
-            return res.status(400).send("invalid game id");
+            return res.status(404).render("pages/error", {
+                id :req?.session?.user?.id,
+                HTML_title: "game not found",
+                class: "error",
+                status: 404,
+                message: "game not found"
+            });
         }
         let userId = req?.session?.user?.id;
         let reviews = game?.reviews;
@@ -34,15 +39,21 @@ router.route("/:id").get(async (req, res) => {
             image: await games.getImage(argId),
             alt: `${game?.title}`,
             description: game?.description ?? "No description available",
-            f_rating: await games.getAverageRatingAmongFriends(userId, argId) ?? "None of your freinds have rated this game!", //todo should depend on if the user is logged in
+            f_rating: await games.getAverageRatingAmongFriends(userId, argId) ?? "None of your freinds have rated this game!",
             overall_rating: game?.overallRating ?? "No one has rated this game!",
             HTML_title: game?.title,
             reviews: reviews,
-            comments: comments, //todo
+            comments: comments,
         };
         res.render("pages/game", hobj);
     } catch (e) {
-        return res.status(400).send("routecatch "+e);
+        return res.status(500).render("pages/error", {
+            id :req?.session?.user?.id,
+            HTML_title: "error",
+            class: "error",
+            status: 500,
+            message: e
+        });
     }
 });
 
@@ -88,12 +99,18 @@ router.route("/:id").post(async (req, res) => {
         }
         let userId = req?.session?.user?.id;
         console.log(req.body)
-        if (!req.body.rating || !req.body.review) {
-            throw "rating and review must both be supplied";
+
+        if (req.body.comment) {
+            let comment = req.body.comment;
+            await comments.createComment(userId, argId, comment);
+        } else if (req.body.rating && req.body.review) {
+            let rating = req.body.rating;
+            let review = req.body.review;
+            await reviews.createReview(userId, argId, review, rating);
+        } else {
+            throw "must supply comment or rating and review"
         }
-        let rating = req.body.rating;
-        let review = req.body.review;
-        await reviews.createReview(userId, argId, review, rating);
+        
     } catch (e) {
         console.log("post routecatch "+ e)
         return res.status(400).send("post routecatch "+e);
