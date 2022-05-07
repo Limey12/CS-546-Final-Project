@@ -27,17 +27,15 @@ router.route("/").get(async (req, res) => {
 
 //GET http://localhost:3000/profile/{id}
 router.route("/:id").get(async (req, res) => {
-    let id;
+    let id, user;
     try {
         id = req.params.id;
         if(!ObjectId.isValid(id)){
-            return res.status(404).render("pages/error", {
-                id: req?.session?.user?.id,
-                HTML_title: "user not found",
-                class: "error",
-                status: 404,
-                message: "user not found"
-            });
+            throw "User not found";
+        }
+        user = await users.getUser(id);
+        if(!user){
+            throw "User not found";
         }
     } catch (e) {
         return res.status(400).render("pages/error", {
@@ -50,16 +48,10 @@ router.route("/:id").get(async (req, res) => {
     }
     try {
         let loggedIn = false;
-        let sessionUser = req.session.user; 
-        if(sessionUser){
+        let userId = req?.session?.user?.id; 
+        if(userId){
             loggedIn = true;
         }
-        let user = await users.getUser(id);
-        //console.log(user);
-        if(!user){
-            res.status(404).json({ message: "User not found" });
-        }
-        let userId = req?.session?.user?.id;
         let username = user.username;
         let bio = user.bio;
         let favoriteGameId = user.favoriteGameId;
@@ -101,6 +93,50 @@ router.route("/:id").get(async (req, res) => {
             friended, friended
         });
     } catch (e) {
+        return res.status(500).render("pages/error", {
+            id :req?.session?.user?.id,
+            HTML_title: "error",
+            class: "error",
+            status: 500,
+            message: e
+        });
+    }
+});
+
+//POST http://localhost:3000/profile/add/{id}
+router.route("/add/:id").post(async (req, res) => {
+    let id, user, loggedIn, userId;
+    try {
+        id = req.params.id;
+        if(!ObjectId.isValid(id)){
+            throw "User not found";
+        }
+        user = await users.getUser(id);
+        if(!user){
+            throw "User not found";
+        }
+        loggedIn = false;
+        userId = req?.session?.user?.id; 
+        if(userId){
+            loggedIn = true;
+        }
+        if(!loggedIn) {
+            throw "Not logged in";
+        }
+    } catch (e) {
+        return res.status(400).render("pages/error", {
+            id :req?.session?.user?.id,
+            HTML_title: "error",
+            class: "error",
+            status: 400,
+            message: e
+        });
+    }
+    try {
+        users.addFriend(userId, id);
+        res.redirect('back');
+    }
+    catch (e) {
         return res.status(500).render("pages/error", {
             id :req?.session?.user?.id,
             HTML_title: "error",
