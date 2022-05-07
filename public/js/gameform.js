@@ -46,15 +46,19 @@ async function checkImage(url) {
     if (!title && !description) {
       error.html("Title Input and Description Input is missing");
       error.show();
+      return;
     } else if (!description) {
       error.html("Description Input is missing");
       error.show();
+      return;
     } else if (!title) {
       error.html("Title Input is missing");
       error.show();
+      return;
     } else if (typeof description !== "string" || typeof title !== "string") {
       error.html("Inputs should be strings");
       error.show();
+      return;
     } else {
       error.hide();
     }
@@ -74,6 +78,7 @@ async function checkImage(url) {
       if (res.error) {
         error.html(res.error);
         error.show();
+        return;
       } else {
         var addedgametitle = res.addedgame.title;
         var addedgamedesc = res.addedgame.description;
