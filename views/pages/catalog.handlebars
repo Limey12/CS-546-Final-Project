@@ -2,7 +2,9 @@
   Game Catalog
 </h1>
 {{#if id}}
-  <button><a href="/GameCatalog/gameform">Enter a new game</a></button>
+<form action="/GameCatalog/gameform">
+    <input type="submit" value="Enter a new game" />
+</form>
 {{/if}}
 <form method="POST" action="/gamecatalog" id="gamesearch">
   <label for="gameSearchTerm" id="Search">Search:</label>
