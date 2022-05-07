@@ -42,10 +42,10 @@ router.post("/", async (req, res) => {
     userlist = await users.getUserSearchTerm(search);
     let id = req.session.user?.id;
     if (userlist.length == 0) {
+      //Technically not an error since that just means there are no users with that name
       res
-        .status(400)
         .render("pages/users", {
-          games: [],
+          users: [],
           error: true,
           errormsg: "No results",
           id: id,

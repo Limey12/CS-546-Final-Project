@@ -129,7 +129,7 @@ const getRecommendations = async function getRecommendations(username) {
     for(let i = 0; i < reviews.length; i++) {
       if(await reviewData.getRatingFromReview(reviews[i]) > max) {
         max = await reviewData.getRatingFromReview(reviews[i]);
-        fav = await reviewData.getGameFromReview(reviews[i]);
+        fav = (await reviewData.getGameFromReview(reviews[i])).toString();
       }
     }
   }
@@ -178,6 +178,25 @@ const leastfavorite = async function(uID, gameID) {
   );
 }
 
+const updateBio = async function(uID, bio) {
+  const userCollection = await users();
+  await userCollection.updateOne(
+    { _id: ObjectId(uID) },
+    { $set: {bio : bio} }
+  );
+}
+
+const getUser = async function getUser(id) {
+  if (!id) throw "ID must be provided.";
+  if (typeof id !== "string") throw "ID must be a string.";
+  const userCollection = await users();
+  const user = await userCollection.findOne({ _id: ObjectId(id) });
+  if (!user?._id) {
+    throw "No user with that id.";
+  }
+  return user;
+}
+
 //Get Users Stuff
 
 let getUserSearchTerm = async function getUserSearchTerm(term) {
@@ -213,5 +232,7 @@ module.exports = {
   IDtoUsername,
   favorite,
   leastfavorite,
-  getUserSearchTerm
+  updateBio,
+  getUserSearchTerm,
+  getUser,
 };

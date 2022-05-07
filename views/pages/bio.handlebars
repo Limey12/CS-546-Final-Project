@@ -1,0 +1,19 @@
+<h1>{{HTML_title}}</h1>
+<form action="/profile/update/bio" method="POST" id="bio-form">
+  <label for="newBio">
+    New Bio
+  </label>
+  <input type="text" name="newBio" id="newBio" />
+  <button type="submit">Submit</button>
+</form>
+{{#if error}}
+  <p id="error">{{errorMsg}}</p>
+{{else}}
+  <p id="error"></p>
+{{/if}}
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"
+></script>
+<script src="/public/js/bio.js"></script>

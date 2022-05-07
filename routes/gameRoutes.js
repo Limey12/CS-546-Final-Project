@@ -90,7 +90,8 @@ router.route("/:id/lfav").post(async (req, res) => {
     }
 });
 
-//POST http://localhost:3000/game/{id}/
+
+//POST http://localhost:3000/game/{id}
 router.route("/:id").post(async (req, res) => {
     try {
         //todo validation
@@ -101,20 +102,27 @@ router.route("/:id").post(async (req, res) => {
         let userId = req?.session?.user?.id;
         console.log(req.body)
 
+        let user = await users.getUser(userId);
         if (req.body.comment) {
             let comment = req.body.comment;
-            await comments.createComment(userId, argId, comment);
+            let addedcomment = await comments.createComment(userId, argId, comment);
+            res.json({ success: true, addedcomment: addedcomment, user:user.username }); //need xss
         } else if (req.body.rating && req.body.review) {
             let rating = req.body.rating;
             let review = req.body.review;
             await reviews.createReview(userId, argId, review, rating);
+            let addedreview = await reviews.createReview(userId, argId, review, rating);
+            res.json({ success: true, addedreview: addedreview, user:user.username }); //need xss
         } else if (req.body['list-names']) {
             let listName = req.body['list-names'];
             await lists.addGameToList(userId, listName, argId)
+
         } else {
             res.status(400).send({ error : "must supply comment, review+rating, or list-names"});
         }
+
         return res.redirect("/game/" + argId);
+
     } catch (e) {
         console.log("post routecatch "+ e)
         return res.status(500).send( {'error' : e });
