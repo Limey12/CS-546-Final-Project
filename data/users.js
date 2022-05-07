@@ -176,6 +176,17 @@ const leastfavorite = async function(uID, gameID) {
   );
 }
 
+const getUser = async function getUser(id) {
+  if (!id) throw "ID must be provided.";
+  if (typeof id !== "string") throw "ID must be a string.";
+  const userCollection = await users();
+  const user = await userCollection.findOne({ _id: ObjectId(id) });
+  if (!user?._id) {
+    throw "No user with that id.";
+  }
+  return user;
+}
+
 //Get Users Stuff
 
 let getUserSearchTerm = async function getUserSearchTerm(term) {
@@ -211,5 +222,6 @@ module.exports = {
   IDtoUsername,
   favorite,
   leastfavorite,
-  getUserSearchTerm
+  getUserSearchTerm,
+  getUser,
 };
