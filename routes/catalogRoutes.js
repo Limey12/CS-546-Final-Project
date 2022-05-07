@@ -19,7 +19,14 @@ router.route("/").get(async (req, res) => {
     res.render("pages/catalog", { games: allGames, HTML_title:"Game Catalog", id: id });
   } catch (e) {
     let id = req?.session?.user?.id;
-    res.status(500).render("pages/catalog", { error: true, errormsg: e, HTML_title:"Game Catalog", id: id });
+    // res.status(500).render("pages/catalog", { error: true, errormsg: e, HTML_title:"Game Catalog", id: id });
+    return res.status(500).render("pages/error", {
+      id :req?.session?.user?.id,
+      HTML_title: "error",
+      class: "error",
+      status: 500,
+      message: e
+  });
   }
 });
 
@@ -58,7 +65,14 @@ router.post("/", async (req, res) => {
     }
     res.render("pages/catalog", { games: gamelist, HTML_title:"Game Catalog", id: id });
   } catch (e) {
-    res.status(500).render("pages/catalog", { error: true, errormsg: e, HTML_title:"Game Catalog", id: id });
+    // res.status(500).render("pages/catalog", { error: true, errormsg: e, HTML_title:"Game Catalog", id: id });
+    return res.status(500).render("pages/error", {
+      id :req?.session?.user?.id,
+      HTML_title: "error",
+      class: "error",
+      status: 500,
+      message: e
+  });
   }
 });
 
@@ -69,7 +83,14 @@ router.route("/gameform").get(async (req, res) => {
     res.render("pages/gameform", {HTML_title:"Game Form", id: id});
   } catch (e) {
     let id = req?.session?.user?.id;
-    res.status(500).render("pages/gameform",{HTML_title:"Game Form", id: id});
+    // res.status(500).render("pages/gameform",{HTML_title:"Game Form", id: id});
+    return res.status(500).render("pages/error", {
+      id :req?.session?.user?.id,
+      HTML_title: "error",
+      class: "error",
+      status: 500,
+      message: e
+  });
   }
 });
 
