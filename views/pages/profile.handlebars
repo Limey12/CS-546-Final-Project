@@ -36,7 +36,9 @@
     {{/if}}
   </ul>
   {{#if id}}
-    {{#unless pageOwned}}
+    {{#if pageOwned}}
+      <a href="/profile/update/bio">Click here to update your bio!</a>
+    {{else}}
       {{#if friended}}
         <p>You are friends!</p>
       {{else}}
@@ -44,6 +46,6 @@
           <button type="submit">Add Friend</button>
         </form>
       {{/if}}
-    {{/unless}}
+    {{/if}}
   {{/if}}
 </body>
