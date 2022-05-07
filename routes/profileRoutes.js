@@ -159,7 +159,7 @@ router.route("/add/:id").post(async (req, res) => {
 
 //GET http://localhost:3000/profile/update/bio
 router.route("/update/bio").get(async (req, res) => {
-    if (req.session.user) {
+    if (req?.session?.user) {
         res.render("pages/bio", {
             HTML_title: "Update Bio",
             id: req?.session?.user?.id,
@@ -168,6 +168,30 @@ router.route("/update/bio").get(async (req, res) => {
         });
     } else {
         res.redirect("/");
+    }
+});
+
+//POST http://localhost:3000/profile/update/bio
+router.route("/update/bio").post(async (req, res) => {
+    if (!req?.session?.user) {
+        res.redirect("/");
+    }
+    try {
+        let updateData = req.body;
+        let bio = updateData.newBio;
+        if (!bio) throw "Must provide bio";
+        if (typeof bio !== "string") throw "Bio must be a string";
+        bio = bio.trim();
+        if (bio.length == 0) throw "Bio must be a non empty string";
+        // Call update profile function
+        res.redirect("/profile");
+    } catch (e) {
+        return res.status(400).render("pages/bio", {
+            HTML_title: "Update Bio",
+            id: req?.session?.user?.id,
+            error: true,
+            errorMsg: e
+        });
     }
 });
 
