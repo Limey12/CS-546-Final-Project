@@ -1,9 +1,7 @@
 const express = require("express");
 const { ObjectId } = require("mongodb");
 const router = express.Router();
-const { games } = require("../data");
-const mongoCollections = require("../config/mongoCollections");
-const users = mongoCollections.users;
+const { games, users } = require("../data");
 
 router.route("/").get(async (req, res) => {
     if(req.session.user){
@@ -36,8 +34,7 @@ router.route("/:id").get(async (req, res) => {
     if(sessionUser){
         loggedIn = true;
     }
-    const userCollection = await users();
-    const user = await userCollection.findOne({ _id: ObjectId(id) });
+    let user = await users.getUser(id);
     //console.log(user);
     if(!user){
         res.status(404).json({ message: "User not found" });
@@ -64,7 +61,7 @@ router.route("/:id").get(async (req, res) => {
 
     let friendsList = [];
     for(let x = 0; x < user.friends.length; x++){
-        let friend = await userCollection.findOne({ _id: ObjectId(user.friends[x]) });
+        let friend = await users.getUser(user.friends[x]);
         friendsList.push({username: friend.username, id: friend._id});
     }
 
