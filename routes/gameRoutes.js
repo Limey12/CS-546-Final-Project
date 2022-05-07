@@ -8,7 +8,7 @@ router.route("/:id").get(async (req, res) => {
     try {
         let argId = req?.params?.id;
         if (argId == undefined || typeof argId != 'string') {
-            return res.status(400).send({ "error" : "bad request. Must include id parameter"});
+            return res.status(400).send({ "error" : "Bad request. Must include id parameter"});
         }
         let game;
         try {

@@ -8,12 +8,14 @@ Reviews
 
 <article>
     <h2>{{game_name}}</h2>
+    {{#if id}}
     <form id="fav_btn">
         <button type="submit">Favorite</button>
     </form>
     <form id="least_fav_btn">
         <button type="submit">Least Favorite</button>
     </form>
+    {{/if}}
     
     <img src="{{image}}" alt="{{alt}}" width="300" 
      height="300"></img>
@@ -28,6 +30,7 @@ Reviews
     {{!-- Todo form to add a new review --}}
 
     <h3>Reviews</h3>
+    {{#if id}}
     <form id="reviewform" action = "?" method="post">
         <label for="rating" id="rating_label">Rating:</label>
         <input type="number" name="rating" id="rating_input" min="0" max="5" step="0.1"/><br />
@@ -35,6 +38,7 @@ Reviews
         <textarea type="text" name="review" id="review_input" /></textarea>
         <button type="submit">Submit</button>
     </form>
+    {{/if}}
     <ul>
     {{#if reviews}}
         {{#each reviews}}
@@ -45,17 +49,18 @@ Reviews
             </li>
         {{/each}}
     {{else}}
-        <p>There are no reviews for this game yet! Be the first to add one.</p>
+        <p>There are no reviews for this game yet!{{#if id}} Be the first {{else}} Sign in {{/if}}to add one.</p>
     {{/if}}
     </ul>
 
     <h3>Comments</h3>
+    {{#if id}}
     <form id="commentform" action = "?" method="post">
         <label for="comment" id="comment_label">Comment:</label>
         <textarea type="text" name="comment" id="comment_input" /></textarea>
         <button type="submit">Submit</button>
     </form>
-    
+    {{/if}}
     <ul>   
     {{#if comments}}
         {{#each comments}}
@@ -65,7 +70,7 @@ Reviews
             </li>
         {{/each}}
     {{else}}
-        <p>There are no comments for this game yet! Be the first to add one.</p>
+        <p>There are no comments for this game yet!{{#if id}} Be the first {{else}} Sign in {{/if}}to add one.</p>
     {{/if}}
     
     </ul>
