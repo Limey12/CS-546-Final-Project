@@ -33,13 +33,16 @@ const addGame = async function addGame(title, description, image) {
   // if (title.length <= 0 || description.length <= 0) {
   //   throw "Cannot be an empty string";
   // }
-  await validate.checkImage(image);
-  await validate.checkTitle(title);
-  await validate.checkDescription(description);
 
   if (!image) {
     image = "/public/images/no_image.jpeg";
+  } else{
+    await validate.checkImage(image);
   }
+  await validate.checkTitle(title);
+  await validate.checkDescription(description);
+
+ 
 
   const gameCollection = await games();
   let newGame = {

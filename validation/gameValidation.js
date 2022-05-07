@@ -1,7 +1,7 @@
 const axios = require("axios");
 
-const checkImage = async function checkImage(url) {
-  try {
+const checkImage = async function checkImage(url) {  
+try {
     let req = await axios.head(url);
     if (req.status != 200 || !req.headers["content-type"].includes("image")) {
       throw "Not an image link";
