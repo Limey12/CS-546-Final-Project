@@ -29,7 +29,7 @@ router.route("/:id").get(async (req, res) => {
     if(!user){
         res.status(404).json({ message: "User not found" });
     }
-    let userdId = req?.session?.user?.id;
+    let userId = req?.session?.user?.id;
     let reviewList = [];
     if(!user.reviews){
         res.status(404).json({ message: "User has no reviews" });
@@ -47,7 +47,7 @@ router.route("/:id").get(async (req, res) => {
     }
     res.render("pages/reviews", {
         HTML_title: "Reviews",
-        id: userdId,
+        id: id,
         username: user.username,
         reviews: reviewList,
     });
