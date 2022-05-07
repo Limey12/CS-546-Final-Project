@@ -83,4 +83,17 @@ router.route("/:id").get(async (req, res) => {
     
 });
 
+router.route("/:id").post(async (req, res) => {
+    try {
+        let id = req?.params?.id;
+        let newListName = req?.body?.newListTerm;
+        console.log(newListName);
+        await lists.createList(id, newListName, true);
+        return res.redirect("/lists/" + id);
+    } catch (e) {
+        console.log(e)
+        return res.status(500).send({ InternalError : e})
+    }
+});
+
 module.exports = router;

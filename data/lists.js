@@ -36,7 +36,7 @@ let addGameToList = async function (userID, listName, gameID) {
  
   for (l of user.lists) {
     if (l.listName == listName) {
-      l.games.push(gameID);
+      if (!l.games.includes(gameID)) l.games.push(gameID);
     }
   }
   await userCollection.replaceOne(

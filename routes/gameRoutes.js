@@ -1,8 +1,8 @@
 const express = require("express");
 const constructorMethod = require(".");
 const router = express.Router();
-const { games, users, comments, reviews } = require("../data");
-
+const { games, users, comments, reviews, lists } = require("../data");
+const reviewApi = reviews;
 //GET http://localhost:3000/game/{id}
 router.route("/:id").get(async (req, res) => {
     try {
@@ -39,11 +39,12 @@ router.route("/:id").get(async (req, res) => {
             image: await games.getImage(argId),
             alt: `${game?.title}`,
             description: game?.description ?? "No description available",
-            f_rating: !isNaN(parseInt(await reviews.getAverageRatingAmongFriends(userId, argId)).toFixed(1)) || "None of your freinds have rated this game!",
+            f_rating: !isNaN(parseInt(await reviewApi.getAverageRatingAmongFriends(userId, argId)).toFixed(1)) || "None of your freinds have rated this game!",
             overall_rating: !isNaN(parseInt(game?.overallRating).toFixed(1)) || "No one has rated this game!",
             HTML_title: game?.title,
             reviews: reviews,
             comments: comments,
+            lists: await lists.gameListsByUser(userId),
         };
         res.render("pages/game", hobj);
     } catch (e) {
@@ -89,7 +90,7 @@ router.route("/:id/lfav").post(async (req, res) => {
     }
 });
 
-//POST http://localhost:3000/game/{id}/lfav
+//POST http://localhost:3000/game/{id}/
 router.route("/:id").post(async (req, res) => {
     try {
         //todo validation
@@ -107,13 +108,16 @@ router.route("/:id").post(async (req, res) => {
             let rating = req.body.rating;
             let review = req.body.review;
             await reviews.createReview(userId, argId, review, rating);
+        } else if (req.body['list-names']) {
+            let listName = req.body['list-names'];
+            await lists.addGameToList(userId, listName, argId)
         } else {
-            throw "must supply comment or rating and review"
+            res.status(400).send({ error : "must supply comment, review+rating, or list-names"});
         }
-        
+        return res.redirect("/game/" + argId);
     } catch (e) {
         console.log("post routecatch "+ e)
-        return res.status(400).send("post routecatch "+e);
+        return res.status(500).send( {'error' : e });
     }
 });
 
