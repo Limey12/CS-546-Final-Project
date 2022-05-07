@@ -33,22 +33,41 @@ router.route("/:id").get(async (req, res) => {
     }
     const userCollection = await users();
     const user = await userCollection.findOne({ _id: ObjectId(id) });
-    console.log(user);
+    //console.log(user);
     if(!user){
         res.status(404).json({ message: "User not found" });
     }
     let userdId = req?.session?.user?.id;
+    let username = user.username;
+    let bio = user.bio;
+    let comments = user.comments; // fix
+    let friends = user.friends; // fix
+    let favoriteGameId = user.favoriteGameId;
+    let favoriteGameName = null;
+    let favoriteGameImage = null;
+    if(favoriteGameId){
+        let favoriteGame = await games.getGame(favoriteGameId);
+        favoriteGameName = favoriteGame.title;
+    }
+    let leastFavoriteGameId = user.leastFavoriteGameId;
+    let leastFavoriteGameName = null;
+    let leastFavoriteGameImage = null;
+    if(leastFavoriteGameId){
+        let leastFavoriteGame = await games.getGame(leastFavoriteGameId);
+        leastFavoriteGameName = leastFavoriteGame.title;
+    }
+    let pageOwned = loggedIn && (id === userdId);
+
     res.render("pages/profile", {
         HTML_title: "Profile",
         id: userdId,
-        username: user.username,
-        bio: user.bio,
-        comments: user.comments,
-        friends: user.friends,
-        favoriteGameId: user.favoriteGameId,
-        leastFavoriteGameId: user.leastFavoriteGameId,
-        // bool for if user owns the profile page
-        pageOwned: loggedIn && id == sessionUser["id"],
+        username: username,
+        bio: bio,
+        comments: comments,
+        friends: friends,
+        favoriteGameName: favoriteGameName,
+        leastFavoriteGameName: leastFavoriteGameName,
+        pageOwned: pageOwned,
     });
 });
 
