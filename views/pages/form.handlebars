@@ -23,6 +23,14 @@
     <a href="/login/">Already have an account? Click here to log-in</a>
   {{/if}}
   {{#if error}}
-    <p>Error: {{errorMsg}}</p>
+    <p id="error">{{errorMsg}}</p>
+  {{else}}
+    <p id="error"></p>
   {{/if}}
 </article>
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"
+></script>
+<script src="/public/js/login.js"></script>
