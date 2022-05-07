@@ -12,19 +12,17 @@
             No bio available.
         {{/if}}
     </p>
-    <h2>My Reviews</h2>
-    <ul>
-        {{#if reviews}}
-            {{#each reviews}}
-                <li>
-                    <h4>Game: {{self.reviewGame}}</h4>
-                    <p>Comment: {{self.reviewText}}</p>
-                </li>
-            {{/each}}
-        {{else}}
-            <p>No reviews yet</p>
-        {{/if}}
-    </ul>
+    <h2>Preferences</h2>
+    {{#if favoriteGameId}}
+        <p>Favorite game: {{favoriteGameId}}</p>
+    {{else}}
+        <p>No favorite game</p>
+    {{/if}}
+    {{#if leastFavoriteGameId}}
+        <p>Least favorite game: {{leastFavoriteGameId}}</p>
+    {{else}}
+        <p>No least favorite game</p>
+    {{/if}}
     <h2>Friends</h2>
     <ul>
         {{#if friends}}

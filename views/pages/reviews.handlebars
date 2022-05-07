@@ -1,0 +1,15 @@
+<article>
+    {{#if reviews}}
+        <h2>{{username}}'s Reviews</h2>
+        <ul>
+            {{#each reviews}}
+                <li>
+                    <h4>Game: {{self.reviewGame}}</h4>
+                    <p>Comment: {{self.reviewText}}</p>
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p>{{username}} has no reviews</p>
+    {{/if}}
+</article>
