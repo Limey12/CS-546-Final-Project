@@ -17,7 +17,7 @@ router.route("/").get(async (req, res) => {
         //might change to "search for profile" page
         res.redirect("/login");
     }
-})
+});
 
 //GET http://localhost:3000/Profile/{id}
 router.route("/:id").get(async (req, res) => {

@@ -39,7 +39,7 @@ router.route("/:id").get(async (req, res) => {
             image: await games.getImage(argId),
             alt: `${game?.title}`,
             description: game?.description ?? "No description available",
-            f_rating: !isNaN(parseInt(await games.getAverageRatingAmongFriends(userId, argId)).toFixed(1)) || "None of your freinds have rated this game!",
+            f_rating: !isNaN(parseInt(await reviews.getAverageRatingAmongFriends(userId, argId)).toFixed(1)) || "None of your freinds have rated this game!",
             overall_rating: !isNaN(parseInt(game?.overallRating).toFixed(1)) || "No one has rated this game!",
             HTML_title: game?.title,
             reviews: reviews,
