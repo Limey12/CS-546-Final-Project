@@ -79,7 +79,12 @@ router.route("/gameform").post(async (req, res) => {
   let description = req.body.description; //need xss
   let image = req.body.image; //need xss
   try {
-    await validate.checkImage(image);
+    if(image == "/public/images/no_image.jpeg"){
+      image = null;
+    } else{
+      await validate.checkImage(image);
+    }
+    
     await validate.checkTitle(title);
     await validate.checkDescription(description);
   } catch (e) {
