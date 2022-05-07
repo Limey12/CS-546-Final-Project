@@ -89,7 +89,7 @@ router.route("/:id/lfav").post(async (req, res) => {
     }
 });
 
-//POST http://localhost:3000/game/{id}/lfav
+//POST http://localhost:3000/game/{id}
 router.route("/:id").post(async (req, res) => {
     try {
         //todo validation
