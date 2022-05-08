@@ -2,14 +2,14 @@ const express = require("express");
 const { ObjectId } = require("mongodb");
 const router = express.Router();
 const data = require("../data");
-const users = data.users;
 const lists = data.lists;
 const games = data.games;
-const mongoCollections = require("../config/mongoCollections");
 const constructorMethod = require(".");
 const { reviews, comments } = require("../data");
 const xss = require('xss');
+const validate = require("../validation/validation");
 
+//GET http://localhost:3000/lists
 router.route("/").get(async (req, res) => {
     if(xss(req.session.user)){
         //redirect user to own profile
@@ -21,37 +21,29 @@ router.route("/").get(async (req, res) => {
     }
 });
 
+//GET http://localhost:3000/lists/{id}
 router.route("/:id").get(async (req, res) => {
+    let id;
+    var userLists;
     try {
-        console.log("route")
-        let id = xss(req?.params?.id);
-
-        if(!ObjectId.isValid(id)){
-            return res.status(404).render("pages/error", {
-                id :xss(req?.session?.user?.id),
-                HTML_title: "user not found",
-                class: "error",
-                status: 404,
-                message: "user not found"
-            });
-        }
-        //todo more error checking
-        var userLists = await lists.gameListsByUser(id);
+        id = xss(req?.params?.id);
+        id = await validate.checkId(id, "Id");
+        userLists = await lists.gameListsByUser(id);
+        userLists = await validate.checkArray(userLists, "User Lists");
+    } catch (e) {
+        return res.status(404).render("pages/error", {
+            id :xss(req?.session?.user?.id),
+            HTML_title: "user not found",
+            class: "error",
+            status: 404,
+            message: "user not found"
+        });
+    }
+    try {
         //now we replace each game id with the real game data.
-        if (!userLists) {
-            return res.status(404).render("pages/error", {
-                id :xss(req?.session?.user?.id),
-                HTML_title: "user not found",
-                class: "error",
-                status: 404,
-                message: "user not found"
-            });
-        }
         for (l of userLists) {
             //l is a "list"
             //meaning l.games is an array of games in the list
-            console.log("hi")
-            console.log( l)
             for (gi in l.games) {
                 let newg = await games.getGame(l.games[gi]);
                 let revs = await reviews.getReviewFromUserAndGame(l.games[gi], id);
@@ -61,8 +53,6 @@ router.route("/:id").get(async (req, res) => {
                 l.games[gi] = newg;
             }
         }
-        console.log(userLists)
-        console.log(userLists[0].games)
         res.render("pages/lists", {
             id :xss(req?.session?.user?.id),
             HTML_title: "Lists",
@@ -82,11 +72,18 @@ router.route("/:id").get(async (req, res) => {
     
 });
 
+//POST http://localhost:3000/lists/{id}
 router.route("/:id").post(async (req, res) => {
+    let id, newListName;
+    try { 
+
+    } catch (e) {
+        id = xss(req?.params?.id);
+        id = await validate.checkId(id, "Id");
+        newListName = xss(req?.body?.newListTerm);
+        newListName = await validate.checkString(newListName, "List Name");
+    }
     try {
-        let id = xss(req?.params?.id);
-        let newListName = xss(req?.body?.newListTerm);
-        console.log(newListName);
         await lists.createList(id, newListName, true);
         return res.redirect("/lists/" + id);
     } catch (e) {
