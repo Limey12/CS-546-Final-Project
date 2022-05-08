@@ -48,6 +48,8 @@ Reviews
         <textarea type="text" name="review" id="review_input" /></textarea>
         <button type="submit">Submit</button>
     </form>
+    <p id="reviewerror">
+    </p>
     {{/if}}
     <ul>
     {{#if reviews}}
@@ -65,8 +67,7 @@ Reviews
     </ul>
     <ul id="addedreviews" hidden>
     </ul>
-    <p id="reviewerror">
-    </p>
+    
     </details>
 
     <details>
@@ -77,6 +78,7 @@ Reviews
         <textarea type="text" name="comment" id="comment_input" /></textarea>
         <button type="submit">Submit</button>
     </form>
+    <p id="commenterror"></p>
     {{/if}}
     <ul>   
     {{#if comments}}
@@ -94,8 +96,7 @@ Reviews
     </ul>
     <ul id="addedcomments" hidden>
     </ul>
-    <p id="commenterror">
-    </p>
+    
     </details>
     
 </article>
