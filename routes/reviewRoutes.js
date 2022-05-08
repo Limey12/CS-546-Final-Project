@@ -2,13 +2,14 @@ const express = require("express");
 const { ObjectId } = require("mongodb");
 const router = express.Router();
 const { games, reviews, users } = require("../data");
+const xss = require('xss');
 
 router.route("/").get(async (req, res) => {
-    if(req.session.user){
+    if(xss(req.session.user)){
         console.log("Logged in\n");
-        console.log(req.session.user);
+        console.log(xss(req.session.user));
         //redirect user to own profile
-        res.redirect("/Reviews/" + req.session.user.id);
+        res.redirect("/Reviews/" + xss(req.session.user.id));
     }
     else{
         //redirect to login page if user is not logged in
@@ -19,7 +20,7 @@ router.route("/").get(async (req, res) => {
 
 //GET http://localhost:3000/Reviews/{id}
 router.route("/:id").get(async (req, res) => {
-    let id = req.params.id;
+    let id = xss(req.params.id);
     if(!ObjectId.isValid(id)){
         res.status(400).send("Invalid ID");
         return;
@@ -29,7 +30,7 @@ router.route("/:id").get(async (req, res) => {
     if(!user){
         res.status(404).json({ message: "User not found" });
     }
-    let userId = req?.session?.user?.id;
+    let userId = xss(req?.session?.user?.id);
     let reviewList = [];
     if(!user.reviews){
         res.status(404).json({ message: "User has no reviews" });

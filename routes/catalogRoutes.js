@@ -2,12 +2,13 @@ const express = require("express");
 const { ReturnDocument } = require("mongodb");
 const router = express.Router();
 const { games } = require("../data");
-const validate = require("../validation/gameValidation")
+const validate = require("../validation/gameValidation");
+const xss = require('xss');
 
 //GET http://localhost:3000/gamecatalog
 router.route("/").get(async (req, res) => {
   try {
-    let id = req.session.user?.id;
+    let id = xss(req.session.user?.id);
     let allGames = await games.getAllGames();
     if (!allGames) {
         throw "games not found"
@@ -18,10 +19,10 @@ router.route("/").get(async (req, res) => {
     }
     res.render("pages/catalog", { games: allGames, HTML_title:"Game Catalog", id: id });
   } catch (e) {
-    let id = req?.session?.user?.id;
+    let id = xss(req?.session?.user?.id);
     // res.status(500).render("pages/catalog", { error: true, errormsg: e, HTML_title:"Game Catalog", id: id });
     return res.status(500).render("pages/error", {
-      id :req?.session?.user?.id,
+      id :xss(req?.session?.user?.id),
       HTML_title: "error",
       class: "error",
       status: 500,
@@ -32,9 +33,9 @@ router.route("/").get(async (req, res) => {
 
 //POST
 router.post("/", async (req, res) => {
-  let search = req.body.gameSearchTerm;
+  let search = xss(req.body.gameSearchTerm);
   search = search.trim();
-  let id = req.session.user?.id;
+  let id = xss(req.session.user?.id);
   if (!search) {
     res
       .status(400)
@@ -49,7 +50,7 @@ router.post("/", async (req, res) => {
   }
   try {
     gamelist = await games.getGameSearchTerm(search);
-    let id = req.session.user?.id;
+    let id = xss(req.session.user?.id);
     if (gamelist.length == 0) {
       res
       //Technically not an error since that just means there are no users with that name
@@ -66,7 +67,7 @@ router.post("/", async (req, res) => {
   } catch (e) {
     // res.status(500).render("pages/catalog", { error: true, errormsg: e, HTML_title:"Game Catalog", id: id });
     return res.status(500).render("pages/error", {
-      id :req?.session?.user?.id,
+      id :xss(req?.session?.user?.id),
       HTML_title: "error",
       class: "error",
       status: 500,
@@ -78,16 +79,16 @@ router.post("/", async (req, res) => {
 //GET http://localhost:3000/GameCatalog/gameform'
 router.route("/gameform").get(async (req, res) => {
   try {
-    let id = req.session.user?.id;
+    let id = xss(req.session.user?.id);
     if(!id){
       res.redirect("/gamecatalog");
     }
     res.render("pages/gameform", {HTML_title:"Game Form", id: id});
   } catch (e) {
-    let id = req?.session?.user?.id;
+    let id = xss(req?.session?.user?.id);
     // res.status(500).render("pages/gameform",{HTML_title:"Game Form", id: id});
     return res.status(500).render("pages/error", {
-      id :req?.session?.user?.id,
+      id :xss(req?.session?.user?.id),
       HTML_title: "error",
       class: "error",
       status: 500,
@@ -98,9 +99,9 @@ router.route("/gameform").get(async (req, res) => {
 
 //POST called by AJAX request
 router.route("/gameform").post(async (req, res) => {
-  let title = req.body.title; //need xss
-  let description = req.body.description; //need xss
-  let image = req.body.image; //need xss
+  let title = xss(req.body.title); 
+  let description = xss(req.body.description);
+  let image = xss(req.body.image);
   try {
     if(image == "/public/images/no_image.jpeg"){
       image = null;

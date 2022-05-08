@@ -1,14 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const { games, users } = require("../data");
+const xss = require('xss');
 
 //GET http://localhost:3000/
 router.route("/").get(async (req, res) => {
   try{
-    let id = req.session.user?.id;
+    let id = xss(req.session.user?.id);
     let recs = [];
-    if(req.session.user) {
-      recs = await users.getRecommendations(req.session.user.username);
+    if(xss(req.session.user)) {
+      recs = await users.getRecommendations(xss(req.session.user.username));
     }
     res.render("pages/home", {
       HTML_title: "Game Ranker",
@@ -17,7 +18,7 @@ router.route("/").get(async (req, res) => {
     });
   } catch(e){
     return res.status(500).render("pages/error", {
-      id :req?.session?.user?.id,
+      id : xss(req?.session?.user?.id),
       HTML_title: "Error",
       class: "error",
       status: 500,

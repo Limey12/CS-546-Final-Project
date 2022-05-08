@@ -2,12 +2,13 @@ const express = require("express");
 const { ObjectId } = require("mongodb");
 const router = express.Router();
 const { games, users } = require("../data");
+const xss = require('xss');
 
 router.route("/").get(async (req, res) => {
     try {
-        if(req.session.user){
+        if(xss(req.session.user)){
             //redirect user to own profile
-            res.redirect("/profile/" + req.session.user.id);
+            res.redirect("/profile/" + xss(req.session.user.id));
         }
         else{
             //redirect to login page if user is not logged in
@@ -16,7 +17,7 @@ router.route("/").get(async (req, res) => {
         }
     } catch (e) {
         return res.status(500).render("pages/error", {
-            id: req?.session?.user?.id,
+            id: xss(req?.session?.user?.id),
             HTML_title: "error",
             class: "error",
             status: 500,
@@ -29,7 +30,7 @@ router.route("/").get(async (req, res) => {
 router.route("/:id").get(async (req, res) => {
     let id, user;
     try {
-        id = req.params.id;
+        id = xss(req.params.id);
         if(!ObjectId.isValid(id)){
             throw "User not found";
         }
@@ -39,7 +40,7 @@ router.route("/:id").get(async (req, res) => {
         }
     } catch (e) {
         return res.status(404).render("pages/error", {
-            id: req?.session?.user?.id,
+            id: xss(req?.session?.user?.id),
             HTML_title: "error",
             class: "error",
             status: 404,
@@ -48,7 +49,7 @@ router.route("/:id").get(async (req, res) => {
     }
     try {
         let loggedIn = false;
-        let userId = req?.session?.user?.id; 
+        let userId = xss(req?.session?.user?.id); 
         if(userId){
             loggedIn = true;
         }
@@ -94,7 +95,7 @@ router.route("/:id").get(async (req, res) => {
         });
     } catch (e) {
         return res.status(500).render("pages/error", {
-            id :req?.session?.user?.id,
+            id :xss(req?.session?.user?.id),
             HTML_title: "error",
             class: "error",
             status: 500,
@@ -107,7 +108,7 @@ router.route("/:id").get(async (req, res) => {
 router.route("/add/:id").post(async (req, res) => {
     let id, user, loggedIn, userId;
     try {
-        id = req.params.id;
+        id = xss(req.params.id);
         if(!ObjectId.isValid(id)){
             throw "User not found";
         }
@@ -117,7 +118,7 @@ router.route("/add/:id").post(async (req, res) => {
         }
     } catch (e) {
         return res.status(404).render("pages/error", {
-            id :req?.session?.user?.id,
+            id : xss(req?.session?.user?.id),
             HTML_title: "error",
             class: "error",
             status: 404,
@@ -126,7 +127,7 @@ router.route("/add/:id").post(async (req, res) => {
     }
     try {
         loggedIn = false;
-        userId = req?.session?.user?.id; 
+        userId = xss(req?.session?.user?.id); 
         if(userId){
             loggedIn = true;
         }
@@ -135,7 +136,7 @@ router.route("/add/:id").post(async (req, res) => {
         }
     } catch (e) {
         return res.status(400).render("pages/error", {
-            id :req?.session?.user?.id,
+            id :xss(req?.session?.user?.id),
             HTML_title: "error",
             class: "error",
             status: 400,
@@ -148,7 +149,7 @@ router.route("/add/:id").post(async (req, res) => {
     }
     catch (e) {
         return res.status(500).render("pages/error", {
-            id :req?.session?.user?.id,
+            id :xss(req?.session?.user?.id),
             HTML_title: "error",
             class: "error",
             status: 500,
@@ -159,10 +160,10 @@ router.route("/add/:id").post(async (req, res) => {
 
 //GET http://localhost:3000/profile/update/bio
 router.route("/update/bio").get(async (req, res) => {
-    if (req?.session?.user) {
+    if (xss(req?.session?.user)) {
         res.render("pages/bio", {
             HTML_title: "Update Bio",
-            id: req?.session?.user?.id,
+            id: xss(req?.session?.user?.id),
             error: false,
             errorMsg: ""
         });
@@ -173,22 +174,22 @@ router.route("/update/bio").get(async (req, res) => {
 
 //POST http://localhost:3000/profile/update/bio
 router.route("/update/bio").post(async (req, res) => {
-    if (!req?.session?.user) {
+    if (!xss(req?.session?.user)) {
         res.redirect("/");
     }
     try {
-        let updateData = req.body;
+        let updateData = xss(req.body);
         let bio = updateData.newBio;
         if (!bio) throw "Must provide bio";
         if (typeof bio !== "string") throw "Bio must be a string";
         bio = bio.trim();
         if (bio.length == 0) throw "Bio must be a non empty string";
-        users.updateBio(req?.session?.user?.id, bio)
+        users.updateBio(xss(req?.session?.user?.id), bio)
         res.redirect("/profile");
     } catch (e) {
         return res.status(400).render("pages/bio", {
             HTML_title: "Update Bio",
-            id: req?.session?.user?.id,
+            id: xss(req?.session?.user?.id),
             error: true,
             errorMsg: e
         });

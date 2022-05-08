@@ -2,12 +2,13 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const userData = data.users;
+const xss = require('xss');
 
 router.get("/", async (req, res) => {
   if (req.session.user) {
     res.redirect("/");
   } else {
-    let id = req?.session?.user?.id;
+    let id = xss(req?.session?.user?.id);
     res.render("pages/form", {
       HTML_title: "Login",
       id: id,
@@ -22,32 +23,34 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   let signupData = req.body;
+  let signupUserName= xss(signupData.username);
+  let signupPassword= xss(signupData.password);
   try {
-    if (!signupData.username || !signupData.password)
+    if (!signupUserName || !signupPassword)
       throw "Must provide username and password.";
-    if (typeof signupData.username !== "string")
+    if (typeof signupUserName !== "string")
       throw "Username must be a string.";
-    signupData.username = signupData.username.toLowerCase();
-    if (!/^[a-z0-9]+$/i.test(signupData.username))
+      signupUserName = signupUserName.toLowerCase();
+    if (!/^[a-z0-9]+$/i.test(signupUserName))
       throw "Username must be alphanumeric.";
-    if (signupData.username.length < 4)
+    if (signupUserName.length < 4)
       throw "Username must be at least 4 characters long.";
-    if (typeof signupData.password !== "string")
+    if (typeof signupPassword !== "string")
       throw "Password must be a string.";
-    if (/\s/.test(signupData.password))
+    if (/\s/.test(signupPassword))
       throw "Password must not contain any spaces.";
-    if (signupData.password.length < 6)
+    if (signupPassword.length < 6)
       throw "Password must be at least 6 characters long.";
     let result = await userData.checkUser(
-      signupData.username,
-      signupData.password
+      signupUserName,
+      signupPassword
     );
     //checkUser throws if user is not logging in correctly
     //if we are here, the user input the correct credentials
-    req.session.user = { username: signupData.username, id: await userData.usernameToID(signupData.username)};
+    req.session.user = { username: signupUserName, id: await userData.usernameToID(signupUserName)};
     res.redirect("/");
   } catch (e) {
-    let id = req?.session?.user?.id;
+    let id = xss(req?.session?.user?.id);
     return res.status(400).render("pages/form", {
       HTML_title: "Login",
       id: id,

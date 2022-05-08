@@ -3,10 +3,12 @@ const constructorMethod = require(".");
 const router = express.Router();
 const { games, users, comments, reviews, lists } = require("../data");
 const reviewApi = reviews;
+const xss = require('xss');
+
 //GET http://localhost:3000/game/{id}
 router.route("/:id").get(async (req, res) => {
     try {
-        let argId = req?.params?.id;
+        let argId = xss(req?.params?.id);
         if (argId == undefined || typeof argId != 'string') {
             return res.status(400).send({ "error" : "Bad request. Must include id parameter"});
         }
@@ -15,14 +17,14 @@ router.route("/:id").get(async (req, res) => {
             game = await games.getGame(argId);
         } catch {
             return res.status(404).render("pages/error", {
-                id :req?.session?.user?.id,
+                id :xss(req?.session?.user?.id),
                 HTML_title: "game not found",
                 class: "error",
                 status: 404,
                 message: "game not found"
             });
         }
-        let userId = req?.session?.user?.id;
+        let userId = xss(req?.session?.user?.id);
         let gameLists;
         if (userId) {
             gameLists = await lists.gameListsByUser(userId);
@@ -67,7 +69,7 @@ router.route("/:id").get(async (req, res) => {
         res.render("pages/game", hobj);
     } catch (e) {
         return res.status(500).render("pages/error", {
-            id :req?.session?.user?.id,
+            id : xss(req?.session?.user?.id),
             HTML_title: "error",
             class: "error",
             status: 500,
@@ -80,11 +82,11 @@ router.route("/:id").get(async (req, res) => {
 router.route("/:id/fav").post(async (req, res) => {
     try {
         //todo validation
-        let argId = req?.params?.id;
+        let argId = xss(req?.params?.id);
         if (argId == undefined || typeof argId != 'string') {
             //todo error page
         }
-        let userId = req?.session?.user?.id;
+        let userId = xss(req?.session?.user?.id);
         await users.favorite(userId, argId);
     } catch (e) {
         console.log("post routecatch "+ e)
@@ -96,11 +98,11 @@ router.route("/:id/fav").post(async (req, res) => {
 router.route("/:id/lfav").post(async (req, res) => {
     try {
         //todo validation
-        let argId = req?.params?.id;
+        let argId = xss(req?.params?.id);
         if (argId == undefined || typeof argId != 'string') {
             //todo error page
         }
-        let userId = req?.session?.user?.id;
+        let userId = xss(req?.session?.user?.id);
         await users.leastfavorite(userId, argId);
     } catch (e) {
         console.log("post routecatch "+ e)
@@ -113,24 +115,24 @@ router.route("/:id/lfav").post(async (req, res) => {
 router.route("/:id").post(async (req, res) => {
     try {
         //todo validation
-        let argId = req?.params?.id;
+        let argId = xss(req?.params?.id);
         if (argId == undefined || typeof argId != 'string') {
             //todo error page
         }
-        let userId = req?.session?.user?.id;
+        let userId = xss(req?.session?.user?.id);
 
         let user = await users.getUser(userId);
-        if (req.body.comment) {
-            let comment = req.body.comment;
+        if (xss(req.body.comment)) {
+            let comment = xss(req.body.comment);
             let addedcomment = await comments.createComment(userId, argId, comment);
             res.json({ success: true, addedcomment: addedcomment, user:user.username }); //need xss
-        } else if (req.body.rating && req.body.review) {
-            let rating = req.body.rating;
-            let review = req.body.review;
+        } else if (xss(req.body.rating) && xss(req.body.review)) {
+            let rating = xss(req.body.rating);
+            let review = xss(req.body.review);
             let addedreview = await reviews.createReview(userId, argId, review, rating);
             res.json({ success: true, addedreview: addedreview, user:user.username }); //need xss
-        } else if (req.body['list-names']) {
-            let listName = req.body['list-names'];
+        } else if (xss(req.body['list-names'])) {
+            let listName = xss(req.body['list-names']);
             await lists.addGameToList(userId, listName, argId)
             res.status(204).json({ success: true});
         } else {

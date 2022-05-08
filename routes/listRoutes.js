@@ -8,11 +8,12 @@ const games = data.games;
 const mongoCollections = require("../config/mongoCollections");
 const constructorMethod = require(".");
 const { reviews, comments } = require("../data");
+const xss = require('xss');
 
 router.route("/").get(async (req, res) => {
-    if(req.session.user){
+    if(xss(req.session.user)){
         //redirect user to own profile
-        res.redirect("/lists/" + req.session.user.id);
+        res.redirect("/lists/" + xss(req.session.user.id));
     }
     else{
         //redirect to login page if user is not logged in
@@ -23,11 +24,11 @@ router.route("/").get(async (req, res) => {
 router.route("/:id").get(async (req, res) => {
     try {
         console.log("route")
-        let id = req?.params?.id;
+        let id = xss(req?.params?.id);
 
         if(!ObjectId.isValid(id)){
             return res.status(404).render("pages/error", {
-                id :req?.session?.user?.id,
+                id :xss(req?.session?.user?.id),
                 HTML_title: "user not found",
                 class: "error",
                 status: 404,
@@ -39,7 +40,7 @@ router.route("/:id").get(async (req, res) => {
         //now we replace each game id with the real game data.
         if (!userLists) {
             return res.status(404).render("pages/error", {
-                id :req?.session?.user?.id,
+                id :xss(req?.session?.user?.id),
                 HTML_title: "user not found",
                 class: "error",
                 status: 404,
@@ -65,7 +66,7 @@ router.route("/:id").get(async (req, res) => {
         console.log(userLists)
         console.log(userLists[0].games)
         res.render("pages/lists", {
-            id :req?.session?.user?.id,
+            id :xss(req?.session?.user?.id),
             HTML_title: "Lists",
             lists: userLists
         })
@@ -73,7 +74,7 @@ router.route("/:id").get(async (req, res) => {
     } catch (e) {
         console.log(e)
         return res.status(500).render("pages/error", {
-            id :req?.session?.user?.id,
+            id :xss(req?.session?.user?.id),
             HTML_title: "Internal Server Error",
             class: "error",
             status: 500,
@@ -85,8 +86,8 @@ router.route("/:id").get(async (req, res) => {
 
 router.route("/:id").post(async (req, res) => {
     try {
-        let id = req?.params?.id;
-        let newListName = req?.body?.newListTerm;
+        let id = xss(req?.params?.id);
+        let newListName = xss(req?.body?.newListTerm);
         console.log(newListName);
         await lists.createList(id, newListName, true);
         return res.redirect("/lists/" + id);
