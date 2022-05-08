@@ -190,7 +190,7 @@ a{
   width: 50%;
   text-align: center;
 }
-#gamelist, #gameelement, #userlist, #userelement {
+#gamelist, .gameelement, #userlist, .userelement {
   display:inline;
   margin-inline: 10px;
 }
