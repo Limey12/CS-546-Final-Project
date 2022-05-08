@@ -1,0 +1,33 @@
+<form method="POST" action="?" id="gamesearch">
+  <label for="newListTerm" id="newList"><h4>Create new list:</h4> </label>
+  <input type="text" name="newListTerm" id="newListTerm" />
+  <button type="submit">Submit</button>
+</form>
+
+<ul>
+{{#each lists}}
+    <li>
+        <h4>{{this.listName}}</h4>
+        <ul>
+        {{#each this.games}}
+        <li>
+            {{this.title}}
+            <ul>
+            {{#each this.urevs}}
+            <li>
+            <p>Rating: {{this.rating}}</p>
+            <p>{{this.reviewText}}</p>
+            </li>
+            {{/each}}
+            {{#each this.ucoms}}
+            <li>
+            <p>{{this.commentText}}</p>
+            </li>
+            {{/each}}
+            </ul>
+        </li>
+        {{/each}}
+        </ul>
+    </li>
+{{/each}}
+</ul>
