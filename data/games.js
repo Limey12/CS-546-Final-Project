@@ -62,7 +62,7 @@ const getAllGames = async function getAll() {
 //Get a game based on the id
 const getGame = async function getGame(id) {
   if (arguments.length !== 1) {
-    throw "Error: 1 arguments expected";
+    throw "Error: 1 argument expected";
   }
   id = await validate.checkId(id, "Id");
   const gameCollection = await games();
@@ -77,7 +77,7 @@ const getGame = async function getGame(id) {
 //removes a game from the database based on the id
 const removeGame = async function removeGame(id) {
   if (arguments.length !== 1) {
-    throw "Error: 1 arguments expected";
+    throw "Error: 1 argument expected";
   }
   id = await validate.checkId(id, "Id");
   const gameCollection = await games();
@@ -95,7 +95,7 @@ const removeGame = async function removeGame(id) {
 
 let getGameSearchTerm = async function getGameSearchTerm(term) {
   if (arguments.length !== 1) {
-    throw "Error: 1 arguments expected";
+    throw "Error: 1 argument expected";
   }
   term = await validate.checkString(term, "Title");
   const gameCollection = await games();
@@ -113,7 +113,7 @@ let getGameSearchTerm = async function getGameSearchTerm(term) {
 
 let getImage = async function (id) {
   if (arguments.length !== 1) {
-    throw "Error: 1 arguments expected";
+    throw "Error: 1 argument expected";
   }
   id = await validate.checkId(id, "Id");
   const gameCollection = await games();
@@ -129,7 +129,7 @@ let getImage = async function (id) {
 
 const getRecommendations = async function getRecommendations(id) {
   if (arguments.length !== 1) {
-    throw "Error: 1 arguments expected";
+    throw "Error: 1 argument expected";
   }
   id = await validate.checkId(id, "Id");
   const gameCollection = await games();

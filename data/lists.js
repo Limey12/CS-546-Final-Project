@@ -2,12 +2,15 @@ const mongoCollections = require("../config/mongoCollections");
 const games = mongoCollections.games;
 const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
+const validate = require("../validation/validation");
 
-let createList = async function (userID, listName, public) {
-  if (arguments.length != 3) {
-    throw "expects 3 args";
+let createList = async function (userId, listName, public) {
+  if (arguments.length !== 3) {
+    throw "Error: 3 arguments expected";
   }
-  //todo more input validation
+  userId = await validate.checkId(userId, "UserId");
+  listName = await validate.checkString(listName, "List Name");
+  public = await validate.checkBool(public, "Public");
   //make sure user AND game exist
   //along with normal stuff
   const userCollection = await users();
@@ -15,71 +18,84 @@ let createList = async function (userID, listName, public) {
     _id: new ObjectId(),
     public: public,
     listName: listName,
-    games: []
+    games: [],
   };
-  
-  await userCollection.updateOne(
-    { _id: ObjectId(userID) },
+
+  const updateInfo = await userCollection.updateOne(
+    { _id: ObjectId(userId) },
     { $push: { lists: newList } }
   );
+  if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+    throw "Error: Update failed";
   return newList;
 };
 
-let addGameToList = async function (userID, listName, gameID) {
-  if (arguments.length != 3) {
-      throw "expects 3 args";
+let addGameToList = async function (userId, listName, gameId) {
+  if (arguments.length !== 3) {
+    throw "Error: 3 arguments expected";
   }
+  userId = await validate.checkId(userId, "UserId");
+  listName = await validate.checkString(listName, "List Name");
+  gameId = await validate.checkId(gameId, "GameId");
   const userCollection = await users();
-  const user = await userCollection.findOne(
-     { _id : ObjectId(userID) }
-  );
- 
-  for (l of user.lists) {
-    if (l.listName == listName) {
-      if (!l.games.includes(gameID)) l.games.push(gameID);
-    }
+  const user = await userCollection.findOne({ _id: ObjectId(userId) });
+  if (user === null) {
+    throw "Error: User not found";
   }
-  await userCollection.replaceOne(
-    { _id: ObjectId(userID) }, user
-  );
-}
-
-let removeGameFromList = async function (userID, listName, gameID) {
-  if (arguments.length != 3) {
-    throw "expects 3 args";
-  }
-  const userCollection = await users();
-  const user = await userCollection.findOne(
-    {"lists.listName": listName} ,
-    {"lists.$": 1, _id : ObjectId(userID) }
-  );
 
   for (l of user.lists) {
     if (l.listName == listName) {
-      // l.games.splice(l.games.indexOf(gameID), 1);
+      if (!l.games.includes(gameId)) l.games.push(gameId);
     }
   }
-  await userCollection.replaceOne(
-    { _id: ObjectId(userID) }, user
-  );
-}
+  await userCollection.replaceOne({ _id: ObjectId(userId) }, user);
+};
 
-let gameListsByUser = async function (userID) {
-  if (arguments.length != 1) {
-    throw "expects 1 args";
+let removeGameFromList = async function (userId, listName, gameId) {
+  if (arguments.length !== 3) {
+    throw "Error: 3 arguments expected";
   }
-  if(!ObjectId.isValid(userID)){
-    throw "userID must be valid ID";
-  }
+  userId = await validate.checkId(userId, "UserId");
+  listName = await validate.checkString(listName, "List Name");
+  gameId = await validate.checkId(gameId, "GameId");
   const userCollection = await users();
-  const user = await userCollection.findOne({ _id: ObjectId(userID)});
-  console.log(user)
+  const user = await userCollection.findOne(
+    { "lists.listName": listName },
+    { "lists.$": 1, _id: ObjectId(userId) }
+  );
+  if (user === null) {
+    throw "Error: User not found";
+  }
+
+  for (l of user.lists) {
+    if (l.listName == listName) {
+      // l.games.splice(l.games.indexOf(gameId), 1);
+    }
+  }
+  const removeInfo = await userCollection.replaceOne(
+    { _id: ObjectId(userId) },
+    user
+  );
+  if (!removeInfo.matchedCount && !removeInfo.modifiedCount)
+    throw "Error: Remove failed";
+};
+
+let gameListsByUser = async function (userId) {
+  if (arguments.length !== 1) {
+    throw "Error: 1 argument expected";
+  }
+  userId = await validate.checkId(userId, "UserId");
+  const userCollection = await users();
+  const user = await userCollection.findOne({ _id: ObjectId(userId) });
+  if (user === null) {
+    throw "Error: User not found";
+  }
   return user?.lists;
-}
+};
 
 module.exports = {
-    createList,
-    addGameToList,
-    removeGameFromList,
-    gameListsByUser,
-}
+  createList,
+  addGameToList,
+  removeGameFromList,
+  gameListsByUser,
+};
