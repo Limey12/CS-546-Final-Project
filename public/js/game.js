@@ -30,7 +30,7 @@
     let addedReviewElem = $("#addedreviews");
     let noreviews = $("#noreviews");
     let reviewerror = $("#reviewerror");
-  reviewbut.submit(async function (event) {
+    reviewbut.submit(async function (event) {
     event.preventDefault();
     rating = ratinginput.val();
     rating = rating.trim();
