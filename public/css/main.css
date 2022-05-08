@@ -211,7 +211,7 @@ a{
 
 /* details (expandable elements) */
 
-details h4,h3 {
+details h4,h3,h2 {
 	display: inline;
 }
 
