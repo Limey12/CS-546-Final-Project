@@ -50,7 +50,7 @@
       reviewerror.html("Review should be a non empty string");
       reviewerror.show();
       return;
-    } else if( Number(rating) !== "number") {
+    } else if(typeof Number(rating) !== "number") {
       reviewerror.html("Rating should be a number");
       reviewerror.show();
       return;

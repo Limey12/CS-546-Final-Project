@@ -17,34 +17,34 @@ async function main() {
     console.log("creating games")
     const Minecraft = await games.addGame(
       "Minecraft",
-      "Block Game Big Man Steve",
+      "Minecraft is a 3-D computer game where players can build anything. The game which has been described as like an 'online Lego' involves building blocks and creating structures across different environments and terrains. Set in a virtual world the game involves resource gathering, crafting items, building, and combat.",
       "https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png"
     );
     const Pokemon = await games.addGame(
       "Pokemon",
-      "Catch them All",
-      "https://m.media-amazon.com/images/M/MV5BNDcwZDc2NTEtMzU0Ni00YTQyLWIyYTQtNTI3YjM0MzhmMmI4XkEyXkFqcGdeQXVyNTgyNTA4MjM@._V1_.jpg"
+      "Pokémon Red and Blue Versions, commonly shortened as Pokémon Red and Blue, are the first two international Pokémon releases. In Japan, the original pair were Pocket Monsters Red and Green, which were then followed by the enhanced version, Pocket Monsters Blue. Pokémon Yellow, which was based upon the anime series, would later be released internationally.",
+      "https://static.wikia.nocookie.net/pokemon/images/e/e2/Pokemon_Red.jpg"
     );
     const RiskofRain2 = await games.addGame(
       "Risk of Rain 2",
       "Rougelike 3d shooter",
-      null
+      "https://assets.nintendo.com/image/upload/c_fill,f_auto,q_auto,w_1200/v1/ncom/en_US/games/switch/r/risk-of-rain-2-switch/hero"
       
     );
     const Persona5 = await games.addGame(
       "Persona 5",
-      "Joker RPG",
+      "Persona 5 is a game about the internal and external conflicts of a group of troubled high school students – the protagonist and a collection of compatriots he meets in the game's story – who live dual lives as Phantom Thieves.",
       "https://image.api.playstation.com/vulcan/img/cfn/11307XlqDFlHmHWGjBPndSappCDTnE9OmnP2P-dSzcvLX9i0pvH_okJOl6dP1AnZefxthD-2k3RrsdzYU_BqUy9K5_sv-Tnx.png"
     );
     const LeagueofLegends = await games.addGame(
       "League of Legends",
-      "Cringe",
-      null
+      "League of Legends is a team-based strategy game where two teams of five powerful champions face off to destroy the other's base. Choose from over 140 champions to make epic plays, secure kills, and take down towers as you battle your way to victory.",
+      "https://www.gamingscan.com/wp-content/uploads/2020/10/League-Of-Legends-System-Requirements.jpg"
     );
     const Persona4 = await games.addGame(
       "Persona 4",
-      "aaaaaa2",
-      null
+      "Persona 4 follows a group of high school students dealing with a mysterious TV channel dedicated to distorting and exaggerating the truth of who they are and their identities. A string of bizarre murders related to the TV channel begins shaking their once peaceful town.",
+      "https://upload.wikimedia.org/wikipedia/en/1/10/Shin_Megami_Tensei_Persona_4.jpg"
     );
     //Update Game
     // const Minecraft2 = await games.updateGame(
