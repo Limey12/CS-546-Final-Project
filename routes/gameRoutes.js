@@ -37,14 +37,22 @@ router.route("/:id").get(async (req, res) => {
         for (c of comments) {
             c.commentUsername = await users.IDtoUsername(c.userId);
         }
+        let f_rating = parseInt(await reviewApi.getAverageRatingAmongFriends(userId, argId)).toFixed(1);
+        if (isNaN(f_rating)) {
+            f_rating = "None of your freinds have rated this game!";
+        }
+        let overall_rating = parseInt(game?.overallRating).toFixed(1);
+        if (isNaN(overall_rating)) {
+            overall_rating = "No one has rated this game!";
+        }
         let hobj = {
             id: userId,
             game_name: game?.title,
             image: await games.getImage(argId),
             alt: `${game?.title}`,
             description: game?.description ?? "No description available",
-            f_rating: !isNaN(parseInt(await reviewApi.getAverageRatingAmongFriends(userId, argId)).toFixed(1)) || "None of your freinds have rated this game!",
-            overall_rating: !isNaN(parseInt(game?.overallRating).toFixed(1)) || "No one has rated this game!",
+            f_rating: f_rating,
+            overall_rating: overall_rating,
             HTML_title: game?.title,
             reviews: reviews,
             comments: comments,

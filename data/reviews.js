@@ -9,6 +9,7 @@ let createReview = async function (userID, gameID, reviewText, rating) {
   if (arguments.length != 4) {
     throw "expects 4 args";
   }
+  rating = Number(rating);
   //todo more input validation
   //make sure user AND game exist
   //along with normal stuff
