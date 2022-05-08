@@ -4,14 +4,20 @@
   <button type="submit">Submit</button>
 </form>
 
+
+<h3>Current Lists: </h3>
 <ul>
 {{#each lists}}
+    
     <li>
-        <h4>{{this.listName}}</h4>
+        <details>
+        <summary><h4>{{this.listName}}</h4></summary>
         <ul>
         {{#each this.games}}
         <li>
-            <a href = "/game/{{this._id}}">{{this.title}}</a>
+            <details>
+            <summary><a href = "/game/{{this._id}}">{{this.title}}</a></summary>
+            
             <ul>
             {{#each this.urevs}}
             <li>
@@ -25,9 +31,12 @@
             </li>
             {{/each}}
             </ul>
+            </details>
         </li>
         {{/each}}
         </ul>
+        </details>
     </li>
+    
 {{/each}}
 </ul>

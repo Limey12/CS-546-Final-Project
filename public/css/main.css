@@ -198,3 +198,9 @@ a{
 #gamesearch{
   padding-top: 10px;
 }
+
+/* details (expandable elements) */
+
+details h4 {
+	display: inline;
+}
