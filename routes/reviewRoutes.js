@@ -39,7 +39,7 @@ router.route("/:id").get(async (req, res) => {
             let reviewTemp = await reviews.getReview(user.reviews[x]);
             //console.log(reviewTemp);
             let reviewContent = reviewTemp.reviewText;
-            let reviewGameId = await reviews.getGameFromReview(reviewTemp._id);
+            let reviewGameId = await reviews.getGameFromReview(reviewTemp._id.toString());
             let reviewGame = await games.getGame(reviewGameId.toString());
             let rating = reviewTemp.rating;
             let review = {game: reviewGame.title, review: reviewContent, rating: rating};
