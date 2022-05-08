@@ -2,7 +2,7 @@ const mongoCollections = require("../config/mongoCollections");
 const games = mongoCollections.games;
 const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
-const gamesApi = require('./games');
+
 let createComment = async function (userID, gameID, commentText) {
   if (arguments.length != 3) {
     throw "expects 3 args";
@@ -32,21 +32,6 @@ let createComment = async function (userID, gameID, commentText) {
   return newComment;
 }
 
-let getCommentFromUserAndGame = async function (gameID, userID) {
-  //todo validate
-  const gameCollection = await games();
-  const game = await gamesApi.getGame(gameID);
-  console.log(game)
-  let rev = [];
-  for (r of game.comments) {
-    if (r.userId == userID) {
-      rev.push(r);
-    }
-  }
-  return rev;
-}
-
 module.exports = {
-  createComment,
-  getCommentFromUserAndGame
+  createComment
 }

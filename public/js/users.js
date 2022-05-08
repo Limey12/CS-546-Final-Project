@@ -1,8 +1,8 @@
-(async function ($) {
+$(function ($) {
     var form = $("#usersearch");
     var searchTermInput = $("#userSearchTerm");
     var error = $("#searcherror");
-    var dataerror = $("#dataerror");
+  
     form.submit(function(){
       try {
         var searchTerm = searchTermInput.val();
@@ -19,7 +19,6 @@
         error.hide();
         return true;
       } catch(e){
-        dataerror.hide();
         error.html(e);
         error.show();
         return false;

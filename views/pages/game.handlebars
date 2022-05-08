@@ -15,16 +15,6 @@ Reviews
     <form id="least_fav_btn">
         <button type="submit">Least Favorite</button>
     </form>
-    <h3>Add this game to a list!</h3>
-    <form id="game-list-form" method="POST" action="?">
-    <label for="list-names">Select list</label>
-    <select name="list-names" id="list-names">
-        {{#each lists}}
-        <option value="{{this.listName}}">{{this.listName}}</option>
-        {{/each}}
-    </select>
-    <button type="submit">Add {{game_name}} to list!</button>
-    </form>
     {{/if}}
     
     <img src="{{image}}" alt="{{alt}}" width="300" 
@@ -59,14 +49,9 @@ Reviews
             </li>
         {{/each}}
     {{else}}
-        <p id="noreviews">There are no reviews for this game yet!{{#if id}} Be the first {{else}} Log in {{/if}}to add one.</p>
+        <p>There are no reviews for this game yet!{{#if id}} Be the first {{else}} Log in {{/if}}to add one.</p>
     {{/if}}
-    
     </ul>
-    <ul id="addedreviews" hidden>
-    </ul>
-    <p id="reviewerror">
-    </p>
 
     <h3>Comments</h3>
     {{#if id}}
@@ -85,16 +70,10 @@ Reviews
             </li>
         {{/each}}
     {{else}}
-        <p id="nocomments">There are no comments for this game yet!{{#if id}} Be the first {{else}} Log in {{/if}}to add one.</p>
+        <p>There are no comments for this game yet!{{#if id}} Be the first {{else}} Log in {{/if}}to add one.</p>
     {{/if}}
     
-    
     </ul>
-    <ul id="addedcomments" hidden>
-    </ul>
-    <p id="commenterror">
-    </p>
-    
 </article>
 {{!-- for ajax buttons and forms --}}
 <script

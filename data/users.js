@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt");
 const validator = require("email-validator");
 const reviewData = require("./reviews");
 const gameData = require("./games");
-const listData = require("./lists");
 const { ObjectId } = require("mongodb");
 
 const saltRounds = 8;
@@ -51,7 +50,6 @@ const createUser = async function createUser(username, email, password) {
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
     throw "Could not add user.";
   newUser._id = newUser._id.toString();
-  await listData.createList(newUser._id, "Played Games", true);
   return newUser;
 };
 
@@ -129,7 +127,7 @@ const getRecommendations = async function getRecommendations(username) {
     for(let i = 0; i < reviews.length; i++) {
       if(await reviewData.getRatingFromReview(reviews[i]) > max) {
         max = await reviewData.getRatingFromReview(reviews[i]);
-        fav = (await reviewData.getGameFromReview(reviews[i])).toString();
+        fav = await reviewData.getGameFromReview(reviews[i]);
       }
     }
   }
@@ -175,14 +173,6 @@ const leastfavorite = async function(uID, gameID) {
   await userCollection.updateOne(
     { _id: ObjectId(uID) },
     { $set: {leastFavoriteGameId : gameID} }
-  );
-}
-
-const updateBio = async function(uID, bio) {
-  const userCollection = await users();
-  await userCollection.updateOne(
-    { _id: ObjectId(uID) },
-    { $set: {bio : bio} }
   );
 }
 
@@ -232,7 +222,6 @@ module.exports = {
   IDtoUsername,
   favorite,
   leastfavorite,
-  updateBio,
   getUserSearchTerm,
   getUser,
 };

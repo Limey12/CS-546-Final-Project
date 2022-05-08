@@ -1,4 +1,4 @@
-(async function ($) {
+$(function ($) {
   var loginForm = $("#login-form");
   var signupForm = $("#signup-form");
   var usernameInput = $("#username");

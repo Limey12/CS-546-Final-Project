@@ -4,7 +4,6 @@ const games = data.games;
 const users = data.users;
 const reviews = data.reviews;
 const comments = data.comments;
-const lists = data.lists;
 
 async function main() {
   
@@ -14,7 +13,6 @@ async function main() {
   } 
   //Add Games
   try {
-    console.log("creating games")
     const Minecraft = await games.addGame(
       "Minecraft",
       "Block Game Big Man Steve",
@@ -53,13 +51,11 @@ async function main() {
     //   "Bigger Game",
     //   null
     // );
-    console.log("logging persona4")
     console.log(Persona4);
     // console.log(await games.getGame(Minecraft._id.toString()));
     console.log(await games.getGameSearchTerm("Persona"));
 
     //seeding users database
-    console.log("creating users")
     const u1 = await users.createUser("user01", "user01@email.com", "1234567890");
     const u2 = await users.createUser("user02", "user02@email.com", "1234567890");
     const u3 = await users.createUser("user03", "user03@email.com", "1234567890");
@@ -71,11 +67,9 @@ async function main() {
     await users.addFriend(u3._id, u4._id);
     
     //creating reviews
-    console.log("creating reviews")
     const r1 = await reviews.createReview(u4._id, Persona4._id, "pretty good", 3);
     const r2 = await reviews.createReview(u2._id, Persona4._id, "is persona = bad", 1);
     const r3 = await reviews.createReview(u1._id, Persona4._id, "good!", 4);
-    const r3_ = await reviews.createReview(u1._id, Persona4._id, "good! again", 4);
     const r4 = await reviews.createReview(u1._id, Persona5._id, "good!!!", 5);
     const r5 = await reviews.createReview(u3._id, Persona5._id, "good", 4);
     const r6 = await reviews.createReview(u4._id, Persona5._id, "pretty good also", 3);
@@ -83,8 +77,6 @@ async function main() {
     const r8 = await reviews.createReview(u6._id, Persona5._id, "it is like pokemon", 4);
 
     console.log(r1)
-
-    console.log(await reviews.getReviewFromUserAndGame(Persona4._id, u1._id));
 
     //favorite games
     await users.favorite(u1._id, Persona5._id);
@@ -96,20 +88,6 @@ async function main() {
     //creating comments
     const c1 = await comments.createComment(u2._id, Persona4._id, "u2 comment on persona 4");
     const c2 = await comments.createComment(u3._id, Minecraft._id, "u3 comment on minecraft");
-    const c3 = await comments.createComment(u1._id, Persona4._id, "u1 comment on persona 4");
-    const c4 = await comments.createComment(u1._id, Persona5._id, "u1 comment on persona 5");
-    
-
-    //lists
-    const l1 = await lists.createList(u1._id, "test1", true);
-    const l1_ = await lists.createList(u1._id, "test1_", true);
-    const l2 = await lists.createList(u2._id, "test2", true);
-    const l3 = await lists.createList(u3._id, "test3", true);
-
-    await lists.addGameToList(u1._id, "test1", LeagueofLegends._id);
-    await lists.addGameToList(u1._id, "test1", Pokemon._id);
-    await lists.addGameToList(u1._id, "test1", Persona4._id);
-
 
   } catch (e) {
     console.log(e);

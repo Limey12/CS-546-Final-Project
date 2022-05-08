@@ -1,10 +1,9 @@
-(async function ($) {
+$(function ($) {
   var gameList = $("#gameList");
   var form = $("#gamesearch");
   var searchTermInput = $("#gameSearchTerm");
   var error = $("#searcherror");
   var backLink = $("#backLink");
-  var dataerror = $("#dataerror");
 
 
   form.submit(function(){
@@ -23,7 +22,6 @@
       error.hide();
       return true;
     } catch(e){
-      dataerror.hide();
       error.html(e);
       error.show();
       return false;

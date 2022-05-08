@@ -3,9 +3,9 @@ const games = mongoCollections.games;
 const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 
-// const reviews = require("./reviews");
+const reviews = require("./reviews");
 
-const validate = require("../validation/gameValidation");
+const validate = require("../validation/gameValidation")
 
 const goodRank = 3;
 
@@ -36,11 +36,13 @@ const addGame = async function addGame(title, description, image) {
 
   if (!image) {
     image = "/public/images/no_image.jpeg";
-  } else {
+  } else{
     await validate.checkImage(image);
   }
   await validate.checkTitle(title);
   await validate.checkDescription(description);
+
+ 
 
   const gameCollection = await games();
   let newGame = {
@@ -95,7 +97,7 @@ const getGame = async function getGame(id) {
   const gameCollection = await games();
   const game = await gameCollection.findOne({ _id: ObjectId(id) });
   if (game === null) {
-    throw "game with that id does not exist";
+    throw "game with that id does not exist"
   }
   game["_id"] = game["_id"].toString();
   return game;
@@ -160,7 +162,7 @@ const updateGame = async function updateGame(id, title, description, image) {
   }
   title.trim();
   description.trim();
-  if (!image) {
+  if(!image){
     image = "/public/images/no_image.jpeg";
   }
   image.trim();
@@ -172,29 +174,25 @@ const updateGame = async function updateGame(id, title, description, image) {
   if (game == null) {
     throw "game does not exist";
   }
-  if (
-    game.title == title &&
-    game.description == description &&
-    game.image == image
-  ) {
+  if (game.title == title && game.description == description && game.image == image) {
     throw "No fields will change";
   }
 
   //these ifs are for if you are not updating certain fields you pass those in as null
   //and they are set to the original
-  if (title == null) {
+  if(title == null){
     title = game.title;
   }
-  if (description == null) {
+  if(description == null){
     description = game.description;
   }
-  if (image == null) {
+  if(image == null){
     image = game.image;
   }
   const updatedGame = {
     title: title,
     description: description,
-    image: image,
+    image: image
   };
 
   const updatedInfo = await gameCollection.updateOne(
@@ -232,6 +230,51 @@ let getGameSearchTerm = async function getGameSearchTerm(term) {
   return gameList;
 };
 
+let getAverageRatingAmongFriends = async function (userID, gameID) {
+  //todo validation
+
+  if (arguments.length != 2) {
+    throw "expects 2 args";
+  }
+  if (!userID) {
+    return null;
+  }
+
+  const userCollection = await users();
+
+  const user = await userCollection.findOne({ _id: ObjectId(userID) });
+  console.log(user);
+  const friendList = user.friends;
+  if (friendList.length == 0) {
+    return null;
+  }
+  let total = 0; //running total of the reviews
+  let reviewCount = 0; //number of freinds that rated the game
+  for (f of friendList) {
+    //f is id of a friend
+    let friend = await userCollection.findOne({ _id: ObjectId(f) });
+    console.log(friend);
+    const reviewList = friend.reviews;
+    for (r of reviewList) {
+      if (await reviews.getGameFromReview(r) == gameID && await reviews.getRatingFromReview(r) != null) {
+        total += await reviews.getRatingFromReview(r);
+        reviewCount++;
+      }
+    }
+
+
+    // await reviews.getGameFromReview(reviewList[0]);
+    //todo look in reviews subdocument of the particular game to see if the friend reviewed the game.
+
+    console.log("frrr")
+    console.log(friend);
+  }
+  if (reviewCount == 0) {
+    return null;
+  }
+  return total / reviewCount;
+};
+
 let getImage = async function (gameID) {
   if (!gameID) throw "gameID must be provided";
   const gameCollection = await games();
@@ -249,28 +292,18 @@ const getRecommendations = async function getRecommendations(gameID) {
   const game = await gameCollection.findOne({ _id: ObjectId(gameID) });
   const reviews = game.reviews;
   let gameList = [];
-  for (r of reviews) {
-    if (r.rating >= goodRank) {
-      let user = await userCollection.findOne({ _id: ObjectId(r.userId) });
-      if (!user) {
+  for(r of reviews) {
+    if(r.rating >= goodRank) {
+      let user = await userCollection.findOne({ _id:ObjectId(r.userId) });
+      if(!user){
         continue;
       }
-      if (user?.favoriteGameId) {
-        gameList.push(await getGame(user.favoriteGameId));
-      }
+      gameList.push(await getGame(user.favoriteGameId));
     }
   }
-  gameList = gameList.filter((value, index) => {
-    const _value = JSON.stringify(value);
-    return (
-      index ===
-      gameList.findIndex((obj) => {
-        return JSON.stringify(obj) === _value;
-      })
-    );
-  });
+
   return gameList;
-};
+}
 
 module.exports = {
   addGame,
@@ -278,7 +311,8 @@ module.exports = {
   getGame,
   removeGame,
   updateGame,
+  getAverageRatingAmongFriends,
   getImage,
   getGameSearchTerm,
-  getRecommendations,
+  getRecommendations
 };

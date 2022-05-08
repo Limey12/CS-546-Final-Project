@@ -52,11 +52,12 @@ router.post("/", async (req, res) => {
     let id = req.session.user?.id;
     if (gamelist.length == 0) {
       res
-      //Technically not an error since that just means there are no users with that name
+        .status(400)
         .render("pages/catalog", {
           games: [],
           error: true,
           errormsg: "No results",
+          login: loggedIn,
           HTML_title:"Game Catalog",
           id: id
         });
@@ -79,9 +80,6 @@ router.post("/", async (req, res) => {
 router.route("/gameform").get(async (req, res) => {
   try {
     let id = req.session.user?.id;
-    if(!id){
-      res.redirect("/gamecatalog");
-    }
     res.render("pages/gameform", {HTML_title:"Game Form", id: id});
   } catch (e) {
     let id = req?.session?.user?.id;
