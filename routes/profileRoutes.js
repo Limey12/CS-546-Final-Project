@@ -186,7 +186,7 @@ router.route("/update/bio").post(async (req, res) => {
   try {
     let updateData = req.body;
     bio = xss(updateData.newBio);
-    bio = await validate.checkString(bio);
+    bio = await validate.checkString(bio, "Bio");
   } catch (e) {
     return res.status(400).render("pages/bio", {
       HTML_title: "Update Bio",
