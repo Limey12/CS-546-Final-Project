@@ -37,13 +37,19 @@ router.route("/:id").get(async (req, res) => {
         for (c of comments) {
             c.commentUsername = await users.IDtoUsername(c.userId);
         }
-        let f_rating = parseInt(await reviewApi.getAverageRatingAmongFriends(userId, argId)).toFixed(1);
-        if (isNaN(f_rating)) {
+        let f_rating = await reviewApi.getAverageRatingAmongFriends(userId, argId);
+        if (isNaN(f_rating) || f_rating == null || f_rating == undefined) {
             f_rating = "None of your freinds have rated this game!";
+        } else {
+            f_rating = Number(f_rating).toFixed(1);
         }
-        let overall_rating = parseInt(game?.overallRating).toFixed(1);
-        if (isNaN(overall_rating)) {
+
+
+        let overall_rating = game?.overallRating;
+        if (isNaN(overall_rating) || overall_rating == null || overall_rating == undefined) {
             overall_rating = "No one has rated this game!";
+        } else {
+            overall_rating = Number(overall_rating).toFixed(1);
         }
         let hobj = {
             id: userId,
