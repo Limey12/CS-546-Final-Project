@@ -74,7 +74,7 @@ const getGame = async function getGame(id) {
   return game;
 };
 
-//removes a game from the database based on the id
+//Removes a game from the database based on the id
 const removeGame = async function removeGame(id) {
   if (arguments.length !== 1) {
     throw "Error: 1 argument expected";

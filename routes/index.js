@@ -7,7 +7,6 @@ const logoutRoutes = require("./logoutRoutes");
 const rootRoute = require("./rootRoute");
 const catalogRoutes = require("./catalogRoutes");
 const profileRoutes = require("./profileRoutes");
-const reviewRoutes = require("./reviewRoutes");
 const userRoutes = require("./userRoutes");
 const listRoutes = require("./listRoutes");
 
@@ -19,9 +18,8 @@ const constructorMethod = (app) => {
   app.use("/game", gameRoutes);
   app.use("/gamecatalog", catalogRoutes);
   app.use("/Profile", profileRoutes);
-  app.use("/Reviews", reviewRoutes);
   app.use("/users", userRoutes);
-  app.use("/lists", listRoutes)
+  app.use("/lists", listRoutes);
   app.use("*", (req, res) => {
     res.status(404).json({ error: "Not found" });
   });

@@ -12,6 +12,22 @@ const checkId = async function checkId(id, varName) {
   return id;
 };
 
+const checkNum = async function checkNum(num, varName) {
+  if (!num) throw `Error: You must provide ${varName}`;
+  if (typeof num === "string") {
+    num = num.trim();
+    if (num.length === 0)
+      throw `Error: ${varName} cannot be an empty string or string with just spaces`;
+    num = Number(num);
+    if(isNaN(num)) throw `Error: ${varName} must be a number`;
+  }
+  else if (typeof num === "number") {
+    if(isNaN(num)) throw `Error: ${varName} must be a number`;
+  }
+  else throw `Error: ${varName} must be a string or number`;
+  return num;
+};
+
 const checkString = async function checkString(strVal, varName) {
   if (!strVal) throw `Error: You must provide ${varName}`;
   if (typeof strVal !== "string") throw `Error: ${varName} must be a string`;
@@ -25,6 +41,12 @@ const checkBool = async function checkBool(bool, varName) {
   if (!bool) throw `Error: You must provide ${varName}`;
   if (typeof bool !== "boolean") throw `Error: ${varName} must be a boolean`;
   return bool;
+}
+
+const checkArray  = async function checkArray(arr, varName) {
+  if (!arr) throw `Error: You must provide ${varName}`;
+  if (!Array.isArray(arr)) throw `Error: ${varName} must be an array`;
+  return arr;
 }
 
 const checkImage = async function checkImage(url) {
@@ -64,52 +86,14 @@ const checkPassword = async function checkPassword(password) {
   return password;
 }
 
-// TO DELETE
-
-const checkTitle = async function checkTitle(title) {
-  if (!title) {
-    throw "Title not provided";
-  }
-
-  if (typeof title !== "string") {
-    throw "Description not string";
-  }
-
-  title = title.trim();
-
-  if (title.length <= 0) {
-    throw "Description Cannot be an empty string";
-  }
-};
-
-const checkDescription = async function checkDescription(description) {
-  if (!description) {
-    throw "Description not provided";
-  }
-
-  if (typeof description !== "string") {
-    throw "Description not string";
-  }
-
-  description = description.trim();
-
-  if (description.length <= 0) {
-    throw "Description cannot be an empty string";
-  }
-};
-
-// END
-
 module.exports = {
   checkId,
   checkString,
+  checkNum,
   checkBool,
+  checkArray,
   checkImage,
   checkUsername,
   checkEmail,
   checkPassword,
-  // TO DELETE
-  checkDescription,
-  checkTitle,
-  // END
 };
