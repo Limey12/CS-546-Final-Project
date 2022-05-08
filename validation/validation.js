@@ -27,6 +27,12 @@ const checkBool = async function checkBool(bool, varName) {
   return bool;
 }
 
+const checkArray  = async function checkArray(arr, varName) {
+  if (!arr) throw `Error: You must provide ${varName}`;
+  if (!Array.isArray(arr)) throw `Error: ${varName} must be an array`;
+  return arr;
+}
+
 const checkImage = async function checkImage(url) {
   try {
     let req = await axios.head(url);
@@ -64,52 +70,13 @@ const checkPassword = async function checkPassword(password) {
   return password;
 }
 
-// TO DELETE
-
-const checkTitle = async function checkTitle(title) {
-  if (!title) {
-    throw "Title not provided";
-  }
-
-  if (typeof title !== "string") {
-    throw "Description not string";
-  }
-
-  title = title.trim();
-
-  if (title.length <= 0) {
-    throw "Description Cannot be an empty string";
-  }
-};
-
-const checkDescription = async function checkDescription(description) {
-  if (!description) {
-    throw "Description not provided";
-  }
-
-  if (typeof description !== "string") {
-    throw "Description not string";
-  }
-
-  description = description.trim();
-
-  if (description.length <= 0) {
-    throw "Description cannot be an empty string";
-  }
-};
-
-// END
-
 module.exports = {
   checkId,
   checkString,
   checkBool,
+  checkArray,
   checkImage,
   checkUsername,
   checkEmail,
   checkPassword,
-  // TO DELETE
-  checkDescription,
-  checkTitle,
-  // END
 };

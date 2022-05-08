@@ -10,17 +10,13 @@ router.route("/").get(async (req, res) => {
   try {
     let id = xss(req.session.user?.id);
     let allGames = await games.getAllGames();
-    if (!allGames) {
-        throw "games not found"
-    }
+    allGames = await validate.checkArray(allGames, "Game List");
     if (allGames.length == 0) {
         res.render("pages/catalog", { games: allGames, errormsg: 'No games in database', HTML_title:"Game Catalog", id: id });
         return;
     }
     res.render("pages/catalog", { games: allGames, HTML_title:"Game Catalog", id: id });
   } catch (e) {
-    let id = xss(req?.session?.user?.id);
-    // res.status(500).render("pages/catalog", { error: true, errormsg: e, HTML_title:"Game Catalog", id: id });
     return res.status(500).render("pages/error", {
       id :xss(req?.session?.user?.id),
       HTML_title: "error",
@@ -31,26 +27,25 @@ router.route("/").get(async (req, res) => {
   }
 });
 
-//POST
+//POST http://localhost:3000/gamecatalog
 router.post("/", async (req, res) => {
-  let search = xss(req.body.gameSearchTerm);
-  search = search.trim();
-  let id = xss(req.session.user?.id);
-  if (!search) {
-    res
-      .status(400)
-      .render("pages/catalog", {
-        games: [],
-        error: true,
-        errormsg: "No searchterm inputted",
-        HTML_title:"Game Catalog",
-        id: id
-      });
-    return;
-  }
   try {
-    gamelist = await games.getGameSearchTerm(search);
+    let search = xss(req.body.gameSearchTerm);
     let id = xss(req.session.user?.id);
+    if (!search) {
+      res
+        .status(400)
+        .render("pages/catalog", {
+          games: [],
+          error: true,
+          errormsg: "No searchterm inputted",
+          HTML_title:"Game Catalog",
+          id: id
+        });
+      return;
+    }
+    let gamelist = await games.getGameSearchTerm(search);
+    gamelist = await validate.checkArray(gamelist, "Game List");
     if (gamelist.length == 0) {
       res
       //Technically not an error since that just means there are no users with that name
@@ -65,7 +60,6 @@ router.post("/", async (req, res) => {
     }
     res.render("pages/catalog", { games: gamelist, HTML_title:"Game Catalog", id: id });
   } catch (e) {
-    // res.status(500).render("pages/catalog", { error: true, errormsg: e, HTML_title:"Game Catalog", id: id });
     return res.status(500).render("pages/error", {
       id :xss(req?.session?.user?.id),
       HTML_title: "error",
@@ -76,7 +70,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-//GET http://localhost:3000/GameCatalog/gameform'
+//GET http://localhost:3000/gamecatalog/gameform
 router.route("/gameform").get(async (req, res) => {
   try {
     let id = xss(req.session.user?.id);
@@ -85,8 +79,6 @@ router.route("/gameform").get(async (req, res) => {
     }
     res.render("pages/gameform", {HTML_title:"Game Form", id: id});
   } catch (e) {
-    let id = xss(req?.session?.user?.id);
-    // res.status(500).render("pages/gameform",{HTML_title:"Game Form", id: id});
     return res.status(500).render("pages/error", {
       id :xss(req?.session?.user?.id),
       HTML_title: "error",
@@ -98,19 +90,20 @@ router.route("/gameform").get(async (req, res) => {
 });
 
 //POST called by AJAX request
+//POST http://localhost:3000/gamecatalog/gameform
 router.route("/gameform").post(async (req, res) => {
-  let title = xss(req.body.title); 
-  let description = xss(req.body.description);
-  let image = xss(req.body.image);
+  let title, description, image;
   try {
+    title = xss(req.body.title);
+    title = await validate.checkString(title, "title")
+    description = xss(req.body.description);
+    description = await validate.checkString(description, "description")
+    image = xss(req.body.image);
     if(image == "/public/images/no_image.jpeg"){
       image = null;
     } else{
       await validate.checkImage(image);
     }
-    
-    await validate.checkTitle(title);
-    await validate.checkDescription(description);
   } catch (e) {
     res.status(400).json({ success: false, error: e });
     return;
