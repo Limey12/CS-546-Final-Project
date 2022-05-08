@@ -8,7 +8,7 @@ const { ObjectId } = require("mongodb");
 const validate = require("../validation/validation");
 
 const saltRounds = 8;
-const numRecs = 100;
+const numRecs = 5;
 
 //https://advancedweb.hu/asynchronous-array-functions-in-javascript/
 const asyncFilter = async (arr, predicate) => {
