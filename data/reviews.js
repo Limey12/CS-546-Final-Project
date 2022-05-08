@@ -4,6 +4,7 @@ const users = mongoCollections.users;
 const listsApi = require("./lists");
 const gamesApi = require('./games');
 const { ObjectId } = require("mongodb");
+const validate = require("../validation/validation");
 
 let createReview = async function (userId, gameId, reviewText, rating) {
   if (arguments.length !== 4) {
