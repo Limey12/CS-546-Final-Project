@@ -3,7 +3,9 @@ const { ObjectId } = require("mongodb");
 const router = express.Router();
 const { games, users } = require("../data");
 const xss = require('xss');
+const validate = require("../validation/validation");
 
+//GET http://localhost:3000/profile
 router.route("/").get(async (req, res) => {
     try {
         if(xss(req.session.user)){
@@ -31,12 +33,20 @@ router.route("/:id").get(async (req, res) => {
     let id, user;
     try {
         id = xss(req.params.id);
-        if(!ObjectId.isValid(id)){
-            throw "User not found";
-        }
+        id = await validate.checkId(id, "Id");
+    } catch(e) {
+        return res.status(400).render("pages/error", {
+            id: xss(req?.session?.user?.id),
+            HTML_title: "error",
+            class: "error",
+            status: 400,
+            message: e
+        });
+    }
+    try {
         user = await users.getUser(id);
         if(!user){
-            throw "User not found";
+            throw "Error: User not found";
         }
     } catch (e) {
         return res.status(404).render("pages/error", {
@@ -57,14 +67,12 @@ router.route("/:id").get(async (req, res) => {
         let bio = user.bio;
         let favoriteGameId = user.favoriteGameId;
         let favoriteGameName = null;
-        let favoriteGameImage = null;
         if(favoriteGameId){
             let favoriteGame = await games.getGame(favoriteGameId);
             favoriteGameName = favoriteGame.title;
         }
         let leastFavoriteGameId = user.leastFavoriteGameId;
         let leastFavoriteGameName = null;
-        let leastFavoriteGameImage = null;
         if(leastFavoriteGameId){
             let leastFavoriteGame = await games.getGame(leastFavoriteGameId);
             leastFavoriteGameName = leastFavoriteGame.title;
@@ -109,12 +117,20 @@ router.route("/add/:id").post(async (req, res) => {
     let id, user, loggedIn, userId;
     try {
         id = xss(req.params.id);
-        if(!ObjectId.isValid(id)){
-            throw "User not found";
-        }
+        id = await validate.checkId(id, "Id");
+    } catch(e) {
+        return res.status(400).render("pages/error", {
+            id: xss(req?.session?.user?.id),
+            HTML_title: "error",
+            class: "error",
+            status: 400,
+            message: e
+        });
+    }
+    try {
         user = await users.getUser(id);
         if(!user){
-            throw "User not found";
+            throw "Error: User not found";
         }
     } catch (e) {
         return res.status(404).render("pages/error", {
@@ -134,16 +150,6 @@ router.route("/add/:id").post(async (req, res) => {
         if(!loggedIn) {
             throw "Not logged in";
         }
-    } catch (e) {
-        return res.status(400).render("pages/error", {
-            id :xss(req?.session?.user?.id),
-            HTML_title: "error",
-            class: "error",
-            status: 400,
-            message: e
-        });
-    }
-    try {
         users.addFriend(userId, id);
         res.redirect('back');
     }
@@ -174,20 +180,27 @@ router.route("/update/bio").get(async (req, res) => {
 
 //POST http://localhost:3000/profile/update/bio
 router.route("/update/bio").post(async (req, res) => {
+    let bio;
     if (!xss(req?.session?.user)) {
         res.redirect("/");
     }
     try {
         let updateData = req.body;
-        let bio = xss(updateData.newBio);
-        if (!bio) throw "Must provide bio";
-        if (typeof bio !== "string") throw "Bio must be a string";
-        bio = bio.trim();
-        if (bio.length == 0) throw "Bio must be a non empty string";
+        bio = xss(updateData.newBio);
+        bio = await validate.checkString(bio);
+    } catch (e) {
+        return res.status(400).render("pages/bio", {
+            HTML_title: "Update Bio",
+            id: xss(req?.session?.user?.id),
+            error: true,
+            errorMsg: e
+        });
+    }
+    try {
         users.updateBio(xss(req?.session?.user?.id), bio)
         res.redirect("/profile");
     } catch (e) {
-        return res.status(400).render("pages/bio", {
+        return res.status(500).render("pages/bio", {
             HTML_title: "Update Bio",
             id: xss(req?.session?.user?.id),
             error: true,
