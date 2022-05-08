@@ -6,7 +6,6 @@ const { games, users } = require("../data");
 router.route("/").get(async (req, res) => {
   try{
     let id = req.session.user?.id;
-    console.log("hello:" + id);
     let recs = [];
     if(req.session.user) {
       recs = await users.getRecommendations(req.session.user.username);
