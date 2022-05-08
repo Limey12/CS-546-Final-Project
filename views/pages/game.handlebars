@@ -15,6 +15,16 @@ Reviews
     <form id="least_fav_btn">
         <button type="submit">Least Favorite</button>
     </form>
+    <h3>Add this game to a list!</h3>
+    <form id="game-list-form" method="POST" action="?">
+    <label for="list-names">Select list</label>
+    <select name="list-names" id="list-names">
+        {{#each lists}}
+        <option value="{{this.listName}}">{{this.listName}}</option>
+        {{/each}}
+    </select>
+    <button type="submit">Add {{game_name}} to list!</button>
+    </form>
     {{/if}}
     
     <img src="{{image}}" alt="{{alt}}" width="300" 

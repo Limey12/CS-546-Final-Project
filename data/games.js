@@ -3,7 +3,7 @@ const games = mongoCollections.games;
 const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 
-const reviews = require("./reviews");
+// const reviews = require("./reviews");
 
 const validate = require("../validation/gameValidation")
 
@@ -230,50 +230,7 @@ let getGameSearchTerm = async function getGameSearchTerm(term) {
   return gameList;
 };
 
-let getAverageRatingAmongFriends = async function (userID, gameID) {
-  //todo validation
 
-  if (arguments.length != 2) {
-    throw "expects 2 args";
-  }
-  if (!userID) {
-    return null;
-  }
-
-  const userCollection = await users();
-
-  const user = await userCollection.findOne({ _id: ObjectId(userID) });
-  console.log(user);
-  const friendList = user.friends;
-  if (friendList.length == 0) {
-    return null;
-  }
-  let total = 0; //running total of the reviews
-  let reviewCount = 0; //number of freinds that rated the game
-  for (f of friendList) {
-    //f is id of a friend
-    let friend = await userCollection.findOne({ _id: ObjectId(f) });
-    console.log(friend);
-    const reviewList = friend.reviews;
-    for (r of reviewList) {
-      if (await reviews.getGameFromReview(r) == gameID && await reviews.getRatingFromReview(r) != null) {
-        total += await reviews.getRatingFromReview(r);
-        reviewCount++;
-      }
-    }
-
-
-    // await reviews.getGameFromReview(reviewList[0]);
-    //todo look in reviews subdocument of the particular game to see if the friend reviewed the game.
-
-    console.log("frrr")
-    console.log(friend);
-  }
-  if (reviewCount == 0) {
-    return null;
-  }
-  return total / reviewCount;
-};
 
 let getImage = async function (gameID) {
   if (!gameID) throw "gameID must be provided";
@@ -312,7 +269,6 @@ module.exports = {
   getGame,
   removeGame,
   updateGame,
-  getAverageRatingAmongFriends,
   getImage,
   getGameSearchTerm,
   getRecommendations
