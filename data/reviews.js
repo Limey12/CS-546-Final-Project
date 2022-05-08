@@ -2,7 +2,7 @@ const mongoCollections = require("../config/mongoCollections");
 const games = mongoCollections.games;
 const users = mongoCollections.users;
 const listsApi = require("./lists");
-const gamesApi = require('./games');
+const gamesApi = require("./games");
 const { ObjectId } = require("mongodb");
 const validate = require("../validation/validation");
 
@@ -41,7 +41,7 @@ let createReview = async function (userId, gameId, reviewText, rating) {
   if (!gameUpdateInfo.matchedCount && !gameUpdateInfo.modifiedCount)
     throw "Error: Update failed";
   //new review is added to video game. Id must be added to user.
- const userUpdateInfo = await userCollection.updateOne(
+  const userUpdateInfo = await userCollection.updateOne(
     { _id: ObjectId(userId) },
     { $push: { reviews: newReview._id.toString() } }
   );
@@ -131,7 +131,7 @@ let getReviewFromUserAndGame = async function (gameId, userId) {
     }
   }
   return rev;
-}
+};
 
 let getAverageRatingAmongFriends = async function (userId, gameId) {
   if (arguments.length !== 2) {
@@ -161,17 +161,19 @@ let getAverageRatingAmongFriends = async function (userId, gameId) {
     }
     const reviewList = friend.reviews;
     for (r of reviewList) {
-      if (await getGameFromReview(r) == gameId && await getRatingFromReview(r) != null) {
+      if (
+        (await getGameFromReview(r)) == gameId &&
+        (await getRatingFromReview(r)) != null
+      ) {
         total += await getRatingFromReview(r);
         reviewCount++;
       }
     }
 
-
     // await reviews.getGameFromReview(reviewList[0]);
     //todo look in reviews subdocument of the particular game to see if the friend reviewed the game.
 
-    console.log("frrr")
+    console.log("frrr");
     console.log(friend);
   }
   if (reviewCount == 0) {
