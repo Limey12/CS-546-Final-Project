@@ -39,7 +39,7 @@ router.post("/", async (req, res) => {
   let search;
   try {
     search = xss(req.body.gameSearchTerm);
-    search = validate.checkString(search);
+    search = await validate.checkString(search, "Search Term");
   } catch (e) {
     return res.status(400).render("pages/catalog", {
       games: [],
