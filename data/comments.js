@@ -2,51 +2,60 @@ const mongoCollections = require("../config/mongoCollections");
 const games = mongoCollections.games;
 const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
-const gamesApi = require('./games');
-let createComment = async function (userID, gameID, commentText) {
+const gamesApi = require("./games");
+const validate = require("../validation/validation");
+let createComment = async function (userId, gameId, commentText) {
   if (arguments.length != 3) {
-    throw "expects 3 args";
+    throw "Error: 3 arguments expected";
   }
+  userId = validate.checkId(userId, "UserId");
+  gameId = validate.checkId(gameId, "GameId");
+  commentText = validate.checkString(commentText, "Comment Text");
 
-  //todo more input validation
   const gameCollection = await games();
   const userCollection = await users();
   const newComment = {
     _id: new ObjectId(),
-    userId: userID,
+    userId: userId,
     commentText: commentText,
   };
 
-  const game = await gameCollection.findOne({ _id: ObjectId(gameID) });
-  await gameCollection.updateOne(
-    { _id: ObjectId(gameID) },
+  const gameUpdateInfo = await gameCollection.updateOne(
+    { _id: ObjectId(gameId) },
     {
       $push: { comments: newComment },
     }
   );
+  if (!gameUpdateInfo.matchedCount && !gameUpdateInfo.modifiedCount)
+    throw "Update failed";
+
   //new review is added to video game. Id must be added to user.
-  await userCollection.updateOne(
-    { _id: ObjectId(userID) },
+  const userUpdateInfo = await userCollection.updateOne(
+    { _id: ObjectId(userId) },
     { $push: { comments: newComment._id.toString() } }
   );
+  if (!userUpdateInfo.matchedCount && !userUpdateInfo.modifiedCount)
+    throw "Update failed";
   return newComment;
-}
+};
 
-let getCommentFromUserAndGame = async function (gameID, userID) {
-  //todo validate
-  const gameCollection = await games();
-  const game = await gamesApi.getGame(gameID);
-  console.log(game)
+let getCommentFromUserAndGame = async function (gameId, userId) {
+  if (arguments.length != 2) {
+    throw "Error: 2 arguments expected";
+  }
+  userId = validate.checkId(userId, "UserId");
+  gameId = validate.checkId(gameId, "GameId");
+  const game = await gamesApi.getGame(gameId);
   let rev = [];
   for (r of game.comments) {
-    if (r.userId == userID) {
+    if (r.userId == userId) {
       rev.push(r);
     }
   }
   return rev;
-}
+};
 
 module.exports = {
   createComment,
-  getCommentFromUserAndGame
-}
+  getCommentFromUserAndGame,
+};

@@ -2,7 +2,7 @@ const express = require("express");
 const { ReturnDocument } = require("mongodb");
 const router = express.Router();
 const { games } = require("../data");
-const validate = require("../validation/gameValidation");
+const validate = require("../validation/validation");
 const xss = require('xss');
 
 //GET http://localhost:3000/gamecatalog
