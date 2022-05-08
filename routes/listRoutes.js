@@ -55,11 +55,9 @@ router.route("/:id").get(async (req, res) => {
             for (gi in l.games) {
                 let newg = await games.getGame(l.games[gi]);
                 let revs = await reviews.getReviewFromUserAndGame(l.games[gi], id);
-                let coms = await comments.getCommentFromUserAndGame(l.games[gi], id)
-                //todo same for comments as revs
+                let coms = await comments.getCommentFromUserAndGame(l.games[gi], id);
                 newg.urevs = revs;
                 newg.ucoms = coms;
-                console.log(newg)
                 l.games[gi] = newg;
             }
         }

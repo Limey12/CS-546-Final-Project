@@ -11,7 +11,7 @@
         <ul>
         {{#each this.games}}
         <li>
-            {{this.title}}
+            <a href = "/game/{{this._id}}">{{this.title}}</a>
             <ul>
             {{#each this.urevs}}
             <li>
