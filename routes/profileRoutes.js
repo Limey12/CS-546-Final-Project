@@ -88,7 +88,9 @@ router.route("/:id").get(async (req, res) => {
             bio: bio,
             friends: friendsList,
             favoriteGameName: favoriteGameName,
+            favoriteGameId: favoriteGameId,
             leastFavoriteGameName: leastFavoriteGameName,
+            leastFavoriteGameId,
             pageOwned: pageOwned,
             pageId: id,
             friended, friended
