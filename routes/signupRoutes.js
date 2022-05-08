@@ -24,51 +24,41 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  let signupData = req.body;
-  let signupUserName= xss(signupData.username);
-  let signupPassword= xss(signupData.password);
-  let signupEmail= xss(signupData.email);
+  let signupData, username, password, email;
   try {
-    if (!signupUserName || !signupEmail || !signupPassword)
-      throw "Must provide username, email, and password.";
-    if (typeof signupUserName !== "string")
-      throw "Username must be a string.";
-      signupUserName = signupUserName.toLowerCase();
-    if (!/^[a-z0-9]+$/i.test(signupUserName))
-      throw "Username must be alphanumeric.";
-    if (signupUserName.length < 4)
-      throw "Username must be at least 4 characters long.";
-    if (typeof signupEmail !== "string") throw "Email must be a string.";
-    signupEmail = signupEmail.toLowerCase();
-    if (!validator.validate(signupEmail)) throw "Email must be valid.";
-    if (typeof signupPassword !== "string")
-      throw "Password must be a string.";
-    if (/\s/.test(signupPassword))
-      throw "Password must not contain any spaces.";
-    if (signupPassword.length < 6)
-      throw "Username must be at least 6 characters long.";
+    signupData = req.body;
+    username = xss(signupData.username);
+    password = xss(signupData.password);
+    email = xss(signupData.email);
+    username = await validate.checkUsername(username);
+    password = await validate.checkPassword(password);
+    email = await validate.checkEmail(email);
+  } catch (e) {
+    let id = xss(req?.session?.user?.id);
+    return res.status(400).render("pages/form", {
+      HTML_title: "Signup",
+      id: id,
+      act: "/signup",
+      formId: "signup-form",
+      login: false,
+      error: true,
+      errorMsg: e,
+    });
+  }
+  try {
     let result = await userData.createUser(
-      signupUserName,
-      signupEmail,
-      signupPassword
+      username,
+      email,
+      password
     );
     if (result) {
       res.redirect("/");
     } else {
-      let id = xss(req?.session?.user?.id);
-      return res.status(500).render("pages/form", {
-        HTML_title: "Signup",
-        id: id,
-        act: "/signup",
-        formId: "signup-form",
-        login: false,
-        error: true,
-        errorMsg: "Internal Server Error",
-      });
+      throw "Error: Internal Server Error";
     }
   } catch (e) {
     let id = xss(req?.session?.user?.id);
-    return res.status(400).render("pages/form", {
+    return res.status(500).render("pages/form", {
       HTML_title: "Signup",
       id: id,
       act: "/signup",
