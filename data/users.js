@@ -47,6 +47,9 @@ const createUser = async function createUser(username, email, password) {
     throw "Error: Could not add user";
   newUser._id = newUser._id.toString();
   await listData.createList(newUser._id, "Played Games", true);
+  await listData.createList(newUser._id, "Currently Playing", true);
+  await listData.createList(newUser._id, "100% Completed", true);
+  
   return newUser;
 };
 
