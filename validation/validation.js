@@ -23,7 +23,7 @@ const checkString = async function checkString(strVal, varName) {
 
 const checkBool = async function checkBool(bool, varName) {
   if (!bool) throw `Error: You must provide ${varName}`;
-  if (typeof id !== "boolean") throw `Error: ${varName} must be a boolean`;
+  if (typeof bool !== "boolean") throw `Error: ${varName} must be a boolean`;
   return bool;
 }
 
