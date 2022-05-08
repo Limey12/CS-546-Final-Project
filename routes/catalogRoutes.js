@@ -10,7 +10,6 @@ router.route("/").get(async (req, res) => {
   try {
     let id = xss(req.session.user?.id);
     let allGames = await games.getAllGames();
-    allGames = await validate.checkArray(allGames, "Game List");
     if (allGames.length == 0) {
       res.render("pages/catalog", {
         games: allGames,
@@ -52,7 +51,6 @@ router.post("/", async (req, res) => {
       return;
     }
     let gamelist = await games.getGameSearchTerm(search);
-    gamelist = await validate.checkArray(gamelist, "Game List");
     if (gamelist.length == 0) {
       res
         //Technically not an error since that just means there are no users with that name
