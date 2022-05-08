@@ -27,7 +27,7 @@ let createComment = async function (userId, gameId, commentText) {
     }
   );
   if (!gameUpdateInfo.matchedCount && !gameUpdateInfo.modifiedCount)
-    throw "Update failed";
+    throw "Error: Update failed";
 
   //new review is added to video game. Id must be added to user.
   const userUpdateInfo = await userCollection.updateOne(
@@ -35,7 +35,7 @@ let createComment = async function (userId, gameId, commentText) {
     { $push: { comments: newComment._id.toString() } }
   );
   if (!userUpdateInfo.matchedCount && !userUpdateInfo.modifiedCount)
-    throw "Update failed";
+    throw "Error: Update failed";
   return newComment;
 };
 
