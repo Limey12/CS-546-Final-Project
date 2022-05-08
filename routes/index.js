@@ -21,7 +21,7 @@ const constructorMethod = (app) => {
   app.use("/Profile", profileRoutes);
   app.use("/Reviews", reviewRoutes);
   app.use("/users", userRoutes);
-  app.use("/lists", listRoutes)
+  app.use("/lists", listRoutes);
   app.use("*", (req, res) => {
     res.status(404).json({ error: "Not found" });
   });
