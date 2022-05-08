@@ -4,7 +4,6 @@ const router = express.Router();
 const data = require("../data");
 const lists = data.lists;
 const games = data.games;
-const constructorMethod = require(".");
 const { reviews, comments } = require("../data");
 const xss = require('xss');
 const validate = require("../validation/validation");
