@@ -11,8 +11,6 @@ let createList = async function (userId, listName, public) {
   userId = await validate.checkId(userId, "UserId");
   listName = await validate.checkString(listName, "List Name");
   public = await validate.checkBool(public, "Public");
-  //make sure user AND game exist
-  //along with normal stuff
   const userCollection = await users();
   const newList = {
     _id: new ObjectId(),
