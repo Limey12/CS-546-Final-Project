@@ -3,7 +3,7 @@ const router = express.Router();
 const validator = require("email-validator");
 const data = require("../data");
 const userData = data.users;
-const xss = require('xss');
+const xss = require("xss");
 const validate = require("../validation/validation");
 
 router.get("/", async (req, res) => {
@@ -46,11 +46,7 @@ router.post("/", async (req, res) => {
     });
   }
   try {
-    let result = await userData.createUser(
-      username,
-      email,
-      password
-    );
+    let result = await userData.createUser(username, email, password);
     if (result) {
       res.redirect("/");
     } else {
