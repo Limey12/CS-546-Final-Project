@@ -133,16 +133,19 @@ let getReviewFromUserAndGame = async function (gameId, userId) {
   return rev;
 }
 
-let getAverageRatingAmongFriends = async function (userID, gameID) {
+let getAverageRatingAmongFriends = async function (userId, gameId) {
   if (arguments.length !== 2) {
     throw "Error: 2 arguments expected";
+  }
+  if (!userId) {
+    return null;
   }
   gameId = await validate.checkId(gameId, "GameId");
   userId = await validate.checkId(userId, "UserId");
 
   const userCollection = await users();
 
-  const user = await userCollection.findOne({ _id: ObjectId(userID) });
+  const user = await userCollection.findOne({ _id: ObjectId(userId) });
   if (user === null) throw "Error: User not found";
   const friendList = user.friends;
   if (friendList.length == 0) {
@@ -158,7 +161,7 @@ let getAverageRatingAmongFriends = async function (userID, gameID) {
     }
     const reviewList = friend.reviews;
     for (r of reviewList) {
-      if (await getGameFromReview(r) == gameID && await getRatingFromReview(r) != null) {
+      if (await getGameFromReview(r) == gameId && await getRatingFromReview(r) != null) {
         total += await getRatingFromReview(r);
         reviewCount++;
       }
