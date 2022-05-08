@@ -190,9 +190,18 @@ a{
   width: 50%;
   text-align: center;
 }
-#gamelist, .gameelement, #userlist, .userelement {
+#gameList, .gameelement, #userlist, .userelement {
   display:inline;
   margin-inline: 10px;
+}
+
+#gameList, #userlist{
+	padding-left: 0px;
+}
+
+
+#gamelistdiv{
+	text-align: center;
 }
 
 #gamesearch{
@@ -213,3 +222,42 @@ details h4,h3 {
 .review .text, .comment .text {
 	text-indent: 20px;
 }
+
+
+/*Home page*/
+h1 { padding-bottom: 15px }
+
+#home{
+	text-align: center;
+}
+#about{
+	color: #333333; font-family: "Helvetica Neue",Arial,sans-serif; 
+	font-size: 16px; font-weight: 300; line-height: 1.5625; margin-bottom: 15px;
+}
+
+#aboutdiv{
+  padding: 10px;
+  border: 5px solid gray;
+  margin: 0;
+  align-self: auto;
+  margin: auto;
+  margin-bottom: 20px;
+  width: 50%;
+  padding: 10px;
+}
+
+#recdiv{
+	padding: 10px;
+	border: 5px solid gray;
+	margin: 10px;
+	align-self: auto;
+	margin: auto;
+	width: 50%;
+	padding: 10px;
+}
+
+#reclist, .recs {
+	text-align: center;
+	display: inline-block;
+	padding:20px
+  }
