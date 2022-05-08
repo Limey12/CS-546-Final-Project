@@ -23,6 +23,12 @@ router.route("/:id").get(async (req, res) => {
             });
         }
         let userId = req?.session?.user?.id;
+        let gameLists;
+        if (userId) {
+            gameLists = await lists.gameListsByUser(userId);
+        } else {
+            gameLists = [];
+        }
         let reviews = game?.reviews;
         for (r of reviews) {
             r.reviewUsername = await users.IDtoUsername(r.userId);
@@ -42,7 +48,7 @@ router.route("/:id").get(async (req, res) => {
             HTML_title: game?.title,
             reviews: reviews,
             comments: comments,
-            lists: await lists.gameListsByUser(userId),
+            lists: gameLists,
         };
         res.render("pages/game", hobj);
     } catch (e) {
@@ -103,16 +109,16 @@ router.route("/:id").post(async (req, res) => {
         if (req.body.comment) {
             let comment = req.body.comment;
             let addedcomment = await comments.createComment(userId, argId, comment);
-            res.json({ success: true, addedcomment: addedcomment, user:user.username }); //need xss
+            res.status(204).json({ success: true, addedcomment: addedcomment, user:user.username }); //need xss
         } else if (req.body.rating && req.body.review) {
             let rating = req.body.rating;
             let review = req.body.review;
             let addedreview = await reviews.createReview(userId, argId, review, rating);
-            res.json({ success: true, addedreview: addedreview, user:user.username }); //need xss
+            res.status(204).json({ success: true, addedreview: addedreview, user:user.username }); //need xss
         } else if (req.body['list-names']) {
             let listName = req.body['list-names'];
             await lists.addGameToList(userId, listName, argId)
-
+            res.status(204).json({ success: true});
         } else {
             res.status(400).send({ error : "must supply comment, review+rating, or list-names"});
         }
