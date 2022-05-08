@@ -18,9 +18,9 @@ let createList = async function (userId, listName, public) {
     _id: new ObjectId(),
     public: public,
     listName: listName,
-    games: []
+    games: [],
   };
-  
+
   const updateInfo = await userCollection.updateOne(
     { _id: ObjectId(userId) },
     { $push: { lists: newList } }
@@ -38,9 +38,7 @@ let addGameToList = async function (userId, listName, gameId) {
   listName = await validate.checkString(listName, "List Name");
   gameId = await validate.checkId(gameId, "GameId");
   const userCollection = await users();
-  const user = await userCollection.findOne(
-     { _id : ObjectId(userId) }
-  );
+  const user = await userCollection.findOne({ _id: ObjectId(userId) });
   if (user === null) {
     throw "Error: User not found";
   }
@@ -50,10 +48,8 @@ let addGameToList = async function (userId, listName, gameId) {
       if (!l.games.includes(gameId)) l.games.push(gameId);
     }
   }
-  await userCollection.replaceOne(
-    { _id: ObjectId(userId) }, user
-  );
-}
+  await userCollection.replaceOne({ _id: ObjectId(userId) }, user);
+};
 
 let removeGameFromList = async function (userId, listName, gameId) {
   if (arguments.length !== 3) {
@@ -64,8 +60,8 @@ let removeGameFromList = async function (userId, listName, gameId) {
   gameId = await validate.checkId(gameId, "GameId");
   const userCollection = await users();
   const user = await userCollection.findOne(
-    {"lists.listName": listName} ,
-    {"lists.$": 1, _id : ObjectId(userId) }
+    { "lists.listName": listName },
+    { "lists.$": 1, _id: ObjectId(userId) }
   );
   if (user === null) {
     throw "Error: User not found";
@@ -77,11 +73,12 @@ let removeGameFromList = async function (userId, listName, gameId) {
     }
   }
   const removeInfo = await userCollection.replaceOne(
-    { _id: ObjectId(userId) }, user
+    { _id: ObjectId(userId) },
+    user
   );
   if (!removeInfo.matchedCount && !removeInfo.modifiedCount)
     throw "Error: Remove failed";
-}
+};
 
 let gameListsByUser = async function (userId) {
   if (arguments.length !== 1) {
@@ -89,16 +86,16 @@ let gameListsByUser = async function (userId) {
   }
   userId = await validate.checkId(userId, "UserId");
   const userCollection = await users();
-  const user = await userCollection.findOne({ _id: ObjectId(userId)});
+  const user = await userCollection.findOne({ _id: ObjectId(userId) });
   if (user === null) {
     throw "Error: User not found";
   }
   return user?.lists;
-}
+};
 
 module.exports = {
-    createList,
-    addGameToList,
-    removeGameFromList,
-    gameListsByUser,
-}
+  createList,
+  addGameToList,
+  removeGameFromList,
+  gameListsByUser,
+};
