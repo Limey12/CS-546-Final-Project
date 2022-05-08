@@ -1,8 +1,8 @@
 const express = require("express");
-const { ReturnDocument } = require("mongodb");
 const router = express.Router();
 const { users } = require("../data");
 const xss = require('xss');
+const validate = require("../validation/validation");
 
 //GET http://localhost:3000/users
 router.route("/").get(async (req, res) => {
@@ -10,8 +10,6 @@ router.route("/").get(async (req, res) => {
       let id = xss(req.session.user?.id);
       res.render("pages/users", { HTML_title:"Users", id: id });
     } catch (e) {
-      let id = xss(req?.session?.user?.id);
-      // res.status(500).render("pages/catalog", { error: true, errormsg: e, HTML_title:"Game Catalog", id: id });
       return res.status(500).render("pages/error", {
         id :xss(req?.session?.user?.id),
         HTML_title: "error",
@@ -22,12 +20,13 @@ router.route("/").get(async (req, res) => {
     }
   });
 
-//POST
+//POST http://localhost:3000/users
 router.post("/", async (req, res) => {
-  let search = xss(req.body.userSearchTerm);
-  search = search.trim();
-  let id = xss(req.session.user?.id);
-  if (!search) {
+  let search;
+  try {
+    search = xss(req.body.userSearchTerm);
+    search = await validate.checkString(search, "Search Term");
+  } catch(e) {
     res
       .status(400)
       .render("pages/users", {
@@ -38,10 +37,10 @@ router.post("/", async (req, res) => {
         id: id
       });
     return;
-  }
+  }  
   try {
-    userlist = await users.getUserSearchTerm(search);
     let id = xss(req.session.user?.id);
+    let userlist = await users.getUserSearchTerm(search);
     if (userlist.length == 0) {
       //Technically not an error since that just means there are no users with that name
       res
@@ -56,7 +55,6 @@ router.post("/", async (req, res) => {
     }
     res.render("pages/users", { users: userlist, HTML_title:"Users", id: id });
   } catch (e) {
-    // res.status(500).render("pages/catalog", { error: true, errormsg: e, HTML_title:"Game Catalog", id: id });
     return res.status(500).render("pages/error", {
       id :xss(req?.session?.user?.id),
       HTML_title: "error",
