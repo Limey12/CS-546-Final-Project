@@ -5,7 +5,7 @@ const { ObjectId } = require("mongodb");
 const gamesApi = require("./games");
 const validate = require("../validation/validation");
 let createComment = async function (userId, gameId, commentText) {
-  if (arguments.length != 3) {
+  if (arguments.length !== 3) {
     throw "Error: 3 arguments expected";
   }
   userId = validate.checkId(userId, "UserId");
@@ -40,7 +40,7 @@ let createComment = async function (userId, gameId, commentText) {
 };
 
 let getCommentFromUserAndGame = async function (gameId, userId) {
-  if (arguments.length != 2) {
+  if (arguments.length !== 2) {
     throw "Error: 2 arguments expected";
   }
   userId = validate.checkId(userId, "UserId");
