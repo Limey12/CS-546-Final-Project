@@ -20,14 +20,14 @@
             
             <ul>
             {{#each this.urevs}}
-            <li>
+            <li  class="review">
             <p>Rating: {{this.rating}}</p>
-            <p>{{this.reviewText}}</p>
+            <p  class="text">{{this.reviewText}}</p>
             </li>
             {{/each}}
             {{#each this.ucoms}}
-            <li>
-            <p>{{this.commentText}}</p>
+            <li  class="comment">
+            <p class="text">{{this.commentText}}</p>
             </li>
             {{/each}}
             </ul>

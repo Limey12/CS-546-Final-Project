@@ -56,8 +56,8 @@ Reviews
         {{#each reviews}}
             <li class="review">
                 <h4>By <a href="/profile/{{this.userId}}">{{this.reviewUsername}}</a></h4>
-                <p>Rating: {{this.rating}}</p>
-                <p>{{this.reviewText}}</p>
+                <p class="rating">Rating: {{this.rating}}</p>
+                <p class="text">{{this.reviewText}}</p>
             </li>
         {{/each}}
     {{else}}
@@ -85,7 +85,7 @@ Reviews
         {{#each comments}}
             <li class="comment">
                 <h4>By <a href="/profile/{{this.userId}}">{{this.commentUsername}}</a></h4>
-                <p>{{this.commentText}}</p>
+                <p class="text">{{this.commentText}}</p>
             </li>
         {{/each}}
     {{else}}
