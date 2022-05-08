@@ -10,13 +10,8 @@ const profileRoutes = require("./profileRoutes");
 const reviewRoutes = require("./reviewRoutes");
 const userRoutes = require("./userRoutes");
 const listRoutes = require("./listRoutes");
-const middle = require("../middleware");
+
 const constructorMethod = (app) => {
-  //middleware that keeps you logged in as "admin1" (no special privalages at the moment) based on how the server was started
-  if (process.argv.includes("admin")) {
-    app.use(middle.admin);
-  }
-  
   app.use("/", rootRoute);
   app.use("/login", loginRoutes);
   app.use("/signup", signupRoutes);
