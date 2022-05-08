@@ -178,8 +178,8 @@ router.route("/update/bio").post(async (req, res) => {
         res.redirect("/");
     }
     try {
-        let updateData = xss(req.body);
-        let bio = updateData.newBio;
+        let updateData = req.body;
+        let bio = xss(updateData.newBio);
         if (!bio) throw "Must provide bio";
         if (typeof bio !== "string") throw "Bio must be a string";
         bio = bio.trim();
