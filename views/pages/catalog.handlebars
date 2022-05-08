@@ -1,18 +1,20 @@
+<article id="gamecatalog">
 <h1>
   Game Catalog
 </h1>
+
 {{#if id}}
 <form action="/GameCatalog/gameform">
     <button type="submit">Enter a new game</button>
 </form>
 {{/if}}
 <form method="POST" action="/gamecatalog" id="gamesearch">
-  <label for="gameSearchTerm" id="Search">Search:</label>
-  <input type="text" name="gameSearchTerm" id="gameSearchTerm" />
-  <button type="submit">Submit</button>
+  <label for="gameSearchTerm" id="Search" class="searchButton">Search:</label>
+  <input type="text" name="gameSearchTerm" id="gameSearchTerm" class="searchTerm" />
+  <button type="submit" class="searchButton">Search</button>
 </form>
 <ul id="gameList">{{#each games}}
-    <li>
+    <li id="gameelement">
       <a href="/game/{{_id}}">{{title}}</a>
     </li>
   {{/each}}</ul>
@@ -23,6 +25,7 @@
   </p>
 {{/if}}
 <a href="/gamecatalog" id="backLink">Get All Games</a>
+</article>
 <script
   src="https://code.jquery.com/jquery-2.2.4.min.js"
   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
