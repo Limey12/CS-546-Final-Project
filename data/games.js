@@ -64,7 +64,7 @@ const getGame = async function getGame(id) {
   if (arguments.length !== 1) {
     throw "Error: 1 arguments expected";
   }
-  id = validate.checkId(id, "Id");
+  id = await validate.checkId(id, "Id");
   const gameCollection = await games();
   const game = await gameCollection.findOne({ _id: ObjectId(id) });
   if (game === null) {
@@ -79,7 +79,7 @@ const removeGame = async function removeGame(id) {
   if (arguments.length !== 1) {
     throw "Error: 1 arguments expected";
   }
-  id = validate.checkId(id, "Id");
+  id = await validate.checkId(id, "Id");
   const gameCollection = await games();
   const game = await gameCollection.findOne({ _id: ObjectId(id) });
   if (game === null) {
@@ -115,7 +115,7 @@ let getImage = async function (id) {
   if (arguments.length !== 1) {
     throw "Error: 1 arguments expected";
   }
-  id = validate.checkId(id, "Id");
+  id = await validate.checkId(id, "Id");
   const gameCollection = await games();
   const game = await gameCollection.findOne({ _id: ObjectId(id) });
   if (game === null) {
@@ -131,7 +131,7 @@ const getRecommendations = async function getRecommendations(id) {
   if (arguments.length !== 1) {
     throw "Error: 1 arguments expected";
   }
-  id = validate.checkId(id, "Id");
+  id = await validate.checkId(id, "Id");
   const gameCollection = await games();
   const userCollection = await users();
   const game = await gameCollection.findOne({ _id: ObjectId(id) });

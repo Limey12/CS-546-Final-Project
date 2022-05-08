@@ -20,6 +20,11 @@ const checkString = async function checkString(strVal, varName) {
   return strVal;
 };
 
+const checkBool = async function checkBool(bool, varName) {
+  if (!bool) throw `Error: You must provide ${varName}`;
+  if (typeof id !== "boolean") throw `Error: ${varName} must be a boolean`;
+}
+
 const checkImage = async function checkImage(url) {
   try {
     let req = await axios.head(url);
@@ -69,6 +74,7 @@ const checkDescription = async function checkDescription(description) {
 module.exports = {
   checkId,
   checkString,
+  checkBool,
   checkImage,
   // TO DELETE
   checkDescription,

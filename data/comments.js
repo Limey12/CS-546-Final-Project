@@ -8,9 +8,9 @@ let createComment = async function (userId, gameId, commentText) {
   if (arguments.length !== 3) {
     throw "Error: 3 arguments expected";
   }
-  userId = validate.checkId(userId, "UserId");
-  gameId = validate.checkId(gameId, "GameId");
-  commentText = validate.checkString(commentText, "Comment Text");
+  userId = await validate.checkId(userId, "UserId");
+  gameId = await validate.checkId(gameId, "GameId");
+  commentText = await validate.checkString(commentText, "Comment Text");
 
   const gameCollection = await games();
   const userCollection = await users();
@@ -43,8 +43,8 @@ let getCommentFromUserAndGame = async function (gameId, userId) {
   if (arguments.length !== 2) {
     throw "Error: 2 arguments expected";
   }
-  userId = validate.checkId(userId, "UserId");
-  gameId = validate.checkId(gameId, "GameId");
+  userId = await validate.checkId(userId, "UserId");
+  gameId = await validate.checkId(gameId, "GameId");
   const game = await gamesApi.getGame(gameId);
   let rev = [];
   for (r of game.comments) {
