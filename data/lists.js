@@ -49,6 +49,7 @@ let addGameToList = async function (userId, listName, gameId) {
   await userCollection.replaceOne({ _id: ObjectId(userId) }, user);
 };
 
+//Not implemented or exported
 let removeGameFromList = async function (userId, listName, gameId) {
   if (arguments.length !== 3) {
     throw "Error: 3 arguments expected";
@@ -94,6 +95,5 @@ let gameListsByUser = async function (userId) {
 module.exports = {
   createList,
   addGameToList,
-  removeGameFromList,
   gameListsByUser,
 };
