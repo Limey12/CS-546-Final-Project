@@ -109,12 +109,12 @@ router.route("/:id").post(async (req, res) => {
         if (req.body.comment) {
             let comment = req.body.comment;
             let addedcomment = await comments.createComment(userId, argId, comment);
-            res.status(204).json({ success: true, addedcomment: addedcomment, user:user.username }); //need xss
+            res.json({ success: true, addedcomment: addedcomment, user:user.username }); //need xss
         } else if (req.body.rating && req.body.review) {
             let rating = req.body.rating;
             let review = req.body.review;
             let addedreview = await reviews.createReview(userId, argId, review, rating);
-            res.status(204).json({ success: true, addedreview: addedreview, user:user.username }); //need xss
+            res.json({ success: true, addedreview: addedreview, user:user.username }); //need xss
         } else if (req.body['list-names']) {
             let listName = req.body['list-names'];
             await lists.addGameToList(userId, listName, argId)
