@@ -8,9 +8,9 @@ let createList = async function (userId, listName, public) {
   if (arguments.length !== 3) {
     throw "Error: 3 arguments expected";
   }
-  userId = validate.checkId(userId, "UserId");
-  listName = validate.checkString(listName, "List Name");
-  validate.checkBool(public, "Public");
+  userId = await validate.checkId(userId, "UserId");
+  listName = await validate.checkString(listName, "List Name");
+  await validate.checkBool(public, "Public");
   //make sure user AND game exist
   //along with normal stuff
   const userCollection = await users();
@@ -34,9 +34,9 @@ let addGameToList = async function (userId, listName, gameId) {
   if (arguments.length !== 3) {
     throw "Error: 3 arguments expected";
   }
-  userId = validate.checkId(userId, "UserId");
-  listName = validate.checkString(listName, "List Name");
-  gameId = validate.checkId(gameId, "GameId");
+  userId = await validate.checkId(userId, "UserId");
+  listName = await validate.checkString(listName, "List Name");
+  gameId = await validate.checkId(gameId, "GameId");
   const userCollection = await users();
   const user = await userCollection.findOne(
      { _id : ObjectId(userId) }
@@ -59,9 +59,9 @@ let removeGameFromList = async function (userId, listName, gameId) {
   if (arguments.length !== 3) {
     throw "Error: 3 arguments expected";
   }
-  userId = validate.checkId(userId, "UserId");
-  listName = validate.checkString(listName, "List Name");
-  gameId = validate.checkId(gameId, "GameId");
+  userId = await validate.checkId(userId, "UserId");
+  listName = await validate.checkString(listName, "List Name");
+  gameId = await validate.checkId(gameId, "GameId");
   const userCollection = await users();
   const user = await userCollection.findOne(
     {"lists.listName": listName} ,
@@ -87,9 +87,9 @@ let gameListsByUser = async function (userId) {
   if (arguments.length !== 1) {
     throw "Error: 1 argument expected";
   }
-  userId = validate.checkId(userId, "UserId");
+  userId = await validate.checkId(userId, "UserId");
   const userCollection = await users();
-  const user = await userCollection.findOne({ _id: ObjectId(userID)});
+  const user = await userCollection.findOne({ _id: ObjectId(userId)});
   if (user === null) {
     throw "Error: User not found";
   }
