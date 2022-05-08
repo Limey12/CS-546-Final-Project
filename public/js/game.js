@@ -73,8 +73,9 @@
         var addedrating = res.addedreview.rating;
         var addedreviewtext = res.addedreview.reviewText;
         var username = res.user;
+        var userId = res.addedreview.userId;
         const li = `<li>
-        <h4>By ${username}</h4>
+        <h4>By <a href="/profile/${userId}">${username}</a></h4>
         <p>Rating: ${addedrating}</p>
         <p>${addedreviewtext}</p>
         </li>`;
@@ -121,8 +122,9 @@
       //Checking is reponse has an error
         var addedcomment = res.addedcomment.commentText;
         var username = res.user;
+        var userId = res.addedcomment.userId;
         const li = `<li>
-        <h4>By ${username}</h4>
+        <h4>By <a href="/profile/${userId}">${username}</a></h4>
         <p>${addedcomment}</p>
         </li>`;
         addedCommentElem.append(li);
