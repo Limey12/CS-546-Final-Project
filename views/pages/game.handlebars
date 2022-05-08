@@ -51,7 +51,7 @@ Reviews
     <p id="reviewerror">
     </p>
     {{/if}}
-    <ul>
+    <ul id="addedreviews">
     {{#if reviews}}
         {{#each reviews}}
             <li class="review">
@@ -65,7 +65,7 @@ Reviews
     {{/if}}
     
     </ul>
-    <ul id="addedreviews" hidden>
+    {{!-- <ul id="addedreviews" hidden> --}}
     </ul>
     
     </details>
@@ -80,7 +80,7 @@ Reviews
     </form>
     <p id="commenterror"></p>
     {{/if}}
-    <ul>   
+    <ul id="addedcomments">   
     {{#if comments}}
         {{#each comments}}
             <li class="comment">
@@ -94,8 +94,8 @@ Reviews
     
     
     </ul>
-    <ul id="addedcomments" hidden>
-    </ul>
+    {{!-- <ul id="addedcomments" hidden>
+    </ul> --}}
     
     </details>
     
