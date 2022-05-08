@@ -85,6 +85,7 @@
       });
   });
   };
+
     let commentbut = $("#commentform");
     let commentInput = $("#comment_input");
     let addedCommentElem = $("#addedcomments");
