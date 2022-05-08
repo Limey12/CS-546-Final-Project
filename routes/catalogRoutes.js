@@ -36,19 +36,21 @@ router.route("/").get(async (req, res) => {
 
 //POST http://localhost:3000/gamecatalog
 router.post("/", async (req, res) => {
+  let search;
   try {
-    let search = xss(req.body.gameSearchTerm);
+    search = xss(req.body.gameSearchTerm);
+    search = validate.checkString(search);
+  } catch (e) {
+    return res.status(400).render("pages/catalog", {
+      games: [],
+      error: true,
+      errormsg: "No searchterm inputted",
+      HTML_title: "Game Catalog",
+      id: id,
+    });
+  }
+  try {
     let id = xss(req.session.user?.id);
-    if (!search) {
-      res.status(400).render("pages/catalog", {
-        games: [],
-        error: true,
-        errormsg: "No searchterm inputted",
-        HTML_title: "Game Catalog",
-        id: id,
-      });
-      return;
-    }
     let gamelist = await games.getGameSearchTerm(search);
     if (gamelist.length == 0) {
       res
