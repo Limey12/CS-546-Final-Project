@@ -12,11 +12,11 @@ const numRecs = 2;
 
 //https://advancedweb.hu/asynchronous-array-functions-in-javascript/
 const asyncFilter = async (arr, predicate) => {
-	const results = await Promise.all(arr.map(predicate));
-	return arr.filter((_v, index) => results[index]);
-}
-const asyncSome =
-	async (arr, predicate) => (await asyncFilter(arr, predicate)).length > 0;
+  const results = await Promise.all(arr.map(predicate));
+  return arr.filter((_v, index) => results[index]);
+};
+const asyncSome = async (arr, predicate) =>
+  (await asyncFilter(arr, predicate)).length > 0;
 
 const createUser = async function createUser(username, email, password) {
   if (arguments.length !== 3) {
@@ -81,15 +81,24 @@ const addFriend = async function addFriend(uID1, uID2) {
   uID2 = await validate.checkId(uID2, "UserId2");
   try {
     const userCollection = await users();
-    const userUpdateInfo1 = await userCollection.updateOne({_id : ObjectId(uID1)}, {$push: {friends : uID2}});
-    const userUpdateInfo2 = await userCollection.updateOne({_id : ObjectId(uID2)}, {$push: {friends : uID1}});
-    if ((!userUpdateInfo1.matchedCount && !userUpdateInfo1.modifiedCount) || (!userUpdateInfo2.matchedCount && !userUpdateInfo2.modifiedCount))
+    const userUpdateInfo1 = await userCollection.updateOne(
+      { _id: ObjectId(uID1) },
+      { $push: { friends: uID2 } }
+    );
+    const userUpdateInfo2 = await userCollection.updateOne(
+      { _id: ObjectId(uID2) },
+      { $push: { friends: uID1 } }
+    );
+    if (
+      (!userUpdateInfo1.matchedCount && !userUpdateInfo1.modifiedCount) ||
+      (!userUpdateInfo2.matchedCount && !userUpdateInfo2.modifiedCount)
+    )
       throw "Error: Update failed";
   } catch (e) {
     console.log(e);
   }
   return;
-}
+};
 
 const usernameToID = async function usernameToID(username) {
   if (arguments.length !== 1) {
@@ -102,7 +111,7 @@ const usernameToID = async function usernameToID(username) {
     throw "Error: User not found";
   }
   return user._id.toString();
-}
+};
 
 const getRecommendations = async function getRecommendations(username) {
   if (arguments.length !== 1) {
@@ -114,37 +123,46 @@ const getRecommendations = async function getRecommendations(username) {
   if (!user) throw "Error: User not found";
   let fav = user.favoriteGameId;
   const reviews = user.reviews;
-  if(!fav && reviews.length == 0) {
+  if (!fav && reviews.length == 0) {
     let games = await gameData.getAllGames();
-    games = games.sort(function(){return .5 - Math.random()});
+    games = games.sort(function () {
+      return 0.5 - Math.random();
+    });
     return games.slice(0, numRecs);
-  }
-  else if(!fav) {
+  } else if (!fav) {
     let max = 0;
-    for(let i = 0; i < reviews.length; i++) {
-      if(await reviewData.getRatingFromReview(reviews[i]) > max) {
+    for (let i = 0; i < reviews.length; i++) {
+      if ((await reviewData.getRatingFromReview(reviews[i])) > max) {
         max = await reviewData.getRatingFromReview(reviews[i]);
         fav = (await reviewData.getGameFromReview(reviews[i])).toString();
       }
     }
   }
   let games = await gameData.getRecommendations(fav);
-  games = await asyncFilter(games, async game => {
-    return !await asyncSome(reviews, async r => (await reviewData.getGameFromReview(r)).toString() === game._id);
+  games = await asyncFilter(games, async (game) => {
+    return !(await asyncSome(
+      reviews,
+      async (r) =>
+        (await reviewData.getGameFromReview(r)).toString() === game._id
+    ));
   });
-  games = games.sort(function(){return .5 - Math.random()});
-  if(games.length < numRecs) {
-    let tmp = await gameData.getAllGames()
-    tmp = tmp.sort(function(){return .5 - Math.random()});
-    tmp = tmp.filter(g1 => {
-      return !games.some(g2 => (g1._id === g2._id));
+  games = games.sort(function () {
+    return 0.5 - Math.random();
+  });
+  if (games.length < numRecs) {
+    let tmp = await gameData.getAllGames();
+    tmp = tmp.sort(function () {
+      return 0.5 - Math.random();
+    });
+    tmp = tmp.filter((g1) => {
+      return !games.some((g2) => g1._id === g2._id);
     });
     games = games.concat(tmp);
   }
   return games.slice(0, numRecs);
-}
+};
 
-const IDtoUsername = async function(userId) {
+const IDtoUsername = async function (userId) {
   if (arguments.length !== 1) {
     throw "Error: 1 argument expected";
   }
@@ -155,9 +173,9 @@ const IDtoUsername = async function(userId) {
     throw "Error: User not found";
   }
   return user.username;
-}
+};
 
-const favorite = async function(userId, gameId) {
+const favorite = async function (userId, gameId) {
   if (arguments.length !== 2) {
     throw "Error: 2 arguments expected";
   }
@@ -166,13 +184,13 @@ const favorite = async function(userId, gameId) {
   const userCollection = await users();
   const updateInfo = await userCollection.updateOne(
     { _id: ObjectId(userId) },
-    { $set: {favoriteGameId : gameId} }
+    { $set: { favoriteGameId: gameId } }
   );
   if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
     throw "Error: Update failed";
-}
+};
 
-const leastfavorite = async function(userId, gameId) {
+const leastfavorite = async function (userId, gameId) {
   if (arguments.length !== 2) {
     throw "Error: 2 arguments expected";
   }
@@ -181,13 +199,13 @@ const leastfavorite = async function(userId, gameId) {
   const userCollection = await users();
   const updateInfo = await userCollection.updateOne(
     { _id: ObjectId(uID) },
-    { $set: {leastFavoriteGameId : gameID} }
+    { $set: { leastFavoriteGameId: gameID } }
   );
   if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
     throw "Error: Update failed";
-}
+};
 
-const updateBio = async function(userId, bio) {
+const updateBio = async function (userId, bio) {
   if (arguments.length !== 2) {
     throw "Error: 2 arguments expected";
   }
@@ -196,11 +214,11 @@ const updateBio = async function(userId, bio) {
   const userCollection = await users();
   const updateInfo = await userCollection.updateOne(
     { _id: ObjectId(userId) },
-    { $set: {bio : bio} }
+    { $set: { bio: bio } }
   );
   if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
     throw "Error: Update failed";
-}
+};
 
 const getUser = async function getUser(id) {
   if (arguments.length !== 1) {
@@ -213,7 +231,7 @@ const getUser = async function getUser(id) {
     throw "Error: User not found";
   }
   return user;
-}
+};
 
 //Get Users Stuff
 
