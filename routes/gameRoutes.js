@@ -4,26 +4,29 @@ const router = express.Router();
 const { games, users, comments, reviews, lists } = require("../data");
 const reviewApi = reviews;
 const xss = require('xss');
+const validate = require("../validation/validation");
 
 //GET http://localhost:3000/game/{id}
 router.route("/:id").get(async (req, res) => {
+    let argId, game;
     try {
-        let argId = xss(req?.params?.id);
-        if (argId == undefined || typeof argId != 'string') {
-            return res.status(400).send({ "error" : "Bad request. Must include id parameter"});
-        }
-        let game;
-        try {
-            game = await games.getGame(argId);
-        } catch {
-            return res.status(404).render("pages/error", {
-                id :xss(req?.session?.user?.id),
-                HTML_title: "game not found",
-                class: "error",
-                status: 404,
-                message: "game not found"
-            });
-        }
+        argId = xss(req?.params?.id);
+        await validate.checkString(argId);
+    } catch (e) {
+        return res.status(400).send({ "error" : "Bad request. Must include id parameter"});
+    }
+    try {
+        game = await games.getGame(argId);
+    } catch {
+        return res.status(404).render("pages/error", {
+            id :xss(req?.session?.user?.id),
+            HTML_title: "game not found",
+            class: "error",
+            status: 404,
+            message: "game not found"
+        });
+    }
+    try {
         let userId = xss(req?.session?.user?.id);
         let gameLists;
         if (userId) {
@@ -45,7 +48,6 @@ router.route("/:id").get(async (req, res) => {
         } else {
             f_rating = Number(f_rating).toFixed(1);
         }
-
 
         let overall_rating = game?.overallRating;
         if (isNaN(overall_rating) || overall_rating == null || overall_rating == undefined) {
@@ -81,11 +83,11 @@ router.route("/:id").get(async (req, res) => {
 //POST http://localhost:3000/game/{id}/fav
 router.route("/:id/fav").post(async (req, res) => {
     try {
-        //todo validation
         let argId = xss(req?.params?.id);
-        if (argId == undefined || typeof argId != 'string') {
+        await validate.checkString(argId);
+        //if (argId == undefined || typeof argId != 'string') {
             //todo error page
-        }
+        //}
         let userId = xss(req?.session?.user?.id);
         await users.favorite(userId, argId);
     } catch (e) {
@@ -97,11 +99,11 @@ router.route("/:id/fav").post(async (req, res) => {
 //POST http://localhost:3000/game/{id}/lfav
 router.route("/:id/lfav").post(async (req, res) => {
     try {
-        //todo validation
         let argId = xss(req?.params?.id);
-        if (argId == undefined || typeof argId != 'string') {
+        await validate.checkString(argId);
+        //if (argId == undefined || typeof argId != 'string') {
             //todo error page
-        }
+        //}
         let userId = xss(req?.session?.user?.id);
         await users.leastfavorite(userId, argId);
     } catch (e) {
@@ -110,15 +112,15 @@ router.route("/:id/lfav").post(async (req, res) => {
     }
 });
 
-
 //POST http://localhost:3000/game/{id}
 router.route("/:id").post(async (req, res) => {
     try {
         //todo validation
         let argId = xss(req?.params?.id);
-        if (argId == undefined || typeof argId != 'string') {
+        await validate.checkString(argId);
+        //if (argId == undefined || typeof argId != 'string') {
             //todo error page
-        }
+        //}
         let userId = xss(req?.session?.user?.id);
 
         let user = await users.getUser(userId);
@@ -138,9 +140,6 @@ router.route("/:id").post(async (req, res) => {
         } else {
             res.status(400).send({ error : "must supply comment, review+rating, or list-names"});
         }
-
-        // return res.redirect("/game/" + argId);
-
     } catch (e) {
         console.log("post routecatch "+ e)
         return res.status(500).send( {'error' : e });
