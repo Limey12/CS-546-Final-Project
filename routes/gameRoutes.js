@@ -107,28 +107,42 @@ router.route("/:id/lfav").post(async (req, res) => {
 
 //POST http://localhost:3000/game/{id}
 router.route("/:id").post(async (req, res) => {
+    let argId, userId, comment, rating, review, listName;
     try {
-        //todo validation
-        let argId = xss(req?.params?.id);
+        argId = xss(req?.params?.id);
         argId = await validate.checkId(argId);
-        let userId = xss(req?.session?.user?.id);
-
+        userId = xss(req?.session?.user?.id);
+        if (xss(req.body.comment)) {
+            comment = xss(req.body.comment);
+            comment =  await validate.checkString(comment, "Comment");
+        } else if (xss(req.body.rating) && xss(req.body.review)) {
+            rating = xss(req.body.rating);
+            rating =  await validate.checkNum(rating, "Rating");
+            review = xss(req.body.review);
+            review =  await validate.checkString(review, "Review");
+        } else if (xss(req.body['list-names'])) {
+            listName = xss(req.body['list-names']);
+            listName = await validate.checkString(listName, "List Name");
+        } else {
+            throw "Must supply comment, review + rating, or list-names";
+        }
+    } catch (e) {
+        console.log("post routecatch "+ e)
+        return res.status(400).send( {'error' : e });
+    }
+    try {
         let user = await users.getUser(userId);
         if (xss(req.body.comment)) {
-            let comment = xss(req.body.comment);
             let addedcomment = await comments.createComment(userId, argId, comment);
             res.json({ success: true, addedcomment: addedcomment, user:user.username });
         } else if (xss(req.body.rating) && xss(req.body.review)) {
-            let rating = xss(req.body.rating);
-            let review = xss(req.body.review);
             let addedreview = await reviews.createReview(userId, argId, review, rating);
             res.json({ success: true, addedreview: addedreview, user:user.username });
         } else if (xss(req.body['list-names'])) {
-            let listName = xss(req.body['list-names']);
             await lists.addGameToList(userId, listName, argId)
             res.status(204).json({ success: true});
         } else {
-            res.status(400).send({ error : "must supply comment, review+rating, or list-names"});
+            throw "Must supply comment, review + rating, or list-names";
         }
     } catch (e) {
         console.log("post routecatch "+ e)
