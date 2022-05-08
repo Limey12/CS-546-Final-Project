@@ -37,9 +37,9 @@ Reviews
         <p>Among all users: {{overall_rating}}</p>
     </div>
 
-    {{!-- Todo form to add a new review --}}
-
-    <h3>Reviews</h3>
+    <details>
+    <summary><h3>Reviews</h3></summary>
+    
     {{#if id}}
     <form id="reviewform" action = "?" method="post">
         <label for="rating" id="rating_label">Rating:</label>
@@ -52,7 +52,7 @@ Reviews
     <ul>
     {{#if reviews}}
         {{#each reviews}}
-            <li>
+            <li class="review">
                 <h4>By <a href="/profile/{{this.userId}}">{{this.reviewUsername}}</a></h4>
                 <p>Rating: {{this.rating}}</p>
                 <p>{{this.reviewText}}</p>
@@ -67,8 +67,10 @@ Reviews
     </ul>
     <p id="reviewerror">
     </p>
+    </details>
 
-    <h3>Comments</h3>
+    <details>
+    <summary><h3>Comments</h3></summary>
     {{#if id}}
     <form id="commentform" action = "?" method="post">
         <label for="comment" id="comment_label">Comment:</label>
@@ -79,7 +81,7 @@ Reviews
     <ul>   
     {{#if comments}}
         {{#each comments}}
-            <li>
+            <li class="comment">
                 <h4>By <a href="/profile/{{this.userId}}">{{this.commentUsername}}</a></h4>
                 <p>{{this.commentText}}</p>
             </li>
@@ -94,6 +96,7 @@ Reviews
     </ul>
     <p id="commenterror">
     </p>
+    </details>
     
 </article>
 {{!-- for ajax buttons and forms --}}
