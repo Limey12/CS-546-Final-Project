@@ -1,11 +1,11 @@
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const bcrypt = require("bcrypt");
-const validator = require("email-validator");
 const reviewData = require("./reviews");
 const gameData = require("./games");
 const listData = require("./lists");
 const { ObjectId } = require("mongodb");
+const validate = require("../validation/validation");
 
 const saltRounds = 8;
 const numRecs = 2;
@@ -19,23 +19,17 @@ const asyncSome =
 	async (arr, predicate) => (await asyncFilter(arr, predicate)).length > 0;
 
 const createUser = async function createUser(username, email, password) {
-  if (!username || !email || !password)
-    throw "All fields need to have valid values.";
-  if (typeof username !== "string") throw "Username must be a string.";
-  username = username.toLowerCase();
-  if (!/^[a-z0-9]+$/i.test(username)) throw "Username must be alphanumeric.";
-  if (username.length < 4) throw "Username must be at least 4 characters long.";
-  if (typeof email !== "string") throw "Email must be a string.";
-  if (!validator.validate(email)) throw "Email must be valid.";
-  if (typeof password !== "string") throw "Password must be a string.";
-  if (/\s/.test(password)) throw "Password must not contain any spaces.";
-  if (password.length < 6) throw "Password must be at least 6 characters long.";
+  if (arguments.length !== 3) {
+    throw "Error: 3 arguments expected";
+  }
+  username = await validate.checkUsername(username);
+  email = await validate.checkEmail(email);
   const hash = await bcrypt.hash(password, saltRounds);
   const userCollection = await users();
   const user1 = await userCollection.findOne({ username: username });
-  if (user1) throw "User with that username already exists.";
+  if (user1) throw "Error: User with that username already exists.";
   const user2 = await userCollection.findOne({ email: email });
-  if (user2) throw "User with that email already exists.";
+  if (user2) throw "Error: User with that email already exists.";
   let newUser = {
     username: username,
     bio: "",
@@ -49,7 +43,7 @@ const createUser = async function createUser(username, email, password) {
   };
   const insertInfo = await userCollection.insertOne(newUser);
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
-    throw "Could not add user.";
+    throw "Error: Could not add user";
   newUser._id = newUser._id.toString();
   await listData.createList(newUser._id, "Played Games", true);
   return newUser;
