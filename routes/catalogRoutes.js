@@ -1,5 +1,4 @@
 const express = require("express");
-const { ReturnDocument } = require("mongodb");
 const router = express.Router();
 const { games } = require("../data");
 const validate = require("../validation/validation");
@@ -120,7 +119,7 @@ router.route("/gameform").post(async (req, res) => {
 
   try {
     let addedgame = await games.addGame(title, description, image);
-    res.json({ success: true, addedgame: addedgame }); //need xss
+    res.json({ success: true, addedgame: addedgame });
   } catch (e) {
     res.status(500).json({ success: false, error: e });
     return;

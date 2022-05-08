@@ -1,5 +1,4 @@
 const express = require("express");
-const constructorMethod = require(".");
 const router = express.Router();
 const { games, users, comments, reviews, lists } = require("../data");
 const reviewApi = reviews;
@@ -85,9 +84,6 @@ router.route("/:id/fav").post(async (req, res) => {
     try {
         let argId = xss(req?.params?.id);
         await validate.checkString(argId);
-        //if (argId == undefined || typeof argId != 'string') {
-            //todo error page
-        //}
         let userId = xss(req?.session?.user?.id);
         await users.favorite(userId, argId);
     } catch (e) {
@@ -101,9 +97,6 @@ router.route("/:id/lfav").post(async (req, res) => {
     try {
         let argId = xss(req?.params?.id);
         await validate.checkString(argId);
-        //if (argId == undefined || typeof argId != 'string') {
-            //todo error page
-        //}
         let userId = xss(req?.session?.user?.id);
         await users.leastfavorite(userId, argId);
     } catch (e) {
@@ -118,9 +111,6 @@ router.route("/:id").post(async (req, res) => {
         //todo validation
         let argId = xss(req?.params?.id);
         await validate.checkString(argId);
-        //if (argId == undefined || typeof argId != 'string') {
-            //todo error page
-        //}
         let userId = xss(req?.session?.user?.id);
 
         let user = await users.getUser(userId);
