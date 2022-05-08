@@ -4,6 +4,7 @@ const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 const gamesApi = require("./games");
 const validate = require("../validation/validation");
+
 let createComment = async function (userId, gameId, commentText) {
   if (arguments.length !== 3) {
     throw "Error: 3 arguments expected";
@@ -27,7 +28,7 @@ let createComment = async function (userId, gameId, commentText) {
     }
   );
   if (!gameUpdateInfo.matchedCount && !gameUpdateInfo.modifiedCount)
-    throw "Update failed";
+    throw "Error: Update failed";
 
   //new review is added to video game. Id must be added to user.
   const userUpdateInfo = await userCollection.updateOne(
@@ -35,7 +36,7 @@ let createComment = async function (userId, gameId, commentText) {
     { $push: { comments: newComment._id.toString() } }
   );
   if (!userUpdateInfo.matchedCount && !userUpdateInfo.modifiedCount)
-    throw "Update failed";
+    throw "Error: Update failed";
   return newComment;
 };
 
