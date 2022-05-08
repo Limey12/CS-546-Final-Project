@@ -116,7 +116,7 @@ router.route("/:id").post(async (req, res) => {
         } else if (req.body['list-names']) {
             let listName = req.body['list-names'];
             await lists.addGameToList(userId, listName, argId)
-
+            res.json({ success: true});
         } else {
             res.status(400).send({ error : "must supply comment, review+rating, or list-names"});
         }
