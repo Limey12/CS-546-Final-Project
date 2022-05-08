@@ -3,7 +3,7 @@ const { ReturnDocument } = require("mongodb");
 const router = express.Router();
 const { games } = require("../data");
 const validate = require("../validation/validation");
-const xss = require('xss');
+const xss = require("xss");
 
 //GET http://localhost:3000/gamecatalog
 router.route("/").get(async (req, res) => {
@@ -12,18 +12,27 @@ router.route("/").get(async (req, res) => {
     let allGames = await games.getAllGames();
     allGames = await validate.checkArray(allGames, "Game List");
     if (allGames.length == 0) {
-        res.render("pages/catalog", { games: allGames, errormsg: 'No games in database', HTML_title:"Game Catalog", id: id });
-        return;
+      res.render("pages/catalog", {
+        games: allGames,
+        errormsg: "No games in database",
+        HTML_title: "Game Catalog",
+        id: id,
+      });
+      return;
     }
-    res.render("pages/catalog", { games: allGames, HTML_title:"Game Catalog", id: id });
+    res.render("pages/catalog", {
+      games: allGames,
+      HTML_title: "Game Catalog",
+      id: id,
+    });
   } catch (e) {
     return res.status(500).render("pages/error", {
-      id :xss(req?.session?.user?.id),
+      id: xss(req?.session?.user?.id),
       HTML_title: "error",
       class: "error",
       status: 500,
-      message: e
-  });
+      message: e,
+    });
   }
 });
 
@@ -33,40 +42,42 @@ router.post("/", async (req, res) => {
     let search = xss(req.body.gameSearchTerm);
     let id = xss(req.session.user?.id);
     if (!search) {
-      res
-        .status(400)
-        .render("pages/catalog", {
-          games: [],
-          error: true,
-          errormsg: "No searchterm inputted",
-          HTML_title:"Game Catalog",
-          id: id
-        });
+      res.status(400).render("pages/catalog", {
+        games: [],
+        error: true,
+        errormsg: "No searchterm inputted",
+        HTML_title: "Game Catalog",
+        id: id,
+      });
       return;
     }
     let gamelist = await games.getGameSearchTerm(search);
     gamelist = await validate.checkArray(gamelist, "Game List");
     if (gamelist.length == 0) {
       res
-      //Technically not an error since that just means there are no users with that name
+        //Technically not an error since that just means there are no users with that name
         .render("pages/catalog", {
           games: [],
           error: true,
           errormsg: "No results",
-          HTML_title:"Game Catalog",
-          id: id
+          HTML_title: "Game Catalog",
+          id: id,
         });
       return;
     }
-    res.render("pages/catalog", { games: gamelist, HTML_title:"Game Catalog", id: id });
+    res.render("pages/catalog", {
+      games: gamelist,
+      HTML_title: "Game Catalog",
+      id: id,
+    });
   } catch (e) {
     return res.status(500).render("pages/error", {
-      id :xss(req?.session?.user?.id),
+      id: xss(req?.session?.user?.id),
       HTML_title: "error",
       class: "error",
       status: 500,
-      message: e
-  });
+      message: e,
+    });
   }
 });
 
@@ -74,18 +85,18 @@ router.post("/", async (req, res) => {
 router.route("/gameform").get(async (req, res) => {
   try {
     let id = xss(req.session.user?.id);
-    if(!id){
+    if (!id) {
       res.redirect("/gamecatalog");
     }
-    res.render("pages/gameform", {HTML_title:"Game Form", id: id});
+    res.render("pages/gameform", { HTML_title: "Game Form", id: id });
   } catch (e) {
     return res.status(500).render("pages/error", {
-      id :xss(req?.session?.user?.id),
+      id: xss(req?.session?.user?.id),
       HTML_title: "error",
       class: "error",
       status: 500,
-      message: e
-  });
+      message: e,
+    });
   }
 });
 
@@ -95,13 +106,13 @@ router.route("/gameform").post(async (req, res) => {
   let title, description, image;
   try {
     title = xss(req.body.title);
-    title = await validate.checkString(title, "title")
+    title = await validate.checkString(title, "title");
     description = xss(req.body.description);
-    description = await validate.checkString(description, "description")
+    description = await validate.checkString(description, "description");
     image = xss(req.body.image);
-    if(image == "/public/images/no_image.jpeg"){
+    if (image == "/public/images/no_image.jpeg") {
       image = null;
-    } else{
+    } else {
       await validate.checkImage(image);
     }
   } catch (e) {
