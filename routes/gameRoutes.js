@@ -10,7 +10,7 @@ router.route("/:id").get(async (req, res) => {
     let argId, game;
     try {
         argId = xss(req?.params?.id);
-        await validate.checkString(argId);
+        argId = await validate.checkId(argId);
     } catch (e) {
         return res.status(400).send({ "error" : "Bad request. Must include id parameter"});
     }
@@ -83,7 +83,7 @@ router.route("/:id").get(async (req, res) => {
 router.route("/:id/fav").post(async (req, res) => {
     try {
         let argId = xss(req?.params?.id);
-        await validate.checkString(argId);
+        await validate.checkId(argId);
         let userId = xss(req?.session?.user?.id);
         await users.favorite(userId, argId);
     } catch (e) {
@@ -96,7 +96,7 @@ router.route("/:id/fav").post(async (req, res) => {
 router.route("/:id/lfav").post(async (req, res) => {
     try {
         let argId = xss(req?.params?.id);
-        await validate.checkString(argId);
+        await validate.checkId(argId);
         let userId = xss(req?.session?.user?.id);
         await users.leastfavorite(userId, argId);
     } catch (e) {
@@ -110,19 +110,19 @@ router.route("/:id").post(async (req, res) => {
     try {
         //todo validation
         let argId = xss(req?.params?.id);
-        await validate.checkString(argId);
+        argId = await validate.checkId(argId);
         let userId = xss(req?.session?.user?.id);
 
         let user = await users.getUser(userId);
         if (xss(req.body.comment)) {
             let comment = xss(req.body.comment);
             let addedcomment = await comments.createComment(userId, argId, comment);
-            res.json({ success: true, addedcomment: addedcomment, user:user.username }); //need xss
+            res.json({ success: true, addedcomment: addedcomment, user:user.username });
         } else if (xss(req.body.rating) && xss(req.body.review)) {
             let rating = xss(req.body.rating);
             let review = xss(req.body.review);
             let addedreview = await reviews.createReview(userId, argId, review, rating);
-            res.json({ success: true, addedreview: addedreview, user:user.username }); //need xss
+            res.json({ success: true, addedreview: addedreview, user:user.username });
         } else if (xss(req.body['list-names'])) {
             let listName = xss(req.body['list-names']);
             await lists.addGameToList(userId, listName, argId)
