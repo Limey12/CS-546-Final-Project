@@ -10,6 +10,7 @@ const profileRoutes = require("./profileRoutes");
 const reviewRoutes = require("./reviewRoutes");
 const userRoutes = require("./userRoutes");
 const listRoutes = require("./listRoutes");
+
 const constructorMethod = (app) => {
   app.use("/", rootRoute);
   app.use("/login", loginRoutes);
