@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "seed": "node ./tasks/seed.js"
+    "seed": "node ./tasks/seed.js",
+    "steam": "node ./tasks/steamseed.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
     "express-handlebars": "^6.0.5",
     "express-session": "^1.17.2",
     "mongodb": "^4.5.0",
+    "steamapi": "^2.2.0",
     "xss": "^1.0.11"
   }
 }
