@@ -2,13 +2,13 @@
 <h1>
   Users
 </h1>
-<form method="POST" action="/users" id="usersearch">
+<form method="POST" action="/users" id="usersearchform">
   <label for="userSearchTerm" id="Search">Search:</label>
   <input type="text" name="userSearchTerm" id="userSearchTerm" />
   <button type="submit">Submit</button>
 </form>
 <ul id="userlist">{{#each users}}
-    <li id="userelement">
+    <li class="userelement">
       <a href="/profile/{{_id}}">{{username}}</a>
     </li>
   {{/each}}</ul>

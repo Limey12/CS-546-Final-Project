@@ -87,29 +87,29 @@ router.route("/:id").get(async (req, res) => {
       }
       friendsList.push({ username: friend.username, id: friend._id });
     }
-
-    res.render("pages/profile", {
-      HTML_title: "Profile",
-      id: userId,
-      username: username,
-      bio: bio,
-      friends: friendsList,
-      favoriteGameName: favoriteGameName,
-      leastFavoriteGameName: leastFavoriteGameName,
-      pageOwned: pageOwned,
-      pageId: id,
-      friended,
-      friended,
-    });
-  } catch (e) {
-    return res.status(500).render("pages/error", {
-      id: xss(req?.session?.user?.id),
-      HTML_title: "error",
-      class: "error",
-      status: 500,
-      message: e,
-    });
-  }
+        res.render("pages/profile", {
+            HTML_title: "Profile",
+            id: userId,
+            username: username,
+            bio: bio,
+            friends: friendsList,
+            favoriteGameName: favoriteGameName,
+            favoriteGameId: favoriteGameId,
+            leastFavoriteGameName: leastFavoriteGameName,
+            leastFavoriteGameId: leastFavoriteGameId,
+            pageOwned: pageOwned,
+            pageId: id,
+            friended: friended
+        });
+    } catch (e) {
+        return res.status(500).render("pages/error", {
+            id :xss(req?.session?.user?.id),
+            HTML_title: "error",
+            class: "error",
+            status: 500,
+            message: e
+        });
+    }
 });
 
 //POST http://localhost:3000/profile/add/{id}

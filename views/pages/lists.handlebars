@@ -5,13 +5,13 @@
 </form>
 
 
-<h3>Current Lists: </h3>
+<h1>Current Lists: </h1>
 <ul>
 {{#each lists}}
     
     <li>
         <details>
-        <summary><h4>{{this.listName}}</h4></summary>
+        <summary><h2>{{this.listName}}</h2></summary>
         <ul>
         {{#each this.games}}
         <li>
@@ -20,14 +20,14 @@
             
             <ul>
             {{#each this.urevs}}
-            <li>
+            <li  class="review">
             <p>Rating: {{this.rating}}</p>
-            <p>{{this.reviewText}}</p>
+            <p  class="text">{{this.reviewText}}</p>
             </li>
             {{/each}}
             {{#each this.ucoms}}
-            <li>
-            <p>{{this.commentText}}</p>
+            <li  class="comment">
+            <p class="text">{{this.commentText}}</p>
             </li>
             {{/each}}
             </ul>

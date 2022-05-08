@@ -7,7 +7,7 @@ Reviews
 
 
 <article>
-    <h2>{{game_name}}</h2>
+    <h1>{{game_name}}</h1>
     {{#if id}}
     <form id="fav_btn">
         <button type="submit">Favorite</button>
@@ -27,8 +27,7 @@ Reviews
     </form>
     {{/if}}
     
-    <img src="{{image}}" alt="{{alt}}" width="300" 
-     height="300"></img>
+    <img src="{{image}}" alt="{{alt}}" width="300" height="300">
      {{!-- todo place holder to resize image --}}
     <p>{{description}}</p>
     <h3>Average Rating</h3>
@@ -42,31 +41,30 @@ Reviews
     
     {{#if id}}
     <form id="reviewform" action = "?" method="post">
-        <label for="rating" id="rating_label">Rating:</label>
+        <label for="rating_input" id="rating_label">Rating:</label>
         <input type="number" name="rating" id="rating_input" min="0" max="5" step="0.1"/><br />
-        <label for="review" id="review_label">Review:</label>
-        <textarea type="text" name="review" id="review_input" /></textarea>
+        <label for="review_input" id="review_label">Review:</label>
+        <textarea name="review" id="review_input"></textarea>
         <button type="submit">Submit</button>
     </form>
     <p id="reviewerror">
     </p>
     {{/if}}
-    <ul>
+    <ul id="addedreviews">
     {{#if reviews}}
         {{#each reviews}}
             <li class="review">
                 <h4>By <a href="/profile/{{this.userId}}">{{this.reviewUsername}}</a></h4>
-                <p>Rating: {{this.rating}}</p>
-                <p>{{this.reviewText}}</p>
+                <p class="rating">Rating: {{this.rating}}</p>
+                <p class="text">{{this.reviewText}}</p>
             </li>
         {{/each}}
     {{else}}
-        <p id="noreviews">There are no reviews for this game yet!{{#if id}} Be the first {{else}} Log in {{/if}}to add one.</p>
+        <li id="noreviews">There are no reviews for this game yet!{{#if id}} Be the first {{else}} Log in {{/if}}to add one.</li>
     {{/if}}
     
     </ul>
-    <ul id="addedreviews" hidden>
-    </ul>
+    {{!-- <ul id="addedreviews" hidden> --}}
     
     </details>
 
@@ -74,28 +72,28 @@ Reviews
     <summary><h3>Comments</h3></summary>
     {{#if id}}
     <form id="commentform" action = "?" method="post">
-        <label for="comment" id="comment_label">Comment:</label>
-        <textarea type="text" name="comment" id="comment_input" /></textarea>
+        <label for="comment_input" id="comment_label">Comment:</label>
+        <textarea name="comment" id="comment_input"></textarea>
         <button type="submit">Submit</button>
     </form>
     <p id="commenterror"></p>
     {{/if}}
-    <ul>   
+    <ul id="addedcomments">   
     {{#if comments}}
         {{#each comments}}
             <li class="comment">
                 <h4>By <a href="/profile/{{this.userId}}">{{this.commentUsername}}</a></h4>
-                <p>{{this.commentText}}</p>
+                <p class="text">{{this.commentText}}</p>
             </li>
         {{/each}}
     {{else}}
-        <p id="nocomments">There are no comments for this game yet!{{#if id}} Be the first {{else}} Log in {{/if}}to add one.</p>
+        <li id="nocomments">There are no comments for this game yet!{{#if id}} Be the first {{else}} Log in {{/if}}to add one.</li>
     {{/if}}
     
     
     </ul>
-    <ul id="addedcomments" hidden>
-    </ul>
+    {{!-- <ul id="addedcomments" hidden>
+    </ul> --}}
     
     </details>
     

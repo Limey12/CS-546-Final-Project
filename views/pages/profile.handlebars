@@ -1,4 +1,4 @@
-<body>
+<article id="profile">
   <header>
     <h1>
       User Profile
@@ -14,20 +14,20 @@
   </p>
   <h2>Preferences</h2>
   {{#if favoriteGameName}}
-    <p>Favorite game: {{favoriteGameName}}</p>
+    <p>Favorite game: <a href="/game/{{favoriteGameId}}">{{favoriteGameName}}</a></p>
   {{else}}
     <p>No favorite game</p>
   {{/if}}
   {{#if leastFavoriteGameName}}
-    <p>Least favorite game: {{leastFavoriteGameName}}</p>
+    <p>Least favorite game: <a href="/game/{{leastFavoriteGameId}}">{{leastFavoriteGameName}}</a></p>
   {{else}}
     <p>No least favorite game</p>
   {{/if}}
   <h2>Friends</h2>
-  <ul>
+  <ul id="friendslist">
     {{#if friends}}
       {{#each friends}}
-        <li>
+        <li class="friendelem">
           <a href="/profile/{{id}}">{{username}}</a>
         </li>
       {{/each}}
@@ -48,4 +48,4 @@
       {{/if}}
     {{/if}}
   {{/if}}
-</body>
+</article>

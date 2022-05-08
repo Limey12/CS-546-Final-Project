@@ -73,10 +73,11 @@
         var addedrating = res.addedreview.rating;
         var addedreviewtext = res.addedreview.reviewText;
         var username = res.user;
-        const li = `<li>
-        <h4>By ${username}</h4>
-        <p>Rating: ${addedrating}</p>
-        <p>${addedreviewtext}</p>
+        var userId = res.addedreview.userId;
+        const li = `<li class="review">
+        <h4>By <a href="/profile/${userId}">${username}</a></h4>
+        <p class="rating">Rating: ${addedrating}</p>
+        <p class="text">${addedreviewtext}</p>
         </li>`;
         addedReviewElem.append(li);
         addedReviewElem.show();
@@ -121,9 +122,10 @@
       //Checking is reponse has an error
         var addedcomment = res.addedcomment.commentText;
         var username = res.user;
-        const li = `<li>
-        <h4>By ${username}</h4>
-        <p>${addedcomment}</p>
+        var userId = res.addedcomment.userId;
+        const li = `<li class="comment">
+        <h4>By <a href="/profile/${userId}">${username}</a></h4>
+        <p class="text">${addedcomment}</p>
         </li>`;
         addedCommentElem.append(li);
         addedCommentElem.show();

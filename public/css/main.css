@@ -4,7 +4,7 @@ body {
 }
 
 a {
-  color: #118bee;
+  color: #0079d1;
   display: inline-block;
   font-weight: bold;
   text-decoration: none;
@@ -12,7 +12,7 @@ a {
 
 a:hover,
 a:active {
-  color: #0f7fdb;
+  color: rgb(4, 79, 141);
   text-decoration: underline;
 }
 
@@ -44,7 +44,7 @@ button:active {
 
 #navBar {
   list-style-type: none;
-  margin: 0;
+  margin: -10px;
   padding: 0;
   overflow: hidden;
   background-color: #333;
@@ -72,6 +72,10 @@ button:active {
 
 /* Login/Signup form*/
 
+
+#signuplink,#loginlink{
+	color: #0074c8;
+}
 #errordiv{
   margin: auto;
   width: 50%;
@@ -87,7 +91,6 @@ button:active {
 	padding: 20px;
 	background: #f4f7f8;
 	border-radius: 8px;
-	font-family: Georgia, "Times New Roman", Times, serif;
 }
 .form-style fieldset{
 	border: none;
@@ -106,7 +109,6 @@ button:active {
 .form-style input[type="password"],
 .form-style textarea,
 .form-style select {
-	font-family: Georgia, "Times New Roman", Times, serif;
 	background: rgba(255,255,255,.1);
 	border: none;
 	border-radius: 4px;
@@ -119,7 +121,6 @@ button:active {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box; 
 	background-color: #e8eeef;
-	color:#8a97a0;
 	-webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
 	box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
 	margin-bottom: 30px;
@@ -190,9 +191,18 @@ a{
   width: 50%;
   text-align: center;
 }
-#gamelist, #gameelement, #userlist, #userelement {
+#gameList, .gameelement, #userlist, .userelement {
   display:inline;
   margin-inline: 10px;
+}
+
+#gameList, #userlist, #friendslist{
+	padding-left: 0px;
+}
+
+
+#gamelistdiv{
+	text-align: center;
 }
 
 #gamesearch{
@@ -201,6 +211,65 @@ a{
 
 /* details (expandable elements) */
 
-details h4,h3 {
+details h4,h3,h2 {
 	display: inline;
+}
+
+.review p, .comment p {
+	margin-top:0px;
+	margin-bottom:0px;
+}
+
+.review .text, .comment .text {
+	text-indent: 20px;
+}
+
+
+/*Home page*/
+h1 { padding-bottom: 15px;
+	font-size: xx-large;
+	font-weight: bold;; }
+
+#home{
+	text-align: center;
+}
+#about{
+	color: #333333; font-family: "Helvetica Neue",Arial,sans-serif; 
+	font-size: 16px; font-weight: 300; line-height: 1.5625; margin-bottom: 15px;
+}
+
+#aboutdiv{
+  padding: 10px;
+  border: 5px solid gray;
+  margin: 0;
+  align-self: auto;
+  margin: auto;
+  margin-bottom: 20px;
+  width: 50%;
+  padding: 10px;
+}
+
+#recdiv{
+	border: 5px solid gray;
+	align-self: auto;
+	margin: auto;
+	width: 50%;
+	padding: 10px;
+}
+
+#reclist, .recs {
+	text-align: center;
+	display: inline-block;
+	padding:20px
+  }
+
+
+/* Profile Page */
+
+#profile{
+	text-align: center;
+}
+
+#friendslist{
+	padding-left: 0px;
 }

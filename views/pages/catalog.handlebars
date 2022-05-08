@@ -13,11 +13,13 @@
   <input type="text" name="gameSearchTerm" id="gameSearchTerm" class="searchTerm" />
   <button type="submit" class="searchButton">Search</button>
 </form>
+<div id="gamelistdiv">
 <ul id="gameList">{{#each games}}
-    <li id="gameelement">
+    <li class="gameelement">
       <a href="/game/{{_id}}">{{title}}</a>
     </li>
   {{/each}}</ul>
+  </div>
   <p id="searcherror"></p>
 {{#if error}}
   <p class="error" id="dataerror">

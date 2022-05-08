@@ -8,7 +8,7 @@ const { ObjectId } = require("mongodb");
 const validate = require("../validation/validation");
 
 const saltRounds = 8;
-const numRecs = 2;
+const numRecs = 5;
 
 //https://advancedweb.hu/asynchronous-array-functions-in-javascript/
 const asyncFilter = async (arr, predicate) => {
@@ -198,8 +198,8 @@ const leastfavorite = async function (userId, gameId) {
   gameId = await validate.checkId(gameId, "GameId");
   const userCollection = await users();
   const updateInfo = await userCollection.updateOne(
-    { _id: ObjectId(uID) },
-    { $set: { leastFavoriteGameId: gameID } }
+    { _id: ObjectId(userId) },
+    { $set: { leastFavoriteGameId: gameId } }
   );
   if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
     throw "Error: Update failed";

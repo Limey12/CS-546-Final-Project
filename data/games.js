@@ -23,7 +23,7 @@ const addGame = async function addGame(title, description, image) {
   title = await validate.checkString(title, "Title");
   description = await validate.checkString(description, "Description");
   if (!image) {
-    image = "/public/images/no_image.jpeg";
+    image = null;
   } else {
     await validate.checkImage(image);
   }
