@@ -23,6 +23,12 @@ router.route("/:id").get(async (req, res) => {
             });
         }
         let userId = req?.session?.user?.id;
+        let gameLists;
+        if (userId) {
+            gameLists = await lists.gameListsByUser(userId);
+        } else {
+            gameLists = [];
+        }
         let reviews = game?.reviews;
         console.log(reviews)
         for (r of reviews) {
@@ -44,7 +50,7 @@ router.route("/:id").get(async (req, res) => {
             HTML_title: game?.title,
             reviews: reviews,
             comments: comments,
-            lists: await lists.gameListsByUser(userId),
+            lists: gameLists,
         };
         res.render("pages/game", hobj);
     } catch (e) {
