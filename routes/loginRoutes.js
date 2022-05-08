@@ -27,8 +27,8 @@ router.post("/", async (req, res) => {
     let loginData = req.body;
     let username = xss(loginData.username);
     let password = xss(loginData.password);
-    username = await validate.checkUsername(username);
-    password = await validate.checkPassword(password);
+    username = await validate.checkUsername(username, "Username");
+    password = await validate.checkPassword(password, "Password");
     let result = await userData.checkUser(username, password);
     //checkUser throws if user is not logging in correctly
     //if we are here, the user input the correct credentials

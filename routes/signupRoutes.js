@@ -4,6 +4,7 @@ const validator = require("email-validator");
 const data = require("../data");
 const userData = data.users;
 const xss = require('xss');
+const validate = require("../validation/validation");
 
 router.get("/", async (req, res) => {
   if (xss(req.session.user)) {
