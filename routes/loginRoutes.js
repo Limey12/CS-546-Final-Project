@@ -5,6 +5,7 @@ const userData = data.users;
 const xss = require("xss");
 const validate = require("../validation/validation");
 
+//GET http://localhost:3000/login
 router.get("/", async (req, res) => {
   if (req.session.user) {
     res.redirect("/");
@@ -22,6 +23,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+//POST http://localhost:3000/login
 router.post("/", async (req, res) => {
   try {
     let loginData = req.body;

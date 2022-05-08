@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const validator = require("email-validator");
 const data = require("../data");
 const userData = data.users;
 const xss = require("xss");
 const validate = require("../validation/validation");
 
+//GET http://localhost:3000/signup
 router.get("/", async (req, res) => {
   if (xss(req.session.user)) {
     res.redirect("/");
@@ -23,6 +23,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+//POST http://localhost:3000/signup
 router.post("/", async (req, res) => {
   let signupData, username, password, email;
   try {
