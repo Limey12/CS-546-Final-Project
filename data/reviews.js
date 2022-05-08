@@ -169,12 +169,6 @@ let getAverageRatingAmongFriends = async function (userId, gameId) {
         reviewCount++;
       }
     }
-
-    // await reviews.getGameFromReview(reviewList[0]);
-    //todo look in reviews subdocument of the particular game to see if the friend reviewed the game.
-
-    console.log("frrr");
-    console.log(friend);
   }
   if (reviewCount == 0) {
     return null;
