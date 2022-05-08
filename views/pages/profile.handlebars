@@ -1,4 +1,4 @@
-<article>
+<article id="profile">
   <header>
     <h1>
       User Profile
@@ -24,10 +24,10 @@
     <p>No least favorite game</p>
   {{/if}}
   <h2>Friends</h2>
-  <ul>
+  <ul id="friendslist">
     {{#if friends}}
       {{#each friends}}
-        <li>
+        <li class="friendelem">
           <a href="/profile/{{id}}">{{username}}</a>
         </li>
       {{/each}}
