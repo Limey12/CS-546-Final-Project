@@ -3,10 +3,6 @@
     var fav = $("#fav_btn");
     var lfav = $("#least_fav_btn");
     
-
-    //todo for both functions add to list using ajax.
-    //clear fields.
-    //do more client side error checking
     fav.submit(function (e) {
       e.preventDefault();
       $.ajax({
@@ -50,8 +46,12 @@
       reviewerror.html("Review Input is missing");
       reviewerror.show();
       return;
-    } else if( typeof review !== "string") {
-      reviewerror.html("Review should be a string");
+    } else if( typeof review !== "string" || review.length == 0) {
+      reviewerror.html("Review should be a non empty string");
+      reviewerror.show();
+      return;
+    } else if( Number(rating) !== "number") {
+      reviewerror.html("Rating should be a number");
       reviewerror.show();
       return;
     }
@@ -69,7 +69,6 @@
       }),
     };
     $.ajax(requestConfig).then(function (res) {
-      //Checking is reponse has an error
         var addedrating = res.addedreview.rating;
         var addedreviewtext = res.addedreview.reviewText;
         var username = res.user;
@@ -119,7 +118,6 @@
       }),
     };
     $.ajax(requestConfig).then(function (res) {
-      //Checking is reponse has an error
         var addedcomment = res.addedcomment.commentText;
         var username = res.user;
         var userId = res.addedcomment.userId;
