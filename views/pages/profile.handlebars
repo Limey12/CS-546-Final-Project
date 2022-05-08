@@ -24,16 +24,16 @@
         <p>No least favorite game</p>
     {{/if}}
     <h2>Friends</h2>
-    <ul>
         {{#if friends}}
+        <ul>
             {{#each friends}}
                 <li>
                     <a href="/profile/{{id}}">{{username}}</a>
                 </li>
             {{/each}}
+        </ul>
         {{else}}
             <p>I have no friends</p>
         {{/if}}
-    </ul>
     <a href="/reviews/{{id}}">{{username}}'s reviews</a>
 </body>
