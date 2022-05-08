@@ -12,6 +12,22 @@ const checkId = async function checkId(id, varName) {
   return id;
 };
 
+const checkNum = async function checkNum(num, varName) {
+  if (!num) throw `Error: You must provide ${varName}`;
+  if (typeof num === "string") {
+    num = num.trim();
+    if (num.length === 0)
+      throw `Error: ${varName} cannot be an empty string or string with just spaces`;
+    num = Number(num);
+    if(isNaN(num)) throw `Error: ${varName} must be a number`;
+  }
+  else if (typeof num === "number") {
+    if(isNaN(num)) throw `Error: ${varName} must be a number`;
+  }
+  else throw `Error: ${varName} must be a string or number`;
+  return num;
+};
+
 const checkString = async function checkString(strVal, varName) {
   if (!strVal) throw `Error: You must provide ${varName}`;
   if (typeof strVal !== "string") throw `Error: ${varName} must be a string`;
@@ -73,6 +89,7 @@ const checkPassword = async function checkPassword(password) {
 module.exports = {
   checkId,
   checkString,
+  checkNum,
   checkBool,
   checkArray,
   checkImage,
