@@ -79,6 +79,9 @@ router.post("/", async (req, res) => {
 router.route("/gameform").get(async (req, res) => {
   try {
     let id = req.session.user?.id;
+    if(!id){
+      res.redirect("/gamecatalog");
+    }
     res.render("pages/gameform", {HTML_title:"Game Form", id: id});
   } catch (e) {
     let id = req?.session?.user?.id;
