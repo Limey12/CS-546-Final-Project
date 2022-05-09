@@ -1,5 +1,3 @@
-//I pledge my honor that I have abided by the Stevens Honor System
-
 const gameRoutes = require("./gameRoutes");
 const loginRoutes = require("./loginRoutes");
 const signupRoutes = require("./signupRoutes");
