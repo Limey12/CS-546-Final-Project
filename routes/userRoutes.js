@@ -27,6 +27,7 @@ router.post("/", async (req, res) => {
     search = xss(req.body.userSearchTerm);
     search = await validate.checkString(search, "Search Term");
   } catch (e) {
+    let id = xss(req.session.user?.id);
     res.status(400).render("pages/users", {
       users: [],
       error: true,

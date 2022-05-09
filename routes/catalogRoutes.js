@@ -41,6 +41,7 @@ router.post("/", async (req, res) => {
     search = xss(req.body.gameSearchTerm);
     search = await validate.checkString(search, "Search Term");
   } catch (e) {
+    let id = xss(req.session.user?.id);
     return res.status(400).render("pages/catalog", {
       games: [],
       error: true,
@@ -85,7 +86,7 @@ router.route("/gameform").get(async (req, res) => {
   try {
     let id = xss(req.session.user?.id);
     if (!id) {
-      res.redirect("/gamecatalog");
+      return res.redirect("/gamecatalog");
     }
     res.render("pages/gameform", { HTML_title: "Game Form", id: id });
   } catch (e) {
