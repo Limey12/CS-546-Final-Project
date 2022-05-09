@@ -12,9 +12,13 @@ router.route("/:id").get(async (req, res) => {
     argId = xss(req?.params?.id);
     argId = await validate.checkId(argId);
   } catch (e) {
-    return res
-      .status(400)
-      .send({ error: "Bad request. Must include id parameter" });
+    return res.status(404).render("pages/error", {
+      id: xss(req?.session?.user?.id),
+      HTML_title: "game not found",
+      class: "error",
+      status: 404,
+      message: "game not found",
+    });
   }
   try {
     game = await games.getGame(argId);
