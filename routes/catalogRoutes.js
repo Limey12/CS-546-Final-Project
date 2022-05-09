@@ -86,7 +86,7 @@ router.route("/gameform").get(async (req, res) => {
   try {
     let id = xss(req.session.user?.id);
     if (!id) {
-      res.redirect("/gamecatalog");
+      return res.redirect("/gamecatalog");
     }
     res.render("pages/gameform", { HTML_title: "Game Form", id: id });
   } catch (e) {
@@ -110,9 +110,10 @@ router.route("/gameform").post(async (req, res) => {
     description = xss(req.body.description);
     description = await validate.checkString(description, "description");
     image = xss(req.body.image);
-    if (image == "/public/images/no_image.jpeg") {
+    if (image == "/public/images/no_image.jpeg" || !image) {
       image = null;
     } else {
+      console.log(image)
       await validate.checkImage(image);
     }
   } catch (e) {

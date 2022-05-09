@@ -1,17 +1,17 @@
 <form method="POST" action="?" id="gamesearch">
-  <h4><label for="newListTerm" id="newList">Create new list: </label></h4>
+  <h1><label for="newListTerm" id="newList">Create new list: </label></h1>
   <input type="text" name="newListTerm" id="newListTerm" />
   <button type="submit">Submit</button>
 </form>
 
 
-<h1>Current Lists: </h1>
+<h2>Current Lists: </h2>
 <ul>
 {{#each lists}}
     
     <li>
         <details>
-        <summary><h2>{{this.listName}}</h2></summary>
+        <summary><h3>{{this.listName}}</h3></summary>
         <ul>
         {{#each this.games}}
         <li>
