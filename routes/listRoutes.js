@@ -69,15 +69,26 @@ router.route("/:id").get(async (req, res) => {
 
 //POST http://localhost:3000/lists/{id}
 router.route("/:id").post(async (req, res) => {
-  let id, newListName;
+  let id, newListName, userId;
   try {
     id = xss(req?.params?.id);
     id = await validate.checkId(id, "Id");
+    userId = xss(req?.session?.user?.id);
+    userId = await validate.checkId(userId, "Id");
+    if(id !== userId) {
+      throw "Error: You do not have permission"
+    }
     newListName = xss(req?.body?.newListTerm);
     newListName = await validate.checkString(newListName, "List Name");
   } catch (e) {
     console.log(e);
-    return res.status(400).send({ error : e });
+    return res.status(400).render("pages/error", {
+      id: xss(req?.session?.user?.id),
+      HTML_title: "Error",
+      class: "error",
+      status: 400,
+      message: e,
+    });
   }
   try {
     await lists.createList(id, newListName, true);
