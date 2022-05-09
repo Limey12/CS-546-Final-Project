@@ -46,16 +46,23 @@ async function main() {
       "Persona 4 follows a group of high school students dealing with a mysterious TV channel dedicated to distorting and exaggerating the truth of who they are and their identities. A string of bizarre murders related to the TV channel begins shaking their once peaceful town.",
       "https://upload.wikimedia.org/wikipedia/en/1/10/Shin_Megami_Tensei_Persona_4.jpg"
     );
-    //Update Game
-    // const Minecraft2 = await games.updateGame(
-    //   Minecraft._id.toString(),
-    //   "Minecraft 2",
-    //   "Bigger Game",
-    //   null
-    // );
+    const Celeste = await games.addGame(
+      "Celeste",
+      "Celeste is a platform game in which players control a young woman named Madeline as she makes her way up Mount Celeste while avoiding various deadly obstacles. Along with jumping and climbing up walls for a limited amount of time, Madeline has the ability to perform a mid-air dash in eight directions.",
+      "https://assets.nintendo.com/image/upload/c_fill,f_auto,q_auto,w_1200/v1/ncom/en_US/games/switch/c/celeste-switch/hero"
+    );
+    const FamilyGuy = await games.addGame(
+      "Family Guy Video Game!",
+      "Play through three stories that intersect in typical Family Guy fashion. Be Stewie and match wits against his brother and arch-nemesis Bertram as they vie to take over the world. Take control of Peter and fight to stop Mr. Belvedere who he thinks is trying to take over the world.",
+      "https://upload.wikimedia.org/wikipedia/en/f/fe/Family_Guy_Video_Game%21.jpg"
+    );
+    const WiiSports = await games.addGame(
+      "Wii Sports",
+      "Wii Sports includes golf, bowling, boxing, baseball, and tennis games. Players use the Wii's wireless motion-sensitive remote to mimic the actions used when playing real-life games. In the baseball game, for instance, a player swings the controller to produce the swing of the bat on-screen.",
+      "https://media.gamestop.com/i/gamestop/10065517/Wii-Sports---Nintendo-Wii"
+    );
     console.log("logging persona4")
     console.log(Persona4);
-    // console.log(await games.getGame(Minecraft._id.toString()));
     console.log(await games.getGameSearchTerm("Persona"));
 
     //seeding users database
@@ -66,9 +73,14 @@ async function main() {
     const u4 = await users.createUser("user04", "user04@email.com", "1234567890");
     const u5 = await users.createUser("qwerty", "qwerty@email.com", "qwerty");
     const u6 = await users.createUser("qwerty2", "qwerty2@email.com", "qwerty2");
+    const familyguy2009 = await users.createUser("familyguy2009", "familyguy@email.com", "password");
+    const patrickhill = await users.createUser("patrickhill", "patrick@email.com", "phillpassword");
+    const xxvideogameplayerxx = await users.createUser("xxvideogameplayerxx", "generic@email.com", "helloxxminecraft");
     await users.addFriend(u1._id, u4._id);
     await users.addFriend(u1._id, u2._id);
     await users.addFriend(u3._id, u4._id);
+    await users.addFriend(familyguy2009._id, xxvideogameplayerxx._id);
+    await users.addFriend(patrickhill._id, u1._id);
     
     //creating reviews
     console.log("creating reviews")
@@ -81,6 +93,8 @@ async function main() {
     const r6 = await reviews.createReview(u4._id, Persona5._id, "pretty good also", 3);
     const r7 = await reviews.createReview(u5._id, Persona5._id, "fancy", 3);
     const r8 = await reviews.createReview(u6._id, Persona5._id, "it is like pokemon", 4);
+    const r9 = await reviews.createReview(familyguy2009._id, RiskofRain2._id, "I love rouge-likes and family guy", 5);
+    const r10 = await reviews.createReview(familyguy2009._id, LeagueofLegends._id, "Best Game of all Time", 5);
 
     console.log(r1)
 
