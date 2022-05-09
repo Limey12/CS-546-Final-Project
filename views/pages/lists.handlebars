@@ -1,8 +1,10 @@
+{{#if loggedin}}
 <form method="POST" action="?" id="gamesearch">
   <h1><label for="newListTerm" id="newList">Create new list: </label></h1>
   <input type="text" name="newListTerm" id="newListTerm" />
   <button type="submit">Submit</button>
 </form>
+{{/if}}
 
 <h2>Current Lists: </h2>
 <ul>
