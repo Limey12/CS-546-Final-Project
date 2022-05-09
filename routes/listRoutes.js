@@ -71,11 +71,13 @@ router.route("/:id").get(async (req, res) => {
 router.route("/:id").post(async (req, res) => {
   let id, newListName;
   try {
-  } catch (e) {
     id = xss(req?.params?.id);
     id = await validate.checkId(id, "Id");
     newListName = xss(req?.body?.newListTerm);
     newListName = await validate.checkString(newListName, "List Name");
+  } catch (e) {
+    console.log(e);
+    return res.status(400).send({ error : e });
   }
   try {
     await lists.createList(id, newListName, true);
