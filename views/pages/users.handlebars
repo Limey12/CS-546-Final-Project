@@ -1,23 +1,23 @@
 <article id="usersearch">
-<h1>
-  Users
-</h1>
-<form method="POST" action="/users" id="usersearchform">
-  <label for="userSearchTerm" id="Search">Search:</label>
-  <input type="text" name="userSearchTerm" id="userSearchTerm" />
-  <button type="submit">Submit</button>
-</form>
-<ul id="userlist">{{#each users}}
-    <li class="userelement">
-      <a href="/profile/{{_id}}">{{username}}</a>
-    </li>
-  {{/each}}</ul>
-<p id="searcherror"></p>
-{{#if error}}
-  <p class="error" id="dataerror">
-    {{errormsg}}
-  </p>
-{{/if}}
+  <h1>
+    Users
+  </h1>
+  <form method="POST" action="/users" id="usersearchform">
+    <label for="userSearchTerm" id="Search">Search:</label>
+    <input type="text" name="userSearchTerm" id="userSearchTerm" />
+    <button type="submit">Submit</button>
+  </form>
+  <ul id="userlist">{{#each users}}
+      <li class="userelement">
+        <a href="/profile/{{_id}}">{{username}}</a>
+      </li>
+    {{/each}}</ul>
+  <p id="searcherror"></p>
+  {{#if error}}
+    <p class="error" id="dataerror">
+      {{errormsg}}
+    </p>
+  {{/if}}
 </article>
 <script
   src="https://code.jquery.com/jquery-2.2.4.min.js"

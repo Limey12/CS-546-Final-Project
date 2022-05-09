@@ -4,39 +4,40 @@
   <button type="submit">Submit</button>
 </form>
 
-
 <h2>Current Lists: </h2>
 <ul>
-{{#each lists}}
-    
+  {{#each lists}}
+
     <li>
-        <details>
+      <details>
         <summary><h3>{{this.listName}}</h3></summary>
         <ul>
-        {{#each this.games}}
-        <li>
-            <details>
-            <summary><a href = "/game/{{this._id}}">{{this.title}}</a></summary>
-            
-            <ul>
-            {{#each this.urevs}}
-            <li  class="review">
-            <p>Rating: {{this.rating}}</p>
-            <p  class="text">{{this.reviewText}}</p>
+          {{#each this.games}}
+            <li>
+              <details>
+                <summary><a
+                    href="/game/{{this._id}}"
+                  >{{this.title}}</a></summary>
+
+                <ul>
+                  {{#each this.urevs}}
+                    <li class="review">
+                      <p>Rating: {{this.rating}}</p>
+                      <p class="text">{{this.reviewText}}</p>
+                    </li>
+                  {{/each}}
+                  {{#each this.ucoms}}
+                    <li class="comment">
+                      <p class="text">{{this.commentText}}</p>
+                    </li>
+                  {{/each}}
+                </ul>
+              </details>
             </li>
-            {{/each}}
-            {{#each this.ucoms}}
-            <li  class="comment">
-            <p class="text">{{this.commentText}}</p>
-            </li>
-            {{/each}}
-            </ul>
-            </details>
-        </li>
-        {{/each}}
+          {{/each}}
         </ul>
-        </details>
+      </details>
     </li>
-    
-{{/each}}
+
+  {{/each}}
 </ul>

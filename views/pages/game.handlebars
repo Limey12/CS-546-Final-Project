@@ -1,104 +1,120 @@
-{{!-- 
+{{! 
 Image, title, description of game
 Average rating among friends
 Average rating among all users
 Reviews
---}}
-
+}}
 
 <article>
-    <h1>{{game_name}}</h1>
-    {{#if id}}
+  <h1>{{game_name}}</h1>
+  {{#if id}}
     <form id="fav_btn">
-        <button type="submit">Favorite</button>
+      <button type="submit">Favorite</button>
     </form>
     <form id="least_fav_btn">
-        <button type="submit">Least Favorite</button>
+      <button type="submit">Least Favorite</button>
     </form>
     <h3>Add this game to a list!</h3>
     <form id="game-list-form" method="POST" action="?">
-    <label for="list-names">Select list</label>
-    <select name="list-names" id="list-names">
+      <label for="list-names">Select list</label>
+      <select name="list-names" id="list-names">
         {{#each lists}}
-        <option value="{{this.listName}}">{{this.listName}}</option>
+          <option value="{{this.listName}}">{{this.listName}}</option>
         {{/each}}
-    </select>
-    <button type="submit">Add {{game_name}} to list!</button>
+      </select>
+      <button type="submit">Add {{game_name}} to list!</button>
     </form>
-    {{/if}}
-    
-    <img src="{{image}}" alt="{{alt}}" id="gameimage">
-     {{!-- todo place holder to resize image --}}
-    <p>{{description}}</p>
-    <h3>Average Rating</h3>
-    <div>
-        <p>Among friends: {{#if id}}{{f_rating}}{{else}}Log in to see your freind's ratings{{/if}}</p>
-        <p>Among all users: {{overall_rating}}</p>
-    </div>
+  {{/if}}
 
-    <details>
+  <img src="{{image}}" alt="{{alt}}" id="gameimage" />
+  {{! todo place holder to resize image }}
+  <p>{{description}}</p>
+  <h3>Average Rating</h3>
+  <div>
+    <p>Among friends:
+      {{#if id}}{{f_rating}}{{else}}Log in to see your freind's ratings{{/if}}</p>
+    <p>Among all users: {{overall_rating}}</p>
+  </div>
+
+  <details>
     <summary><h3>Reviews</h3></summary>
-    
+
     {{#if id}}
-    <form id="reviewform" action = "?" method="post">
+      <form id="reviewform" action="?" method="post">
         <label for="rating_input" id="rating_label">Rating:</label>
-        <input type="number" name="rating" id="rating_input" min="0" max="5" step="0.1"/><br />
+        <input
+          type="number"
+          name="rating"
+          id="rating_input"
+          min="0"
+          max="5"
+          step="0.1"
+        /><br />
         <label for="review_input" id="review_label">Review:</label>
         <textarea name="review" id="review_input"></textarea>
         <button type="submit">Submit</button>
-    </form>
-    <p id="reviewerror">
-    </p>
+      </form>
+      <p id="reviewerror">
+      </p>
     {{/if}}
     <ul id="addedreviews">
-    {{#if reviews}}
+      {{#if reviews}}
         {{#each reviews}}
-            <li class="review">
-                <h4>By <a href="/profile/{{this.userId}}">{{this.reviewUsername}}</a></h4>
-                <p class="rating">Rating: {{this.rating}}</p>
-                <p class="text">{{this.reviewText}}</p>
-            </li>
+          <li class="review">
+            <h4>By
+              <a
+                href="/profile/{{this.userId}}"
+              >{{this.reviewUsername}}</a></h4>
+            <p class="rating">Rating: {{this.rating}}</p>
+            <p class="text">{{this.reviewText}}</p>
+          </li>
         {{/each}}
-    {{else}}
-        <li id="noreviews">There are no reviews for this game yet!{{#if id}} Be the first {{else}} Log in {{/if}}to add one.</li>
-    {{/if}}
-    
-    </ul>
-    {{!-- <ul id="addedreviews" hidden> --}}
-    
-    </details>
+      {{else}}
+        <li id="noreviews">There are no reviews for this game yet!{{#if id}}
+            Be the first
+          {{else}} Log in {{/if}}to add one.</li>
+      {{/if}}
 
-    <details>
+    </ul>
+    {{! <ul id="addedreviews" hidden> }}
+
+  </details>
+
+  <details>
     <summary><h3>Comments</h3></summary>
     {{#if id}}
-    <form id="commentform" action = "?" method="post">
+      <form id="commentform" action="?" method="post">
         <label for="comment_input" id="comment_label">Comment:</label>
         <textarea name="comment" id="comment_input"></textarea>
         <button type="submit">Submit</button>
-    </form>
-    <p id="commenterror"></p>
+      </form>
+      <p id="commenterror"></p>
     {{/if}}
-    <ul id="addedcomments">   
-    {{#if comments}}
+    <ul id="addedcomments">
+      {{#if comments}}
         {{#each comments}}
-            <li class="comment">
-                <h4>By <a href="/profile/{{this.userId}}">{{this.commentUsername}}</a></h4>
-                <p class="text">{{this.commentText}}</p>
-            </li>
+          <li class="comment">
+            <h4>By
+              <a
+                href="/profile/{{this.userId}}"
+              >{{this.commentUsername}}</a></h4>
+            <p class="text">{{this.commentText}}</p>
+          </li>
         {{/each}}
-    {{else}}
-        <li id="nocomments">There are no comments for this game yet!{{#if id}} Be the first {{else}} Log in {{/if}}to add one.</li>
-    {{/if}}
-    
-    
+      {{else}}
+        <li id="nocomments">There are no comments for this game yet!{{#if id}}
+            Be the first
+          {{else}} Log in {{/if}}to add one.</li>
+      {{/if}}
+
     </ul>
-    {{!-- <ul id="addedcomments" hidden>
-    </ul> --}}
-    
-    </details>
-    
+    {{! <ul id="addedcomments" hidden>
+    </ul> }}
+
+  </details>
+
 </article>
-{{!-- for ajax buttons and forms --}}
+{{! for ajax buttons and forms }}
 <script
   src="https://code.jquery.com/jquery-2.2.4.min.js"
   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
