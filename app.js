@@ -1,3 +1,5 @@
+//I pledge my honor that I have abided by the Stevens Honor System
+
 const express = require("express");
 const app = express();
 const static = express.static(__dirname + "/public");
