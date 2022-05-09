@@ -41,6 +41,7 @@ router.post("/", async (req, res) => {
     search = xss(req.body.gameSearchTerm);
     search = await validate.checkString(search, "Search Term");
   } catch (e) {
+    let id = xss(req.session.user?.id);
     return res.status(400).render("pages/catalog", {
       games: [],
       error: true,
