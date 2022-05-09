@@ -180,9 +180,6 @@ router.route("/update/bio").get(async (req, res) => {
 //POST http://localhost:3000/profile/update/bio
 router.route("/update/bio").post(async (req, res) => {
   let bio;
-  if (!xss(req?.session?.user)) {
-    res.redirect("/");
-  }
   try {
     let updateData = req.body;
     bio = xss(updateData.newBio);
@@ -196,6 +193,9 @@ router.route("/update/bio").post(async (req, res) => {
     });
   }
   try {
+    if (!xss(req?.session?.user)) {
+      return res.redirect("/");
+    }
     users.updateBio(xss(req?.session?.user?.id), bio);
     res.redirect("/profile");
   } catch (e) {
