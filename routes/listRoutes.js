@@ -27,6 +27,7 @@ router.route("/:id").get(async (req, res) => {
     id = await validate.checkId(id, "Id");
     userLists = await lists.gameListsByUser(id);
     userLists = await validate.checkArray(userLists, "User Lists");
+    userId = xss(req?.session?.user?.id);
   } catch (e) {
     return res.status(404).render("pages/error", {
       id: xss(req?.session?.user?.id),
@@ -54,6 +55,7 @@ router.route("/:id").get(async (req, res) => {
       id: xss(req?.session?.user?.id),
       HTML_title: "Lists",
       lists: userLists,
+      loggedin: userId == id,
     });
   } catch (e) {
     console.log(e);

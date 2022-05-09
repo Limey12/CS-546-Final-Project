@@ -45,6 +45,7 @@ button:active {
 #navBar {
   list-style-type: none;
   margin: -10px;
+  margin-bottom: auto;
   padding: 0;
   overflow: hidden;
   background-color: #333;
