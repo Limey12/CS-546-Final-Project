@@ -26,7 +26,6 @@
     "express-handlebars": "^6.0.5",
     "express-session": "^1.17.2",
     "mongodb": "^4.5.0",
-    "steamapi": "^2.2.0",
     "xss": "^1.0.11"
   }
 }

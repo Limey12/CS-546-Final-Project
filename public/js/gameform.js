@@ -83,6 +83,9 @@ async function checkImage(url) {
         var addedgametitle = res.addedgame.title;
         var addedgamedesc = res.addedgame.description;
         var addedgameimage = res.addedgame.image;
+        if(!addedgameimage){
+          addedgameimage = "/public/images/no_image.jpeg"
+        }
         const dt = `<dt> ${addedgametitle}  </dt>`;
         const dd = `<dd> Description: ${addedgamedesc}  </dd>`;
         const dd2 = `<dd>  <img src="${addedgameimage}"  alt = ${alt} width="300" 
