@@ -21,7 +21,13 @@ const constructorMethod = (app) => {
   app.use("/users", userRoutes);
   app.use("/lists", listRoutes);
   app.use("*", (req, res) => {
-    res.status(404).json({ error: "Not found" });
+    return res.status(404).render("pages/error", {
+      id: xss(req?.session?.user?.id),
+      HTML_title: "error",
+      class: "error",
+      status: 404,
+      message: "page not found",
+    });
   });
 };
 
