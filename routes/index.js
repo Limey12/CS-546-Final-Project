@@ -9,6 +9,7 @@ const catalogRoutes = require("./catalogRoutes");
 const profileRoutes = require("./profileRoutes");
 const userRoutes = require("./userRoutes");
 const listRoutes = require("./listRoutes");
+const xss = require("xss");
 
 const constructorMethod = (app) => {
   app.use("/", rootRoute);
