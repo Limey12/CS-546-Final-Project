@@ -1,21 +1,21 @@
 <article id="home">
   <h1>Game Ranker</h1>
   <div id="aboutdiv">
-  <p id="about">Game Ranker is a website for rating games you have played and seeing how
-    your friends rank games they played. It is ideal for keeping track of your
-    favorite games figuring out what games to play next based on the reviews of
-    other users.</p>
-    </div>
+    <p id="about">Game Ranker is a website for rating games you have played and
+      seeing how your friends rank games they played. It is ideal for keeping
+      track of your favorite games figuring out what games to play next based on
+      the reviews of other users.</p>
+  </div>
   {{#if id}}
-  <div id="recdiv">
-    <h2>Recommendations</h2>
-    <ul id="reclist">
-      {{#each recs}}
-        <li class="recs">
-          <a href="/game/{{_id}}">{{title}}</a>
-        </li>
-      {{/each}}
-    </ul>
+    <div id="recdiv">
+      <h2>Recommendations</h2>
+      <ul id="reclist">
+        {{#each recs}}
+          <li class="recs">
+            <a href="/game/{{_id}}">{{title}}</a>
+          </li>
+        {{/each}}
+      </ul>
     </div>
   {{/if}}
 </article>

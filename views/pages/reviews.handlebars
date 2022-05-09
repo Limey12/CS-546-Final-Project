@@ -1,17 +1,17 @@
 <article>
-    <h2>{{username}}'s Reviews</h2>
-    {{#if reviews}}
-        <ul>
-            {{#each reviews}}
-                <li>
-                    <h4>Game: {{game}}</h4>
-                    <p>Review: {{review}}</p>
-                    <p>Rating: {{rating}}/5</p>
-                </li>
-            {{/each}}
-        </ul>
-    {{else}}
-        <p>{{username}} has no reviews</p>
-    {{/if}}
-    <a href="/profile/{{id}}">Back to {{username}}'s profile</a>
+  <h2>{{username}}'s Reviews</h2>
+  {{#if reviews}}
+    <ul>
+      {{#each reviews}}
+        <li>
+          <h4>Game: {{game}}</h4>
+          <p>Review: {{review}}</p>
+          <p>Rating: {{rating}}/5</p>
+        </li>
+      {{/each}}
+    </ul>
+  {{else}}
+    <p>{{username}} has no reviews</p>
+  {{/if}}
+  <a href="/profile/{{id}}">Back to {{username}}'s profile</a>
 </article>

@@ -1,32 +1,37 @@
 <article id="gamecatalog">
-<h1>
-  Game Catalog
-</h1>
+  <h1>
+    Game Catalog
+  </h1>
 
-{{#if id}}
-<form action="/GameCatalog/gameform">
-    <button type="submit">Enter a new game</button>
-</form>
-{{/if}}
-<form method="POST" action="/gamecatalog" id="gamesearch">
-  <label for="gameSearchTerm" id="Search" class="searchButton">Search:</label>
-  <input type="text" name="gameSearchTerm" id="gameSearchTerm" class="searchTerm" />
-  <button type="submit" class="searchButton">Search</button>
-</form>
-<div id="gamelistdiv">
-<ul id="gameList">{{#each games}}
-    <li class="gameelement">
-      <a href="/game/{{_id}}">{{title}}</a>
-    </li>
-  {{/each}}</ul>
+  {{#if id}}
+    <form action="/GameCatalog/gameform">
+      <button type="submit">Enter a new game</button>
+    </form>
+  {{/if}}
+  <form method="POST" action="/gamecatalog" id="gamesearch">
+    <label for="gameSearchTerm" id="Search" class="searchButton">Search:</label>
+    <input
+      type="text"
+      name="gameSearchTerm"
+      id="gameSearchTerm"
+      class="searchTerm"
+    />
+    <button type="submit" class="searchButton">Search</button>
+  </form>
+  <div id="gamelistdiv">
+    <ul id="gameList">{{#each games}}
+        <li class="gameelement">
+          <a href="/game/{{_id}}">{{title}}</a>
+        </li>
+      {{/each}}</ul>
   </div>
   <p id="searcherror"></p>
-{{#if error}}
-  <p class="error" id="dataerror">
-    {{errormsg}}
-  </p>
-{{/if}}
-<a href="/gamecatalog" id="backLink">Get All Games</a>
+  {{#if error}}
+    <p class="error" id="dataerror">
+      {{errormsg}}
+    </p>
+  {{/if}}
+  <a href="/gamecatalog" id="backLink">Get All Games</a>
 </article>
 <script
   src="https://code.jquery.com/jquery-2.2.4.min.js"
