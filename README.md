@@ -6,10 +6,10 @@ How to run:
 3. Use the command "npm start" to start the server
 
 Additional commands:
-Use "npm run seed" to seed the database with simple data
-Use "npm run seed drop" to drop the current database and then seed the database with simple data
-Use "npm run steam" to seed the database with data pulled from Steam
-Use "npm run steam drop" to drop the current database and then seed the database with data pulled from Steam
+1. Use "npm run seed" to seed the database with simple data
+2. Use "npm run seed drop" to drop the current database and then seed the database with simple data
+3. Use "npm run steam" to seed the database with data pulled from Steam
+4. Use "npm run steam drop" to drop the current database and then seed the database with data pulled from Steam
 
 Extra features completed:
 1. Use Steam API to pull basic game data
