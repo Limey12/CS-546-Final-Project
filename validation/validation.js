@@ -79,7 +79,7 @@ const checkEmail = async function checkEmail(email) {
 
 const checkPassword = async function checkPassword(password) {
   if (!password)
-    throw "Error: You must provide email";
+    throw "Error: You must provide password";
   if (typeof password !== "string") throw "Error: Password must be a string";
   if (/\s/.test(password)) throw "Error: Password must not contain any spaces";
   if (password.length < 6) throw "Error: Password must be at least 6 characters long";
