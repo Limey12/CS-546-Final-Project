@@ -132,6 +132,14 @@ router.route("/add/:id").post(async (req, res) => {
     if (!user) {
       throw "Error: User not found";
     }
+    loggedIn = false;
+    userId = xss(req?.session?.user?.id);
+    if (userId) {
+      loggedIn = true;
+    }
+    if (!loggedIn) {
+      throw "Error: Not logged in";
+    }
   } catch (e) {
     return res.status(404).render("pages/error", {
       id: xss(req?.session?.user?.id),
@@ -142,14 +150,6 @@ router.route("/add/:id").post(async (req, res) => {
     });
   }
   try {
-    loggedIn = false;
-    userId = xss(req?.session?.user?.id);
-    if (userId) {
-      loggedIn = true;
-    }
-    if (!loggedIn) {
-      throw "Not logged in";
-    }
     users.addFriend(userId, id);
     res.redirect("back");
   } catch (e) {
