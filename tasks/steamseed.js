@@ -6,7 +6,7 @@ const users = data.users;
 const reviews = data.reviews;
 const comments = data.comments;
 const lists = data.lists;
-
+const GAMES_TO_QUERY = 100;
 async function main() {
   
   const db = await dbConnection.dbConnection();
@@ -17,7 +17,7 @@ async function main() {
   try {
     let steam = await axios.get("https://api.steampowered.com/ISteamApps/GetAppList/v0002/?format=json");
     steam = steam.data.applist.apps;
-    steam = steam.slice(0, 100);
+    steam = steam.slice(0, GAMES_TO_QUERY);
 
     for (s of steam) {
       //s is a steam game
