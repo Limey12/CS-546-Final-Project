@@ -97,8 +97,7 @@ router.route("/:id/fav").post(async (req, res) => {
     let userId = xss(req?.session?.user?.id);
     await users.favorite(userId, argId);
   } catch (e) {
-    console.log("post routecatch " + e);
-    return res.status(400).send("post routecatch " + e);
+    return res.status(400).json({error: e});
   }
 });
 
@@ -110,8 +109,7 @@ router.route("/:id/lfav").post(async (req, res) => {
     let userId = xss(req?.session?.user?.id);
     await users.leastfavorite(userId, argId);
   } catch (e) {
-    console.log("post routecatch " + e);
-    return res.status(400).send("post routecatch " + e);
+    return res.status(400).json({error: e});
   }
 });
 
@@ -137,8 +135,12 @@ router.route("/:id").post(async (req, res) => {
       throw "Must supply comment, review + rating, or list-names";
     }
   } catch (e) {
-    console.log("post routecatch " + e);
     return res.status(400).send({ error: e });
+  }
+  try {
+    userId = await validate.checkId(userId);
+  } catch (e) {
+    return res.status(401).send({ error: "not authenticated" });
   }
   try {
     let user = await users.getUser(userId);
@@ -168,7 +170,6 @@ router.route("/:id").post(async (req, res) => {
       throw "Must supply comment, review + rating, or list-names";
     }
   } catch (e) {
-    console.log("post routecatch " + e);
     return res.status(500).send({ error: e });
   }
 });
